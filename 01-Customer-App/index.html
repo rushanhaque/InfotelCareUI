@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Infotel Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#0E9466; --green-d:#0A7350; --green-50:#E9F5EF; --green-100:#D2EBE0;
+  --ink:#14181D; --gray:#5B6472; --gray2:#8B93A0; --line:#E9EBEE; --bg:#FFFFFF; --soft:#F5F6F8;
+  --amber:#E2A33A; --red:#E0573C; --red-50:#FCEEEB;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:Inter,system-ui,sans-serif;background:#E7E9EC;color:var(--ink);display:flex;justify-content:center;line-height:1.45;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit}
+.ic{width:22px;height:22px;stroke:currentColor;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;display:block}
+
+/* phone shell */
+.app{width:430px;max-width:100%;height:100vh;height:100dvh;max-height:932px;background:var(--bg);position:relative;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 70px rgba(20,30,45,.16)}
+@media(min-width:480px){.app{height:912px;margin:auto;border-radius:34px}}
+.statusbar{height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:13px;font-weight:700}
+.statusbar .r{display:flex;gap:6px;align-items:center}
+.statusbar .r .ic{width:16px;height:16px;stroke-width:2.2}
+.bat{width:22px;height:11px;border:1.5px solid var(--ink);border-radius:3px;position:relative}
+.bat::after{content:"";position:absolute;right:-3px;top:3px;height:5px;width:2px;background:var(--ink);border-radius:1px}
+.bat i{position:absolute;inset:1.5px;width:72%;background:var(--ink);border-radius:1px}
+
+.stage{flex:1;position:relative;min-height:0}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg)}
+.screen.active{display:flex}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden}
+.scroll::-webkit-scrollbar{width:0}
+
+/* header */
+.hdr{padding:8px 20px 14px;display:flex;align-items:center;gap:12px}
+.hdr .back{width:40px;height:40px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center}
+.hdr h1{font-size:19px;font-weight:800;letter-spacing:-.02em}
+.hdr .sub{font-size:12.5px;color:var(--gray);font-weight:500}
+.grow{flex:1;min-width:0}
+.iconbtn{width:40px;height:40px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;position:relative}
+.iconbtn .dot{position:absolute;top:9px;right:10px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff}
+
+/* generic */
+.pad{padding:0 20px}
+.row{display:flex;align-items:center}.col{display:flex;flex-direction:column}
+.between{justify-content:space-between}
+.muted{color:var(--gray)}.g2{color:var(--gray2)}
+.sec{font-size:16px;font-weight:800;letter-spacing:-.02em;margin:22px 0 12px}
+.sec .all{font-size:13px;font-weight:600;color:var(--green);float:right;margin-top:3px}
+.fw7{font-weight:700}.fw8{font-weight:800}.fw6{font-weight:600}
+.f12{font-size:12px}.f13{font-size:13px}.f14{font-size:14px}.f15{font-size:15px}
+.mt6{margin-top:6px}.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}
+.rupee::before{content:"\20B9"}
+
+/* search */
+.search{display:flex;align-items:center;gap:10px;height:48px;padding:0 14px;background:var(--soft);border:1px solid var(--line);border-radius:13px;margin:2px 0 4px}
+.search input{flex:1;border:none;outline:none;background:none;font-size:14.5px;font-weight:500}
+.search .ic{width:20px;height:20px;color:var(--gray2)}
+
+/* buttons */
+.btn{display:flex;align-items:center;justify-content:center;gap:9px;height:52px;border-radius:13px;font-size:15px;font-weight:700;width:100%;transition:filter .12s,transform .1s}
+.btn:active{transform:scale(.99)}
+.btn.pri{background:var(--green);color:#fff}
+.btn.pri:active{filter:brightness(.95)}
+.btn.out{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn.soft{background:var(--green-50);color:var(--green-d)}
+.btn .ic{width:19px;height:19px;stroke-width:2.2}
+.btn.sm{height:42px;font-size:13.5px;border-radius:10px;width:auto;padding:0 16px}
+
+/* category grid */
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 8px}
+.cat{display:flex;flex-direction:column;align-items:center;gap:7px;padding:6px 2px;border-radius:12px}
+.cat .ci{width:52px;height:52px;border-radius:15px;background:var(--soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink)}
+.cat .ci .ic{width:24px;height:24px}
+.cat span{font-size:11px;font-weight:600;color:var(--gray);text-align:center;line-height:1.15}
+
+/* cards */
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px}
+.svc{display:flex;gap:13px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:15px;padding:11px}
+.svc .thumb{width:60px;height:60px;border-radius:12px;background:var(--soft);display:grid;place-items:center;color:var(--green-d);flex:0 0 auto}
+.svc .thumb .ic{width:26px;height:26px}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:7px;background:var(--soft);color:var(--gray)}
+.tag.star{background:var(--green-50);color:var(--green-d)}
+.tag.star .ic{width:12px;height:12px;fill:var(--green-d);stroke:none}
+
+/* promo */
+.promo{background:var(--green);border-radius:18px;padding:18px 20px;color:#fff;position:relative;overflow:hidden}
+.promo h3{font-size:17px;font-weight:800;letter-spacing:-.02em}
+.promo p{font-size:12.5px;opacity:.9;margin-top:4px;max-width:74%}
+.promo .pill{display:inline-flex;margin-top:12px;background:#fff;color:var(--green-d);font-size:12.5px;font-weight:800;padding:8px 14px;border-radius:9px}
+.promo .deco{position:absolute;right:-20px;bottom:-26px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.12)}
+
+/* chips select */
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{padding:10px 14px;border-radius:11px;border:1.5px solid var(--line);background:#fff;font-size:13.5px;font-weight:600;color:var(--gray)}
+.chip.sel{border-color:var(--green);background:var(--green-50);color:var(--green-d)}
+.slot{flex:1;min-width:0;text-align:center;padding:12px 6px;border-radius:12px;border:1.5px solid var(--line);background:#fff}
+.slot .t{font-size:14px;font-weight:700;color:var(--ink)}
+.slot .d{font-size:11.5px;color:var(--gray2);margin-top:2px}
+.slot.sel{border-color:var(--green);background:var(--green-50)}
+.slot.sel .t{color:var(--green-d)}
+.slot.off{opacity:.45}
+
+/* list rows */
+.lrow{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--line)}
+.lrow:last-child{border-bottom:none}
+.lrow .li{width:42px;height:42px;border-radius:11px;background:var(--soft);display:grid;place-items:center;color:var(--ink);flex:0 0 auto}
+.lrow .li .ic{width:20px;height:20px}
+.lrow .ttl{font-size:14.5px;font-weight:600}
+.lrow .ds{font-size:12.5px;color:var(--gray);margin-top:1px}
+.chev{color:var(--gray2)}.chev .ic{width:20px;height:20px}
+
+/* status pills */
+.st{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:8px}
+.st .d{width:6px;height:6px;border-radius:50%;background:currentColor}
+.st.ok{background:var(--green-50);color:var(--green-d)}
+.st.go{background:#EAF2FE;color:#2C6BD4}
+.st.warn{background:#FBF1E0;color:#9A6A14}
+.st.off{background:var(--soft);color:var(--gray)}
+.st.red{background:var(--red-50);color:var(--red)}
+
+/* avatar */
+.av{border-radius:50%;background:var(--green-50);color:var(--green-d);display:grid;place-items:center;font-weight:800;flex:0 0 auto}
+
+/* timeline */
+.tl{position:relative;padding:0 0 20px 26px}
+.tl:last-child{padding-bottom:0}
+.tl::before{content:"";position:absolute;left:8px;top:18px;bottom:0;width:2px;background:var(--line)}
+.tl.done::before{background:var(--green)}
+.tl .nd{position:absolute;left:0;top:1px;width:18px;height:18px;border-radius:50%;border:2px solid var(--line);background:#fff}
+.tl.done .nd{background:var(--green);border-color:var(--green)}
+.tl.now .nd{border-color:var(--green)}
+.tl.now .nd::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--green)}
+.tl .tt{font-size:14px;font-weight:700}
+.tl .ts{font-size:12px;color:var(--gray);margin-top:1px}
+.tl.wait .tt{color:var(--gray2)}
+
+/* bill */
+.bill{display:flex;justify-content:space-between;padding:7px 0;font-size:13.5px}
+.bill .k{color:var(--gray)}.bill .v{font-weight:600}
+.bill.tot{border-top:1px solid var(--line);margin-top:6px;padding-top:12px}
+.bill.tot .k{color:var(--ink);font-weight:800;font-size:15px}
+.bill.tot .v{font-weight:800;font-size:17px}
+
+/* dock */
+.dock{flex:0 0 auto;padding:12px 20px calc(22px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
+.dock .pl{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.dock .pl .a{font-size:19px;font-weight:800}
+.dock .pl .l{font-size:12px;color:var(--gray)}
+
+/* tabbar */
+.tabbar{flex:0 0 auto;min-height:68px;display:flex;border-top:1px solid var(--line);background:#fff;padding-bottom:env(safe-area-inset-bottom)}
+.app.flow .tabbar{display:none}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--gray2);font-size:10.5px;font-weight:600}
+.tab .ic{width:23px;height:23px}
+.tab.on{color:var(--green)}
+.tab.on .ic{stroke-width:2.2}
+.map{height:160px;border-radius:14px;border:1px solid var(--line);position:relative;overflow:hidden;background:
+  repeating-linear-gradient(0deg,#eef0f2 0 1px,transparent 1px 24px),
+  repeating-linear-gradient(90deg,#eef0f2 0 1px,transparent 1px 24px),#f4f5f7}
+.map .pin{position:absolute;width:30px;height:30px;border-radius:50% 50% 50% 2px;background:var(--green);transform:translate(-50%,-100%) rotate(45deg);display:grid;place-items:center}
+.map .pin .ic{transform:rotate(-45deg);width:15px;height:15px;color:#fff;stroke-width:2.4}
+.toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:11px;opacity:0;transition:.3s;pointer-events:none;z-index:30;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="statusbar"><span>9:41</span><span class="r"><svg class="ic"><use href="#signal"/></svg><svg class="ic"><use href="#wifi"/></svg><span class="bat"><i></i></span></span></div>
+
+  <div class="stage">
+
+    <!-- ===== HOME ===== -->
+    <section class="screen active" data-screen="home">
+      <div class="hdr">
+        <div class="grow">
+          <div class="row" style="gap:5px;color:var(--green)"><svg class="ic" style="width:16px;height:16px"><use href="#pin"/></svg><span class="f13 fw7" style="color:var(--ink)">Koramangala, Bengaluru</span><svg class="ic" style="width:15px;height:15px;color:var(--gray2)"><use href="#down"/></svg></div>
+          <div class="sub mt6" style="font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.02em">Hello, Aarav</div>
+        </div>
+        <button class="iconbtn"><svg class="ic"><use href="#bell"/></svg><span class="dot"></span></button>
+      </div>
+
+      <div class="scroll pad" style="padding-bottom:18px">
+        <div class="search"><svg class="ic"><use href="#search"/></svg><input placeholder="Search for repair services"></div>
+
+        <div class="sec" style="margin-top:18px">Categories</div>
+        <div class="cats">
+          <button class="cat" data-book="Air Conditioner"><span class="ci"><svg class="ic"><use href="#ac"/></svg></span><span>AC</span></button>
+          <button class="cat" data-book="Refrigerator"><span class="ci"><svg class="ic"><use href="#fridge"/></svg></span><span>Fridge</span></button>
+          <button class="cat" data-book="Washing Machine"><span class="ci"><svg class="ic"><use href="#washer"/></svg></span><span>Washer</span></button>
+          <button class="cat" data-book="Television"><span class="ci"><svg class="ic"><use href="#tv"/></svg></span><span>TV</span></button>
+          <button class="cat" data-book="Mobile Phone"><span class="ci"><svg class="ic"><use href="#phone-d"/></svg></span><span>Mobile</span></button>
+          <button class="cat" data-book="Laptop"><span class="ci"><svg class="ic"><use href="#laptop"/></svg></span><span>Laptop</span></button>
+          <button class="cat" data-book="Microwave"><span class="ci"><svg class="ic"><use href="#micro"/></svg></span><span>Microwave</span></button>
+          <button class="cat" data-book="Water Purifier"><span class="ci"><svg class="ic"><use href="#drop"/></svg></span><span>Purifier</span></button>
+        </div>
+
+        <div class="promo mt20">
+          <h3>Annual Care plan</h3>
+          <p>2 free visits a year &amp; 20% off all repairs.</p>
+          <span class="pill">View plans</span>
+          <span class="deco"></span>
+        </div>
+
+        <div class="sec">Popular services</div>
+        <button class="svc" data-book="Air Conditioner" style="width:100%;text-align:left">
+          <span class="thumb"><svg class="ic"><use href="#ac"/></svg></span>
+          <span class="grow"><span class="fw7 f15" style="display:block">AC service &amp; gas refill</span>
+            <span class="row mt6" style="gap:8px"><span class="tag star"><svg class="ic"><use href="#star"/></svg>4.9</span><span class="muted f13">from <b class="rupee" style="color:var(--ink)">499</b></span></span></span>
+          <span class="chev"><svg class="ic"><use href="#right"/></svg></span>
+        </button>
+        <button class="svc mt12" data-book="Refrigerator" style="width:100%;text-align:left">
+          <span class="thumb"><svg class="ic"><use href="#fridge"/></svg></span>
+          <span class="grow"><span class="fw7 f15" style="display:block">Refrigerator repair</span>
+            <span class="row mt6" style="gap:8px"><span class="tag star"><svg class="ic"><use href="#star"/></svg>4.8</span><span class="muted f13">from <b class="rupee" style="color:var(--ink)">399</b></span></span></span>
+          <span class="chev"><svg class="ic"><use href="#right"/></svg></span>
+        </button>
+        <button class="svc mt12" data-book="Washing Machine" style="width:100%;text-align:left">
+          <span class="thumb"><svg class="ic"><use href="#washer"/></svg></span>
+          <span class="grow"><span class="fw7 f15" style="display:block">Washing machine repair</span>
+            <span class="row mt6" style="gap:8px"><span class="tag star"><svg class="ic"><use href="#star"/></svg>4.9</span><span class="muted f13">from <b class="rupee" style="color:var(--ink)">349</b></span></span></span>
+          <span class="chev"><svg class="ic"><use href="#right"/></svg></span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===== BOOKING ===== -->
+    <section class="screen" data-screen="booking" data-flow>
+      <div class="hdr">
+        <button class="back" data-go="home"><svg class="ic"><use href="#left"/></svg></button>
+        <div class="grow"><h1>Book a service</h1><div class="sub" id="bk-cat">Air Conditioner</div></div>
+      </div>
+      <div class="scroll pad" style="padding-bottom:18px">
+        <div class="sec" style="margin-top:6px">What's the problem?</div>
+        <div class="chips" data-multi>
+          <button class="chip sel">Not cooling</button>
+          <button class="chip">Water leakage</button>
+          <button class="chip">Strange noise</button>
+          <button class="chip">Gas refill</button>
+          <button class="chip">General service</button>
+          <button class="chip">Won't turn on</button>
+        </div>
+
+        <div class="sec">Pick a time slot</div>
+        <div class="muted f13" style="margin:-4px 0 10px">Friday, 13 June</div>
+        <div class="row" style="gap:9px">
+          <button class="slot"><div class="t">8–10<span style="font-size:11px"> AM</span></div><div class="d">Morning</div></button>
+          <button class="slot sel"><div class="t">10–12<span style="font-size:11px"> PM</span></div><div class="d">Late AM</div></button>
+          <button class="slot"><div class="t">2–4<span style="font-size:11px"> PM</span></div><div class="d">Noon</div></button>
+        </div>
+        <div class="row mt12" style="gap:9px">
+          <button class="slot"><div class="t">4–6<span style="font-size:11px"> PM</span></div><div class="d">Evening</div></button>
+          <button class="slot off"><div class="t">6–8<span style="font-size:11px"> PM</span></div><div class="d">Full</div></button>
+          <button class="slot"><div class="t">8–9<span style="font-size:11px"> PM</span></div><div class="d">Night</div></button>
+        </div>
+
+        <div class="sec">Address</div>
+        <div class="card row" style="gap:12px">
+          <span class="lrow" style="padding:0;border:none"><span class="li"><svg class="ic"><use href="#pin"/></svg></span></span>
+          <div class="grow"><div class="fw7 f14">Home</div><div class="muted f13 mt6" style="line-height:1.4">221B, 5th Block, Koramangala, Bengaluru 560095</div></div>
+          <button class="fw7 f13" style="color:var(--green)">Change</button>
+        </div>
+
+        <div class="sec">Bill summary</div>
+        <div class="card">
+          <div class="bill"><span class="k">Visit &amp; inspection</span><span class="v rupee">99</span></div>
+          <div class="bill"><span class="k">Service charge (est.)</span><span class="v rupee">499</span></div>
+          <div class="bill"><span class="k">Taxes (GST 18%)</span><span class="v rupee">108</span></div>
+          <div class="bill tot"><span class="k">Payable now</span><span class="v rupee">706</span></div>
+          <div class="muted f12 mt8" style="line-height:1.4">Parts, if any, are billed after the technician inspects your device.</div>
+        </div>
+      </div>
+      <div class="dock">
+        <div class="pl"><div><div class="a rupee">706</div><div class="l">incl. taxes</div></div><div class="st ok"><span class="d"></span>Slot held for 10 min</div></div>
+        <button class="btn pri" data-go="track" data-confirm>Confirm booking</button>
+      </div>
+    </section>
+
+    <!-- ===== TRACK ===== -->
+    <section class="screen" data-screen="track" data-flow>
+      <div class="hdr">
+        <button class="back" data-go="bookings"><svg class="ic"><use href="#left"/></svg></button>
+        <div class="grow"><h1>Booking #INF-20384</h1><div class="sub">AC service &amp; gas refill</div></div>
+      </div>
+      <div class="scroll pad" style="padding-bottom:18px">
+        <div class="map mt8">
+          <span class="pin" style="left:32%;top:42%"><svg class="ic"><use href="#nav"/></svg></span>
+          <span style="position:absolute;left:74%;top:70%;width:14px;height:14px;border-radius:50%;background:#2C6BD4;border:3px solid #fff;box-shadow:0 0 0 4px rgba(44,107,212,.2)"></span>
+        </div>
+
+        <div class="card mt16 row" style="gap:13px">
+          <span class="av" style="width:50px;height:50px;font-size:17px">RK</span>
+          <div class="grow"><div class="row" style="gap:6px"><span class="fw7 f15">Rajesh Kumar</span><svg class="ic" style="width:16px;height:16px;color:var(--green)"><use href="#verified"/></svg></div><div class="muted f13 mt6">AC expert · <span style="color:var(--green-d);font-weight:700">4.9 ★</span> · Arriving in 12 min</div></div>
+          <button class="iconbtn" style="border-color:var(--green-100);color:var(--green-d)"><svg class="ic" style="width:19px;height:19px"><use href="#call"/></svg></button>
+        </div>
+
+        <div class="card mt12">
+          <div class="tl done"><span class="nd"></span><div class="tt">Booking confirmed</div><div class="ts">9:02 AM</div></div>
+          <div class="tl done"><span class="nd"></span><div class="tt">Technician assigned</div><div class="ts">Rajesh accepted · 9:10 AM</div></div>
+          <div class="tl now"><span class="nd"></span><div class="tt">On the way</div><div class="ts">1.2 km away · ETA 12 min</div></div>
+          <div class="tl wait"><span class="nd"></span><div class="tt">Service in progress</div></div>
+          <div class="tl wait"><span class="nd"></span><div class="tt">Completed</div></div>
+        </div>
+
+        <div class="card mt12 row between">
+          <div><div class="muted f12 fw7">START PIN</div><div class="f13 mt6">Share when Rajesh arrives</div></div>
+          <div class="row" style="gap:7px">
+            <span class="fw8" style="width:34px;height:42px;border:1.5px solid var(--line);border-radius:10px;display:grid;place-items:center;font-size:18px">4</span>
+            <span class="fw8" style="width:34px;height:42px;border:1.5px solid var(--line);border-radius:10px;display:grid;place-items:center;font-size:18px">8</span>
+            <span class="fw8" style="width:34px;height:42px;border:1.5px solid var(--line);border-radius:10px;display:grid;place-items:center;font-size:18px">2</span>
+            <span class="fw8" style="width:34px;height:42px;border:1.5px solid var(--line);border-radius:10px;display:grid;place-items:center;font-size:18px">1</span>
+          </div>
+        </div>
+      </div>
+      <div class="dock"><button class="btn out" data-go="home">Back to home</button></div>
+    </section>
+
+    <!-- ===== BOOKINGS ===== -->
+    <section class="screen" data-screen="bookings">
+      <div class="hdr"><div class="grow"><h1>My bookings</h1></div></div>
+      <div class="scroll pad" style="padding-bottom:18px">
+        <div class="row" style="gap:8px;margin:4px 0 6px">
+          <button class="btn sm pri">Active</button>
+          <button class="btn sm out">Completed</button>
+          <button class="btn sm out">Cancelled</button>
+        </div>
+
+        <button class="card mt12" style="width:100%;text-align:left;display:block" data-go="track">
+          <div class="row between"><span class="st go"><span class="d"></span>On the way</span><span class="muted f12 fw6">#INF-20384</span></div>
+          <div class="row mt12" style="gap:12px"><span class="svc" style="border:none;padding:0;gap:12px"><span class="thumb" style="width:46px;height:46px"><svg class="ic" style="width:22px;height:22px"><use href="#ac"/></svg></span></span><span class="grow"><span class="fw7 f14" style="display:block">AC service &amp; gas refill</span><span class="muted f13">Today, 10–12 PM · Rajesh K.</span></span><span class="fw8 rupee f15">706</span></div>
+        </button>
+
+        <div class="card mt12">
+          <div class="row between"><span class="st warn"><span class="d"></span>Confirmed</span><span class="muted f12 fw6">#INF-20377</span></div>
+          <div class="row mt12" style="gap:12px"><span class="thumb svc" style="border:none;padding:0"><span class="thumb" style="width:46px;height:46px"><svg class="ic" style="width:22px;height:22px"><use href="#washer"/></svg></span></span><span class="grow"><span class="fw7 f14" style="display:block">Washing machine repair</span><span class="muted f13">Sat, 14 Jun · 2–4 PM</span></span><span class="fw8 rupee f15">349</span></div>
+          <div class="row mt12" style="gap:9px"><button class="btn sm out" style="flex:1">Reschedule</button><button class="btn sm out" style="flex:1;color:var(--red);border-color:var(--red-50)">Cancel</button></div>
+        </div>
+
+        <div class="card mt12">
+          <div class="row between"><span class="st ok"><span class="d"></span>Completed</span><span class="muted f12 fw6">#INF-20290</span></div>
+          <div class="row mt12" style="gap:12px"><span class="thumb" style="width:46px;height:46px;border-radius:12px;background:var(--soft);display:grid;place-items:center;color:var(--green-d)"><svg class="ic" style="width:22px;height:22px"><use href="#fridge"/></svg></span><span class="grow"><span class="fw7 f14" style="display:block">Refrigerator repair</span><span class="muted f13">8 Jun · Deepak V.</span></span><span class="fw8 rupee f15">1,180</span></div>
+          <div class="row mt12" style="gap:9px"><button class="btn sm soft" style="flex:1">Rate service</button><button class="btn sm out" style="flex:1">Book again</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ACCOUNT ===== -->
+    <section class="screen" data-screen="account">
+      <div class="hdr"><div class="grow"><h1>Account</h1></div><button class="iconbtn"><svg class="ic"><use href="#cog"/></svg></button></div>
+      <div class="scroll pad" style="padding-bottom:18px">
+        <div class="card row" style="gap:14px;align-items:center">
+          <span class="av" style="width:58px;height:58px;font-size:20px">AS</span>
+          <div class="grow"><div class="fw8" style="font-size:17px">Aarav Sharma</div><div class="muted f13 mt6">+91 98765 43210</div></div>
+          <span class="st ok"><svg class="ic" style="width:13px;height:13px;stroke-width:2.4"><use href="#shield"/></svg>Care+</span>
+        </div>
+
+        <div class="row mt16" style="gap:10px">
+          <div class="card grow" style="text-align:center;padding:14px 8px"><div class="fw8" style="font-size:19px">14</div><div class="muted f12 mt6">Bookings</div></div>
+          <div class="card grow" style="text-align:center;padding:14px 8px"><div class="fw8" style="font-size:19px">5</div><div class="muted f12 mt6">Devices</div></div>
+          <div class="card grow" style="text-align:center;padding:14px 8px"><div class="fw8" style="font-size:19px"><span class="rupee"></span>3.2K</div><div class="muted f12 mt6">Saved</div></div>
+        </div>
+
+        <div class="card mt16" style="padding:4px 15px">
+          <div class="lrow"><span class="li"><svg class="ic"><use href="#pin"/></svg></span><div class="grow"><div class="ttl">Saved addresses</div><div class="ds">Home, Work</div></div><span class="chev"><svg class="ic"><use href="#right"/></svg></span></div>
+          <div class="lrow"><span class="li"><svg class="ic"><use href="#card"/></svg></span><div class="grow"><div class="ttl">Payment methods</div><div class="ds">UPI, 1 card</div></div><span class="chev"><svg class="ic"><use href="#right"/></svg></span></div>
+          <div class="lrow"><span class="li"><svg class="ic"><use href="#shield"/></svg></span><div class="grow"><div class="ttl">Care+ membership</div><div class="ds">Gold · renews 12 Jun 2027</div></div><span class="chev"><svg class="ic"><use href="#right"/></svg></span></div>
+        </div>
+        <div class="card mt12" style="padding:4px 15px">
+          <div class="lrow"><span class="li"><svg class="ic"><use href="#help"/></svg></span><div class="grow"><div class="ttl">Help &amp; support</div></div><span class="chev"><svg class="ic"><use href="#right"/></svg></span></div>
+          <div class="lrow"><span class="li" style="color:var(--red)"><svg class="ic"><use href="#logout"/></svg></span><div class="grow"><div class="ttl" style="color:var(--red)">Log out</div></div></div>
+        </div>
+        <div class="muted f12 mt16" style="text-align:center">Infotel Care · v1.0</div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="toast" id="toast">Booking confirmed</div>
+
+  <nav class="tabbar">
+    <button class="tab on" data-go="home"><svg class="ic"><use href="#home"/></svg>Home</button>
+    <button class="tab" data-go="bookings"><svg class="ic"><use href="#receipt"/></svg>Bookings</button>
+    <button class="tab" data-go="account"><svg class="ic"><use href="#user"/></svg>Account</button>
+  </nav>
+</div>
+
+<!-- icon sprite -->
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="home" viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5M5 9.5V20h5v-6h4v6h5V9.5"/></symbol>
+<symbol id="receipt" viewBox="0 0 24 24"><path d="M5 3h14v18l-2.5-1.5L14 21l-2-1.5L10 21l-2.5-1.5L5 21V3ZM8.5 8h7M8.5 12h7M8.5 16h4"/></symbol>
+<symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-3.3 3-5.5 7-5.5s7 2.2 7 5.5"/></symbol>
+<symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></symbol>
+<symbol id="bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6M9.5 21a2.5 2.5 0 0 0 5 0"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+<symbol id="down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+<symbol id="right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="star" viewBox="0 0 24 24"><path d="M12 3.5l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8L6.6 20l1-6L3.3 9.9l6-.9L12 3.5Z"/></symbol>
+<symbol id="verified" viewBox="0 0 24 24"><path d="M9.5 3.6a3 3 0 0 1 5 0 3 3 0 0 1 3.5 3.5 3 3 0 0 1 0 5 3 3 0 0 1-3.5 3.5 3 3 0 0 1-5 0A3 3 0 0 1 6 12.1a3 3 0 0 1 0-5 3 3 0 0 1 3.5-3.5Z"/><path d="M9 12l2 2 4-4"/></symbol>
+<symbol id="call" viewBox="0 0 24 24"><path d="M5 4h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5V19a2 2 0 0 1-2 2A16 16 0 0 1 4 6a2 2 0 0 1 1-2Z"/></symbol>
+<symbol id="nav" viewBox="0 0 24 24"><path d="M3 11 21 3l-8 18-2-7-8-3Z"/></symbol>
+<symbol id="card" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 14h3"/></symbol>
+<symbol id="shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 7.7 7 9 4-1.3 7-4.5 7-9V6l-7-3Z"/></symbol>
+<symbol id="help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 .9-1 1.7M12 17h.01"/></symbol>
+<symbol id="logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 16l5-4-5-4M21 12H9"/></symbol>
+<symbol id="cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.2A1.7 1.7 0 0 0 6.4 19l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0-1.2-2.9H2a2 2 0 1 1 0-4h.2A1.7 1.7 0 0 0 3.5 6.4l-.1-.1A2 2 0 1 1 6.2 3.5l.1.1a1.7 1.7 0 0 0 1.9.3H8a1.7 1.7 0 0 0 1-1.5V2a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V8a1.7 1.7 0 0 0 1.5 1H22a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
+<symbol id="signal" viewBox="0 0 24 24"><path d="M4 16v3M9 13v6M14 9v10M19 5v14"/></symbol>
+<symbol id="wifi" viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0 1 14 0M8 15.5a6 6 0 0 1 8 0M12 18.8h.01"/></symbol>
+<symbol id="ac" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="6" rx="1.5"/><path d="M6 12v1.5a2 2 0 0 0 2 2M12 12v3.5a2 2 0 0 1-2 2M18 12v1M6 18h.01M10 18h.01M14 18h.01"/></symbol>
+<symbol id="fridge" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="1.5"/><path d="M6 10h12M9.5 6v1.5M9.5 12.5V15"/></symbol>
+<symbol id="washer" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.5"/><circle cx="12" cy="13.5" r="4.5"/><path d="M8 6h.01M11 6h.01"/></symbol>
+<symbol id="tv" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="11" rx="1.5"/><path d="M8 3l4 4 4-4"/></symbol>
+<symbol id="phone-d" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2"/><path d="M11 18.5h2"/></symbol>
+<symbol id="laptop" viewBox="0 0 24 24"><path d="M6 5.5h12a1 1 0 0 1 1 1V16H5V6.5a1 1 0 0 1 1-1ZM3 16h18l-1.2 2.5a1 1 0 0 1-.9.5H5.1a1 1 0 0 1-.9-.5L3 16Z"/></symbol>
+<symbol id="micro" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M15 5v14M6 9v6M9 9v6M18 9h.01M18 12h.01"/></symbol>
+<symbol id="drop" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/></symbol>
+</defs></svg>
+
+<script>
+const app=document.getElementById('app');
+const screens=[...document.querySelectorAll('.screen')];
+function go(id){
+  const sc=screens.find(s=>s.dataset.screen===id); if(!sc) return;
+  screens.forEach(s=>s.classList.toggle('active',s===sc));
+  app.classList.toggle('flow', sc.hasAttribute('data-flow'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.go===id));
+  const sb=sc.querySelector('.scroll'); if(sb) sb.scrollTop=0;
+}
+document.addEventListener('click',e=>{
+  const nav=e.target.closest('[data-go]'); if(nav){ go(nav.dataset.go); }
+  const bk=e.target.closest('[data-book]'); if(bk){ document.getElementById('bk-cat').textContent=bk.dataset.book; go('booking'); }
+  const chip=e.target.closest('.chips[data-multi] .chip'); if(chip){ chip.classList.toggle('sel'); }
+  const slot=e.target.closest('.slot:not(.off)'); if(slot){ slot.closest('[data-screen]').querySelectorAll('.slot').forEach(s=>s.classList.remove('sel')); slot.classList.add('sel'); }
+  if(e.target.closest('[data-confirm]')){ toast('Booking confirmed — finding your expert'); }
+});
+let tt;
+function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(tt); tt=setTimeout(()=>t.classList.remove('show'),2200); }
+</script>
+</body>
+</html>

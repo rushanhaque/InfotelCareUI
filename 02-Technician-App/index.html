@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Infotel Partner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#0E9466; --green-d:#0A7350; --green-50:#E9F5EF; --green-100:#D2EBE0;
+  --ink:#14181D; --gray:#5B6472; --gray2:#8B93A0; --line:#E9EBEE; --bg:#FFFFFF; --soft:#F5F6F8;
+  --amber:#E2A33A; --amber-50:#FBF1E0; --red:#E0573C; --red-50:#FCEEEB; --blue:#2C6BD4; --blue-50:#EAF2FE;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:Inter,system-ui,sans-serif;background:#E7E9EC;color:var(--ink);display:flex;justify-content:center;line-height:1.45;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.ic{width:22px;height:22px;stroke:currentColor;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;display:block}
+.app{width:430px;max-width:100%;height:100vh;height:100dvh;max-height:932px;background:var(--bg);position:relative;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 70px rgba(20,30,45,.16)}
+@media(min-width:480px){.app{height:912px;margin:auto;border-radius:34px}}
+.statusbar{height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;font-size:13px;font-weight:700}
+.statusbar .r{display:flex;gap:6px;align-items:center}.statusbar .r .ic{width:16px;height:16px;stroke-width:2.2}
+.bat{width:22px;height:11px;border:1.5px solid var(--ink);border-radius:3px;position:relative}
+.bat::after{content:"";position:absolute;right:-3px;top:3px;height:5px;width:2px;background:var(--ink);border-radius:1px}
+.bat i{position:absolute;inset:1.5px;width:72%;background:var(--ink);border-radius:1px}
+.stage{flex:1;position:relative;min-height:0}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg)}
+.screen.active{display:flex}
+.scroll{flex:1;overflow-y:auto;overflow-x:hidden}.scroll::-webkit-scrollbar{width:0}
+.hdr{padding:8px 20px 14px;display:flex;align-items:center;gap:12px}
+.hdr .back{width:40px;height:40px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center}
+.hdr h1{font-size:19px;font-weight:800;letter-spacing:-.02em}.hdr .sub{font-size:12.5px;color:var(--gray);font-weight:500}
+.grow{flex:1;min-width:0}
+.iconbtn{width:40px;height:40px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;position:relative}
+.iconbtn .dot{position:absolute;top:9px;right:10px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff}
+.pad{padding:0 20px}.row{display:flex;align-items:center}.col{display:flex;flex-direction:column}.between{justify-content:space-between}
+.muted{color:var(--gray)}.g2{color:var(--gray2)}.grow{flex:1}
+.sec{font-size:16px;font-weight:800;letter-spacing:-.02em;margin:22px 0 12px}
+.fw6{font-weight:600}.fw7{font-weight:700}.fw8{font-weight:800}
+.f11{font-size:11px}.f12{font-size:12px}.f13{font-size:13px}.f14{font-size:14px}.f15{font-size:15px}
+.mt6{margin-top:6px}.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}
+.rupee::before{content:"\20B9"}
+.btn{display:flex;align-items:center;justify-content:center;gap:9px;height:52px;border-radius:13px;font-size:15px;font-weight:700;width:100%;transition:filter .12s,transform .1s}
+.btn:active{transform:scale(.99)}
+.btn.pri{background:var(--green);color:#fff}.btn.pri:active{filter:brightness(.95)}
+.btn.out{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+.btn.soft{background:var(--green-50);color:var(--green-d)}
+.btn.danger{background:var(--red-50);color:var(--red)}
+.btn .ic{width:19px;height:19px;stroke-width:2.2}
+.btn.sm{height:44px;font-size:13.5px;border-radius:11px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px}
+.tag{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:7px;background:var(--soft);color:var(--gray)}
+.tag.star{background:var(--green-50);color:var(--green-d)}.tag.star .ic{width:12px;height:12px;fill:var(--green-d);stroke:none}
+.thumb{width:52px;height:52px;border-radius:13px;background:var(--soft);display:grid;place-items:center;color:var(--green-d);flex:0 0 auto}.thumb .ic{width:25px;height:25px}
+.st{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:8px}
+.st .d{width:6px;height:6px;border-radius:50%;background:currentColor}
+.st.ok{background:var(--green-50);color:var(--green-d)}.st.go{background:var(--blue-50);color:var(--blue)}
+.st.warn{background:var(--amber-50);color:#9A6A14}.st.off{background:var(--soft);color:var(--gray)}.st.red{background:var(--red-50);color:var(--red)}
+.av{border-radius:50%;background:var(--green-50);color:var(--green-d);display:grid;place-items:center;font-weight:800;flex:0 0 auto}
+.stat{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px}
+.stat .v{font-size:19px;font-weight:800;letter-spacing:-.02em}.stat .l{font-size:11.5px;color:var(--gray);margin-top:4px}
+.switch{width:50px;height:29px;border-radius:99px;background:#D7DBE0;position:relative;flex:0 0 auto;transition:.18s}
+.switch i{position:absolute;top:3px;left:3px;width:23px;height:23px;border-radius:50%;background:#fff;transition:.18s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.switch.on{background:var(--green)}.switch.on i{left:24px}
+.lrow{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--line)}
+.lrow:last-child{border-bottom:none}
+.lrow .li{width:42px;height:42px;border-radius:11px;background:var(--soft);display:grid;place-items:center;color:var(--ink);flex:0 0 auto}.lrow .li .ic{width:20px;height:20px}
+.lrow .ttl{font-size:14.5px;font-weight:600}.lrow .ds{font-size:12.5px;color:var(--gray);margin-top:1px}
+.chev{color:var(--gray2)}.chev .ic{width:20px;height:20px}
+.bars{display:flex;align-items:flex-end;gap:9px;height:120px;margin-top:4px}
+.bars .b{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px;height:100%}
+.bars .b i{width:100%;max-width:26px;border-radius:6px 6px 3px 3px;background:var(--green-100);display:block}
+.bars .b.on i{background:var(--green)}.bars .b span{font-size:11px;color:var(--gray2);font-weight:600}
+.bill{display:flex;justify-content:space-between;padding:7px 0;font-size:13.5px}.bill .k{color:var(--gray)}.bill .v{font-weight:600}
+.bill.tot{border-top:1px solid var(--line);margin-top:6px;padding-top:12px}.bill.tot .k{font-weight:800;color:var(--ink);font-size:15px}.bill.tot .v{font-weight:800;font-size:17px}
+.map{height:150px;border-radius:14px;border:1px solid var(--line);position:relative;overflow:hidden;background:repeating-linear-gradient(0deg,#eef0f2 0 1px,transparent 1px 24px),repeating-linear-gradient(90deg,#eef0f2 0 1px,transparent 1px 24px),#f4f5f7}
+.map .pin{position:absolute;width:30px;height:30px;border-radius:50% 50% 50% 2px;background:var(--green);transform:translate(-50%,-100%) rotate(45deg);display:grid;place-items:center}.map .pin .ic{transform:rotate(-45deg);width:15px;height:15px;color:#fff;stroke-width:2.4}
+.dock{flex:0 0 auto;padding:12px 20px calc(22px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
+.dock .pl{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.dock .pl .a{font-size:19px;font-weight:800}.dock .pl .l{font-size:12px;color:var(--gray)}
+.tabbar{flex:0 0 auto;min-height:68px;display:flex;border-top:1px solid var(--line);background:#fff;padding-bottom:env(safe-area-inset-bottom)}.app.flow .tabbar{display:none}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--gray2);font-size:10.5px;font-weight:600}.tab .ic{width:23px;height:23px}.tab.on{color:var(--green)}.tab.on .ic{stroke-width:2.2}
+.toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:11px;opacity:0;transition:.3s;pointer-events:none;z-index:30;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="statusbar"><span>9:41</span><span class="r"><svg class="ic"><use href="#signal"/></svg><svg class="ic"><use href="#wifi"/></svg><span class="bat"><i></i></span></span></div>
+  <div class="stage">
+
+    <!-- ===== JOBS ===== -->
+    <section class="screen active" data-screen="jobs">
+      <div class="hdr">
+        <span class="av" style="width:42px;height:42px;font-size:15px">RK</span>
+        <div class="grow"><div class="sub">Partner</div><h1 style="font-size:18px">Rajesh Kumar</h1></div>
+        <button class="iconbtn"><svg class="ic"><use href="#bell"/></svg><span class="dot"></span></button>
+      </div>
+      <div class="scroll pad" style="padding-bottom:18px">
+        <div class="card row between" style="align-items:center">
+          <div class="row" style="gap:12px"><span class="switch on" id="online"><i></i></span><div><div class="fw7 f15" id="online-t">You're online</div><div class="muted f12 mt6" id="online-s">Accepting jobs near Indiranagar</div></div></div>
+          <span class="st ok" id="online-p"><span class="d"></span>Live</span>
+        </div>
+
+        <div class="row mt12" style="gap:10px">
+          <div class="stat"><div class="v rupee">2,450</div><div class="l">Earned today</div></div>
+          <div class="stat"><div class="v">4.9 ★</div><div class="l">Rating</div></div>
+          <div class="stat"><div class="v">96%</div><div class="l">Acceptance</div></div>
+        </div>
+
+        <div class="sec">New requests <span style="float:right;font-size:12px;color:var(--gray);font-weight:600;margin-top:4px">2 nearby</span></div>
+
+        <div class="card" id="req1">
+          <div class="row between"><span class="st ok"><svg class="ic" style="width:12px;height:12px;stroke-width:2.4"><use href="#bolt"/></svg>New request</span><span class="f12 fw7" style="color:var(--red)">00:48</span></div>
+          <div class="row mt12" style="gap:12px"><span class="thumb"><svg class="ic"><use href="#ac"/></svg></span><div class="grow"><div class="fw7 f15">AC service &amp; gas refill</div><div class="muted f12 mt6">Split AC · not cooling</div></div><div style="text-align:right"><div class="fw8 rupee f15" style="color:var(--green-d)">680</div><div class="muted f11">payout</div></div></div>
+          <div class="row mt12 f12 fw6 muted" style="gap:16px"><span class="row" style="gap:5px"><svg class="ic" style="width:14px;height:14px;color:var(--green-d)"><use href="#pin"/></svg>2.1 km</span><span class="row" style="gap:5px"><svg class="ic" style="width:14px;height:14px;color:var(--green-d)"><use href="#clock"/></svg>Today, 2–4 PM</span></div>
+          <div class="row mt12" style="gap:9px"><button class="btn out sm" style="flex:1" data-decline="req1">Decline</button><button class="btn pri sm" style="flex:1.4" data-go="job">Accept job</button></div>
+        </div>
+
+        <div class="card mt12" id="req2">
+          <div class="row between"><span class="st ok"><svg class="ic" style="width:12px;height:12px;stroke-width:2.4"><use href="#bolt"/></svg>New request</span><span class="f12 fw7" style="color:#9A6A14">01:12</span></div>
+          <div class="row mt12" style="gap:12px"><span class="thumb"><svg class="ic"><use href="#washer"/></svg></span><div class="grow"><div class="fw7 f15">Washing machine repair</div><div class="muted f12 mt6">Front load · not draining</div></div><div style="text-align:right"><div class="fw8 rupee f15" style="color:var(--green-d)">420</div><div class="muted f11">payout</div></div></div>
+          <div class="row mt12 f12 fw6 muted" style="gap:16px"><span class="row" style="gap:5px"><svg class="ic" style="width:14px;height:14px;color:var(--green-d)"><use href="#pin"/></svg>3.6 km</span><span class="row" style="gap:5px"><svg class="ic" style="width:14px;height:14px;color:var(--green-d)"><use href="#clock"/></svg>Today, 5–7 PM</span></div>
+          <div class="row mt12" style="gap:9px"><button class="btn out sm" style="flex:1" data-decline="req2">Decline</button><button class="btn pri sm" style="flex:1.4" data-go="job">Accept job</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== JOB DETAIL ===== -->
+    <section class="screen" data-screen="job" data-flow>
+      <div class="hdr">
+        <button class="back" data-go="jobs"><svg class="ic"><use href="#left"/></svg></button>
+        <div class="grow"><h1>Job #INF-20384</h1><div class="sub">Accepted · today 2–4 PM</div></div>
+        <span class="st ok"><span class="d"></span>Active</span>
+      </div>
+      <div class="scroll pad" style="padding-bottom:18px">
+        <div class="map mt8"><span style="position:absolute;left:24%;top:62%;width:14px;height:14px;border-radius:50%;background:var(--blue);border:3px solid #fff;box-shadow:0 0 0 4px rgba(44,107,212,.2)"></span><span class="pin" style="left:72%;top:34%"><svg class="ic"><use href="#pin"/></svg></span>
+          <button class="btn pri sm" style="position:absolute;right:12px;bottom:12px;width:auto;padding:0 16px"><svg class="ic"><use href="#nav"/></svg>Navigate</button>
+          <span class="st off" style="position:absolute;left:12px;top:12px;background:#fff;border:1px solid var(--line)">2.1 km · 8 min</span>
+        </div>
+
+        <div class="card mt16">
+          <div class="row" style="gap:12px"><span class="thumb"><svg class="ic"><use href="#ac"/></svg></span><div class="grow"><div class="fw7 f15">AC service &amp; gas refill</div><div class="muted f12 mt6">Voltas Split AC 1.5T · cooling issue</div></div><div style="text-align:right"><div class="fw8 rupee f15" style="color:var(--green-d)">680</div><div class="muted f11">est. payout</div></div></div>
+          <div style="height:1px;background:var(--line);margin:14px 0"></div>
+          <div class="f12 fw7 muted" style="letter-spacing:.04em">REPORTED PROBLEM</div>
+          <p class="f13 muted mt8" style="line-height:1.5">"AC runs but doesn't cool. Some water dripping from the indoor unit. Last serviced over a year ago."</p>
+        </div>
+
+        <div class="card mt12 row" style="gap:13px">
+          <span class="av" style="width:46px;height:46px;font-size:15px">AS</span>
+          <div class="grow"><div class="fw7 f14">Aarav Sharma</div><div class="muted f12 mt6">221B, 5th Block, Koramangala</div></div>
+          <button class="iconbtn" style="border-color:var(--green-100);color:var(--green-d)"><svg class="ic" style="width:19px;height:19px"><use href="#call"/></svg></button>
+          <button class="iconbtn"><svg class="ic" style="width:19px;height:19px"><use href="#chat"/></svg></button>
+        </div>
+
+        <div class="card mt12 row" style="gap:11px;background:var(--green-50);border-color:var(--green-100)">
+          <svg class="ic" style="width:20px;height:20px;color:var(--green-d)"><use href="#lock"/></svg>
+          <span class="f13 fw6" style="color:var(--green-d)">Ask the customer for the 4-digit start PIN when you arrive.</span>
+        </div>
+      </div>
+      <div class="dock"><button class="btn pri" data-go="jobs" data-done>Mark job complete</button></div>
+    </section>
+
+    <!-- ===== EARNINGS ===== -->
+    <section class="screen" data-screen="earnings">
+      <div class="hdr"><div class="grow"><h1>Earnings</h1></div><button class="iconbtn"><svg class="ic"><use href="#bell"/></svg></button></div>
+      <div class="scroll pad" style="padding-bottom:18px">
+        <div class="card" style="background:var(--green);border:none;color:#fff;padding:18px">
+          <div class="f13" style="opacity:.9">Available for payout</div>
+          <div class="fw8" style="font-size:32px;letter-spacing:-.02em;margin-top:4px"><span class="rupee"></span>8,420</div>
+          <div class="row between mt16"><span class="f12" style="opacity:.85">Next auto-payout: Mon, 16 Jun</span><button class="btn sm" style="width:auto;padding:0 18px;background:#fff;color:var(--green-d);height:38px">Withdraw</button></div>
+        </div>
+
+        <div class="row mt12" style="gap:10px">
+          <div class="stat"><div class="v rupee">4,250</div><div class="l">This week</div></div>
+          <div class="stat"><div class="v">11</div><div class="l">Jobs</div></div>
+          <div class="stat"><div class="v rupee">386</div><div class="l">Avg / job</div></div>
+        </div>
+
+        <div class="sec">This week</div>
+        <div class="card">
+          <div class="bars">
+            <div class="b"><i style="height:35%"></i><span>M</span></div>
+            <div class="b"><i style="height:60%"></i><span>T</span></div>
+            <div class="b"><i style="height:45%"></i><span>W</span></div>
+            <div class="b"><i style="height:72%"></i><span>T</span></div>
+            <div class="b on"><i style="height:100%"></i><span>F</span></div>
+            <div class="b"><i style="height:55%"></i><span>S</span></div>
+            <div class="b"><i style="height:30%"></i><span>S</span></div>
+          </div>
+        </div>
+
+        <div class="sec">Recent transactions</div>
+        <div class="card" style="padding:4px 15px">
+          <div class="lrow"><span class="li" style="color:var(--green-d)"><svg class="ic"><use href="#wrench"/></svg></span><div class="grow"><div class="ttl">AC service · #INF-20384</div><div class="ds">Today, 4:32 PM</div></div><span class="fw8 f14" style="color:var(--green-d)">+<span class="rupee"></span>680</span></div>
+          <div class="lrow"><span class="li" style="color:#9A6A14"><svg class="ic"><use href="#gift"/></svg></span><div class="grow"><div class="ttl">Weekend bonus</div><div class="ds">5 jobs completed</div></div><span class="fw8 f14" style="color:var(--green-d)">+<span class="rupee"></span>150</span></div>
+          <div class="lrow"><span class="li"><svg class="ic"><use href="#bank"/></svg></span><div class="grow"><div class="ttl">Payout to HDFC ••7782</div><div class="ds">9 Jun</div></div><span class="fw8 f14 muted">−<span class="rupee"></span>6,000</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROFILE ===== -->
+    <section class="screen" data-screen="profile">
+      <div class="hdr"><div class="grow"><h1>Profile</h1></div><button class="iconbtn"><svg class="ic"><use href="#cog"/></svg></button></div>
+      <div class="scroll pad" style="padding-bottom:18px">
+        <div class="card row" style="gap:14px;align-items:center">
+          <span class="av" style="width:58px;height:58px;font-size:20px">RK</span>
+          <div class="grow"><div class="fw8" style="font-size:17px">Rajesh Kumar</div><div class="muted f12 mt6">Partner ID TC-1182 · since 2023</div></div>
+          <span class="st ok"><svg class="ic" style="width:13px;height:13px;stroke-width:2.4"><use href="#verified"/></svg>Verified</span>
+        </div>
+        <div class="row mt16" style="gap:10px">
+          <div class="stat"><div class="v">4.9 ★</div><div class="l">Rating</div></div>
+          <div class="stat"><div class="v">1,240</div><div class="l">Jobs</div></div>
+          <div class="stat"><div class="v">98%</div><div class="l">On-time</div></div>
+        </div>
+        <div class="card mt16 row" style="gap:11px;background:var(--green-50);border-color:var(--green-100)">
+          <svg class="ic" style="width:20px;height:20px;color:var(--green-d)"><use href="#verified"/></svg>
+          <div class="grow"><div class="fw7 f14" style="color:var(--green-d)">KYC verified</div><div class="f12" style="color:var(--green-d);opacity:.85;margin-top:2px">Aadhaar, PAN, photo &amp; bank confirmed</div></div>
+        </div>
+        <div class="card mt12" style="padding:4px 15px">
+          <div class="lrow"><span class="li"><svg class="ic"><use href="#wrench"/></svg></span><div class="grow"><div class="ttl">Service categories</div><div class="ds">AC, Refrigerator, Washing Machine</div></div><span class="chev"><svg class="ic"><use href="#right"/></svg></span></div>
+          <div class="lrow"><span class="li"><svg class="ic"><use href="#pin"/></svg></span><div class="grow"><div class="ttl">Service area</div><div class="ds">Bengaluru · 8 km radius</div></div><span class="chev"><svg class="ic"><use href="#right"/></svg></span></div>
+          <div class="lrow"><span class="li"><svg class="ic"><use href="#bank"/></svg></span><div class="grow"><div class="ttl">Bank &amp; payouts</div><div class="ds">HDFC ••7782</div></div><span class="chev"><svg class="ic"><use href="#right"/></svg></span></div>
+        </div>
+        <div class="card mt12" style="padding:4px 15px">
+          <div class="lrow"><span class="li"><svg class="ic"><use href="#help"/></svg></span><div class="grow"><div class="ttl">Help &amp; support</div></div><span class="chev"><svg class="ic"><use href="#right"/></svg></span></div>
+          <div class="lrow"><span class="li" style="color:var(--red)"><svg class="ic"><use href="#logout"/></svg></span><div class="grow"><div class="ttl" style="color:var(--red)">Log out</div></div></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="toast" id="toast">Job accepted</div>
+
+  <nav class="tabbar">
+    <button class="tab on" data-go="jobs"><svg class="ic"><use href="#grid"/></svg>Jobs</button>
+    <button class="tab" data-go="earnings"><svg class="ic"><use href="#wallet"/></svg>Earnings</button>
+    <button class="tab" data-go="profile"><svg class="ic"><use href="#user"/></svg>Profile</button>
+  </nav>
+</div>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="wallet" viewBox="0 0 24 24"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9ZM3 9V7a2 2 0 0 1 2-2h11M16 13h2"/></symbol>
+<symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-3.3 3-5.5 7-5.5s7 2.2 7 5.5"/></symbol>
+<symbol id="bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6M9.5 21a2.5 2.5 0 0 0 5 0"/></symbol>
+<symbol id="left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+<symbol id="right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+<symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3 2"/></symbol>
+<symbol id="bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></symbol>
+<symbol id="nav" viewBox="0 0 24 24"><path d="M3 11 21 3l-8 18-2-7-8-3Z"/></symbol>
+<symbol id="call" viewBox="0 0 24 24"><path d="M5 4h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5V19a2 2 0 0 1-2 2A16 16 0 0 1 4 6a2 2 0 0 1 1-2Z"/></symbol>
+<symbol id="chat" viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.6L4 20l1-4.3A8.5 8.5 0 1 1 21 11.5Z"/></symbol>
+<symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+<symbol id="verified" viewBox="0 0 24 24"><path d="M9.5 3.6a3 3 0 0 1 5 0 3 3 0 0 1 3.5 3.5 3 3 0 0 1 0 5 3 3 0 0 1-3.5 3.5 3 3 0 0 1-5 0A3 3 0 0 1 6 12.1a3 3 0 0 1 0-5 3 3 0 0 1 3.5-3.5Z"/><path d="M9 12l2 2 4-4"/></symbol>
+<symbol id="wrench" viewBox="0 0 24 24"><path d="M14.5 6.5a3.5 3.5 0 0 1-4.6 4.6L5 16l3 3 4.9-4.9a3.5 3.5 0 0 0 4.6-4.6l-2.2 2.2-2.2-.7-.7-2.2 2.2-2.2Z"/></symbol>
+<symbol id="gift" viewBox="0 0 24 24"><path d="M12 8v13M4 12h16M5 8h14v3.5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V8ZM12 8S10.5 4 8 4a2 2 0 0 0 0 4h4ZM12 8s1.5-4 4-4a2 2 0 0 1 0 4h-4Z"/></symbol>
+<symbol id="bank" viewBox="0 0 24 24"><path d="M4 10h16M5 10 12 4l7 6M6 10v8M10 10v8M14 10v8M18 10v8M4 20h16"/></symbol>
+<symbol id="cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.2A1.7 1.7 0 0 0 6.4 19l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0-1.2-2.9H2a2 2 0 1 1 0-4h.2A1.7 1.7 0 0 0 3.5 6.4l-.1-.1A2 2 0 1 1 6.2 3.5l.1.1a1.7 1.7 0 0 0 1.9.3H8a1.7 1.7 0 0 0 1-1.5V2a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V8a1.7 1.7 0 0 0 1.5 1H22a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
+<symbol id="help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 .9-1 1.7M12 17h.01"/></symbol>
+<symbol id="logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 16l5-4-5-4M21 12H9"/></symbol>
+<symbol id="signal" viewBox="0 0 24 24"><path d="M4 16v3M9 13v6M14 9v10M19 5v14"/></symbol>
+<symbol id="wifi" viewBox="0 0 24 24"><path d="M5 12.5a10 10 0 0 1 14 0M8 15.5a6 6 0 0 1 8 0M12 18.8h.01"/></symbol>
+<symbol id="ac" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="6" rx="1.5"/><path d="M6 12v1.5a2 2 0 0 0 2 2M12 12v3.5a2 2 0 0 1-2 2M18 12v1M6 18h.01M10 18h.01M14 18h.01"/></symbol>
+<symbol id="washer" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.5"/><circle cx="12" cy="13.5" r="4.5"/><path d="M8 6h.01M11 6h.01"/></symbol>
+</defs></svg>
+
+<script>
+const app=document.getElementById('app');
+const screens=[...document.querySelectorAll('.screen')];
+function go(id){
+  const sc=screens.find(s=>s.dataset.screen===id); if(!sc) return;
+  screens.forEach(s=>s.classList.toggle('active',s===sc));
+  app.classList.toggle('flow', sc.hasAttribute('data-flow'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.go===id));
+  const sb=sc.querySelector('.scroll'); if(sb) sb.scrollTop=0;
+}
+let tt; function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2200);}
+document.addEventListener('click',e=>{
+  const nav=e.target.closest('[data-go]');
+  if(nav){ if(nav.matches('[data-go="job"]')) toast('Job accepted'); if(nav.hasAttribute('data-done')) toast('Job completed · '+'₹680 added'); go(nav.dataset.go); return; }
+  const dec=e.target.closest('[data-decline]'); if(dec){ const c=document.getElementById(dec.dataset.decline); c.style.transition='.25s'; c.style.opacity='0'; c.style.transform='scale(.97)'; setTimeout(()=>c.remove(),250); toast('Request declined'); return; }
+  const sw=e.target.closest('#online'); if(sw){ const on=sw.classList.toggle('on');
+    document.getElementById('online-t').textContent=on?"You're online":"You're offline";
+    document.getElementById('online-s').textContent=on?"Accepting jobs near Indiranagar":"You won't receive new requests";
+    const p=document.getElementById('online-p'); p.className='st '+(on?'ok':'off'); p.innerHTML='<span class="d"></span>'+(on?'Live':'Paused');
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Infotel Care · Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#0E9466; --green-d:#0A7350; --green-50:#E9F5EF; --green-100:#D2EBE0;
+  --ink:#14181D; --gray:#5B6472; --gray2:#8B93A0; --line:#E9EBEE; --bg:#F6F7F8; --surface:#FFFFFF;
+  --amber:#E2A33A; --amber-50:#FBF1E0; --red:#E0573C; --red-50:#FCEEEB; --blue:#2C6BD4; --blue-50:#EAF2FE;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45;-webkit-font-smoothing:antialiased;font-size:14px}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input{font-family:inherit}
+.ic{width:20px;height:20px;stroke:currentColor;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;display:block}
+.rupee::before{content:"\20B9"}
+.muted{color:var(--gray)}.g2{color:var(--gray2)}.grow{flex:1;min-width:0}
+.row{display:flex;align-items:center}.col{display:flex;flex-direction:column}.between{justify-content:space-between}
+.fw6{font-weight:600}.fw7{font-weight:700}.fw8{font-weight:800}
+.f11{font-size:11px}.f12{font-size:12px}.f13{font-size:13px}.f15{font-size:15px}
+.mt6{margin-top:6px}.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}.mt24{margin-top:24px}
+
+.admin{display:grid;grid-template-columns:248px 1fr;height:100vh;overflow:hidden}
+
+/* sidebar */
+.sidebar{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:18px 14px;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:11px;padding:4px 8px 14px}
+.brand .m{width:38px;height:38px;border-radius:11px;background:var(--green);display:grid;place-items:center;flex:0 0 auto}
+.brand .m svg{width:21px;height:21px;color:#fff;stroke-width:2.4}
+.brand .n{font-size:16px;font-weight:800;letter-spacing:-.02em}
+.brand .t{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gray2)}
+.navlbl{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray2);padding:14px 10px 7px}
+.nav{display:flex;align-items:center;gap:11px;height:42px;border-radius:10px;padding:0 12px;color:var(--gray);font-weight:600;font-size:13.5px;width:100%;text-align:left;margin-bottom:2px}
+.nav:hover{background:var(--bg);color:var(--ink)}
+.nav.on{background:var(--green-50);color:var(--green-d);font-weight:700}
+.nav .badge{margin-left:auto;background:var(--green);color:#fff;font-size:11px;font-weight:800;min-width:19px;height:19px;border-radius:9px;display:grid;place-items:center;padding:0 5px}
+.nav.on .badge{background:var(--green-d)}
+.uchip{margin-top:auto;display:flex;align-items:center;gap:10px;padding:9px;border:1px solid var(--line);border-radius:12px}
+
+/* main */
+.main{display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.topbar{height:64px;flex:0 0 64px;display:flex;align-items:center;gap:16px;padding:0 24px;background:var(--surface);border-bottom:1px solid var(--line)}
+.topbar .pg{font-size:18px;font-weight:800;letter-spacing:-.02em}
+.topbar .cr{font-size:12px;color:var(--gray);font-weight:500;margin-top:1px}
+.searchbar{display:flex;align-items:center;gap:9px;height:40px;width:300px;padding:0 13px;background:var(--bg);border:1px solid var(--line);border-radius:10px}
+.searchbar input{flex:1;border:none;outline:none;background:none;font-size:13px;font-weight:500}
+.searchbar .ic{width:17px;height:17px;color:var(--gray2)}
+.iconbtn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);display:grid;place-items:center;color:var(--gray);position:relative}
+.iconbtn .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff}
+.content{flex:1;overflow-y:auto;padding:22px 24px 40px}
+
+.view{display:none}.view.active{display:block}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 15px;border-radius:10px;font-size:13px;font-weight:700;background:var(--surface);border:1px solid var(--line);color:var(--ink)}
+.btn:hover{background:var(--bg)}
+.btn.pri{background:var(--green);color:#fff;border:none}.btn.pri:hover{filter:brightness(.96)}
+.btn.sm{height:32px;padding:0 11px;font-size:12px;border-radius:8px}
+.btn .ic{width:16px;height:16px;stroke-width:2.2}
+
+.grid{display:grid;gap:16px}.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:17px}
+.kpi .top{display:flex;justify-content:space-between;align-items:center}
+.kpi .ci{width:38px;height:38px;border-radius:11px;background:var(--green-50);color:var(--green-d);display:grid;place-items:center}
+.kpi .ci .ic{width:19px;height:19px}
+.kpi .v{font-size:25px;font-weight:800;letter-spacing:-.025em;margin-top:13px}
+.kpi .l{font-size:12.5px;color:var(--gray);margin-top:2px}
+.delta{font-size:12px;font-weight:800;padding:3px 8px;border-radius:7px}
+.delta.up{background:var(--green-50);color:var(--green-d)}.delta.down{background:var(--red-50);color:var(--red)}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+.panel.p0{padding:0;overflow:hidden}
+.ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.ph h3{font-size:15px;font-weight:800;letter-spacing:-.01em}
+.ph .s{font-size:12px;color:var(--gray);margin-top:2px}
+
+.bars{display:flex;align-items:flex-end;gap:14px;height:170px}
+.bars .b{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:8px;height:100%}
+.bars .b i{width:100%;max-width:34px;border-radius:7px 7px 4px 4px;background:var(--green-100);display:block}
+.bars .b.on i{background:var(--green)}.bars .b span{font-size:11.5px;color:var(--gray2);font-weight:600}
+
+.brk{display:flex;flex-direction:column;gap:14px}
+.brk .it .row{justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:7px}
+.brk .track{height:8px;border-radius:5px;background:var(--bg)}
+.brk .track i{display:block;height:100%;border-radius:5px;background:var(--green)}
+
+.table{width:100%;border-collapse:collapse}
+.table th{font-size:11px;color:var(--gray2);text-transform:uppercase;text-align:left;padding:12px 16px;font-weight:800;letter-spacing:.04em;border-bottom:1px solid var(--line);background:var(--bg)}
+.table td{padding:13px 16px;border-bottom:1px solid var(--line);font-size:13px;font-weight:500;vertical-align:middle}
+.table tr:last-child td{border-bottom:none}
+.table tbody tr:hover{background:var(--bg)}
+.table .s{font-weight:700;color:var(--ink)}
+.cellrow{display:flex;align-items:center;gap:9px}
+.av{border-radius:50%;background:var(--green-50);color:var(--green-d);display:grid;place-items:center;font-weight:800;flex:0 0 auto;font-size:12px;width:30px;height:30px}
+.av.b{background:var(--blue-50);color:var(--blue)}.av.a{background:var(--amber-50);color:#9A6A14}
+.st{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:8px}
+.st .d{width:6px;height:6px;border-radius:50%;background:currentColor}
+.st.ok{background:var(--green-50);color:var(--green-d)}.st.go{background:var(--blue-50);color:var(--blue)}
+.st.warn{background:var(--amber-50);color:#9A6A14}.st.off{background:var(--bg);color:var(--gray)}.st.red{background:var(--red-50);color:var(--red)}
+.tabs{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:4px;width:max-content}
+.tabs button{height:32px;padding:0 14px;border-radius:7px;font-size:12.5px;font-weight:700;color:var(--gray)}
+.tabs button.on{background:var(--green-50);color:var(--green-d)}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:11px;opacity:0;transition:.3s;pointer-events:none;z-index:80}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.hamburger{display:none}
+.tw{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs{max-width:100%;overflow-x:auto}.tabs::-webkit-scrollbar{display:none}
+
+/* ---- responsive ---- */
+@media(max-width:1040px){.g4{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr!important}}
+@media(max-width:860px){
+  .admin{grid-template-columns:1fr}
+  .sidebar{position:fixed;top:0;left:0;bottom:0;width:266px;z-index:70;transform:translateX(-100%);transition:transform .26s ease;box-shadow:0 24px 60px rgba(12,18,26,.28)}
+  .sidebar.open{transform:none}
+  .backdrop{position:fixed;inset:0;background:rgba(12,18,26,.42);opacity:0;visibility:hidden;transition:.26s;z-index:65}
+  .backdrop.show{opacity:1;visibility:visible}
+  .hamburger{display:grid}
+  .searchbar{display:none}
+  .topbar{padding:0 14px;gap:10px;height:60px;flex:0 0 60px}
+  .topbar .pg{font-size:16px}.topbar .cr{display:none}
+  .newbk{width:40px;padding:0}.newbk .lbl{display:none}
+  .content{padding:16px 14px 36px}
+  .bar{flex-wrap:wrap;gap:12px}
+  .table{min-width:560px}
+  .ph{flex-wrap:wrap;gap:10px}
+}
+@media(max-width:520px){.g4{grid-template-columns:1fr}.kpi .v{font-size:23px}}
+</style>
+</head>
+<body>
+<div class="admin">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand"><span class="m"><svg viewBox="0 0 24 24"><path d="M3 13h3l1.5-4 2.5 8 2-6 1.5 2h5" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div class="n">Infotel Care</div><div class="t">Admin</div></div></div>
+    <button class="nav on" data-go="dashboard"><svg class="ic"><use href="#home"/></svg>Dashboard</button>
+    <button class="nav" data-go="bookings"><svg class="ic"><use href="#receipt"/></svg>Bookings <span class="badge">18</span></button>
+    <button class="nav" data-go="techs"><svg class="ic"><use href="#users"/></svg>Technicians <span class="badge">6</span></button>
+    <button class="nav" data-go="reports"><svg class="ic"><use href="#chart"/></svg>Reports</button>
+    <div class="navlbl">Manage</div>
+    <button class="nav" data-go="dashboard"><svg class="ic"><use href="#percent"/></svg>Commission</button>
+    <button class="nav" data-go="dashboard"><svg class="ic"><use href="#shield"/></svg>AMC Plans</button>
+    <button class="nav" data-go="dashboard"><svg class="ic"><use href="#cog"/></svg>Settings</button>
+    <div class="uchip"><span class="av">PM</span><div class="grow"><div class="fw7 f13">Priya Menon</div><div class="muted f12">Super Admin</div></div></div>
+  </aside>
+  <!-- MAIN -->
+  <div class="main">
+    <header class="topbar">
+      <button class="iconbtn hamburger" id="ham"><svg class="ic"><use href="#menu"/></svg></button>
+      <div class="grow"><div class="pg" id="pg">Dashboard</div><div class="cr" id="cr">Welcome back, Priya · Mon, 11 Jun 2026</div></div>
+      <div class="searchbar"><svg class="ic"><use href="#search"/></svg><input placeholder="Search bookings, technicians…"></div>
+      <button class="iconbtn"><svg class="ic"><use href="#bell"/></svg><span class="dot"></span></button>
+      <button class="btn pri newbk"><svg class="ic"><use href="#plus"/></svg><span class="lbl">New booking</span></button>
+    </header>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <section class="view active" data-view="dashboard">
+        <div class="grid g4">
+          <div class="kpi"><div class="top"><span class="ci"><svg class="ic"><use href="#receipt"/></svg></span><span class="delta up">+12.4%</span></div><div class="v">3,842</div><div class="l">Total bookings</div></div>
+          <div class="kpi"><div class="top"><span class="ci"><svg class="ic"><use href="#rupee"/></svg></span><span class="delta up">+8.1%</span></div><div class="v"><span class="rupee"></span>24.8L</div><div class="l">Revenue this month</div></div>
+          <div class="kpi"><div class="top"><span class="ci"><svg class="ic"><use href="#users"/></svg></span><span class="delta up">+5</span></div><div class="v">214</div><div class="l">Active technicians</div></div>
+          <div class="kpi"><div class="top"><span class="ci"><svg class="ic"><use href="#idcard"/></svg></span><span class="delta down">6 new</span></div><div class="v">6</div><div class="l">Pending KYC</div></div>
+        </div>
+
+        <div class="grid mt16 split" style="grid-template-columns:1fr 360px">
+          <div class="panel">
+            <div class="ph"><div><h3>Revenue</h3><div class="s">Last 7 months</div></div><div class="tabs"><button>Weekly</button><button class="on">Monthly</button></div></div>
+            <div class="bars">
+              <div class="b"><i style="height:42%"></i><span>Dec</span></div>
+              <div class="b"><i style="height:54%"></i><span>Jan</span></div>
+              <div class="b"><i style="height:48%"></i><span>Feb</span></div>
+              <div class="b"><i style="height:67%"></i><span>Mar</span></div>
+              <div class="b"><i style="height:60%"></i><span>Apr</span></div>
+              <div class="b"><i style="height:82%"></i><span>May</span></div>
+              <div class="b on"><i style="height:100%"></i><span>Jun</span></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="ph"><div><h3>By category</h3><div class="s">This month</div></div></div>
+            <div class="brk">
+              <div class="it"><div class="row"><span>Air Conditioner</span><span>32%</span></div><div class="track"><i style="width:32%"></i></div></div>
+              <div class="it"><div class="row"><span>Refrigerator</span><span>23%</span></div><div class="track"><i style="width:23%"></i></div></div>
+              <div class="it"><div class="row"><span>Washing Machine</span><span>17%</span></div><div class="track"><i style="width:17%"></i></div></div>
+              <div class="it"><div class="row"><span>Television</span><span>14%</span></div><div class="track"><i style="width:14%"></i></div></div>
+              <div class="it"><div class="row"><span>Others</span><span>14%</span></div><div class="track"><i style="width:14%"></i></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid mt16 split" style="grid-template-columns:1fr 360px">
+          <div class="panel p0">
+            <div class="ph" style="padding:18px 18px 14px;margin:0"><h3>Recent bookings</h3><button class="btn sm" data-go="bookings">View all</button></div>
+            <table class="table">
+              <thead><tr><th>Booking</th><th>Customer</th><th>Service</th><th>Amount</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td class="s">#INF-20384</td><td><div class="cellrow"><span class="av">AS</span>Aarav S.</div></td><td>AC gas refill</td><td class="s rupee">2,000</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
+                <tr><td class="s">#INF-20383</td><td><div class="cellrow"><span class="av b">NK</span>Neha K.</div></td><td>Washing machine</td><td class="s rupee">850</td><td><span class="st go"><span class="d"></span>Ongoing</span></td></tr>
+                <tr><td class="s">#INF-20382</td><td><div class="cellrow"><span class="av a">VR</span>Vikram R.</div></td><td>TV repair</td><td class="s rupee">1,499</td><td><span class="st warn"><span class="d"></span>Assigning</span></td></tr>
+                <tr><td class="s">#INF-20381</td><td><div class="cellrow"><span class="av">SM</span>Sara M.</div></td><td>Refrigerator</td><td class="s rupee">1,180</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="panel">
+            <div class="ph"><h3>Pending approvals</h3><span class="st warn">6 new</span></div>
+            <div class="col" style="gap:13px">
+              <div class="row" style="gap:10px"><span class="av b">MK</span><div class="grow"><div class="fw7 f13">Manish Kumar</div><div class="muted f12">AC, Refrigerator</div></div><button class="btn sm pri" data-go="techs">Review</button></div>
+              <div class="row" style="gap:10px"><span class="av a">SP</span><div class="grow"><div class="fw7 f13">Suresh Patel</div><div class="muted f12">Mobile, Laptop</div></div><button class="btn sm pri" data-go="techs">Review</button></div>
+              <div class="row" style="gap:10px"><span class="av">RT</span><div class="grow"><div class="fw7 f13">Ravi Teja</div><div class="muted f12">TV, CCTV</div></div><button class="btn sm pri" data-go="techs">Review</button></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BOOKINGS -->
+      <section class="view" data-view="bookings">
+        <div class="row between bar" style="margin-bottom:16px">
+          <div class="tabs"><button class="on">All</button><button>Ongoing</button><button>Completed</button><button>Cancelled</button></div>
+          <button class="btn"><svg class="ic"><use href="#filter"/></svg>Filters</button>
+        </div>
+        <div class="panel p0">
+          <table class="table">
+            <thead><tr><th>Booking</th><th>Customer</th><th>Category</th><th>Technician</th><th>Slot</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="s">#INF-20384</td><td><div class="cellrow"><span class="av">AS</span>Aarav Sharma</div></td><td>Air Conditioner</td><td>Rajesh Kumar</td><td>Today, 10–12 PM</td><td class="s rupee">2,000</td><td><span class="st go"><span class="d"></span>Ongoing</span></td></tr>
+              <tr><td class="s">#INF-20383</td><td><div class="cellrow"><span class="av b">NK</span>Neha Kapoor</div></td><td>Washing Machine</td><td>Imran Ali</td><td>Today, 2–4 PM</td><td class="s rupee">850</td><td><span class="st go"><span class="d"></span>Ongoing</span></td></tr>
+              <tr><td class="s">#INF-20382</td><td><div class="cellrow"><span class="av a">VR</span>Vikram Rao</div></td><td>Television</td><td class="muted">— unassigned</td><td>Tmrw, 11–1 PM</td><td class="s rupee">1,499</td><td><span class="st warn"><span class="d"></span>Assigning</span></td></tr>
+              <tr><td class="s">#INF-20381</td><td><div class="cellrow"><span class="av">SM</span>Sara Menon</div></td><td>Refrigerator</td><td>Deepak Verma</td><td>Yest, 4–6 PM</td><td class="s rupee">1,180</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
+              <tr><td class="s">#INF-20380</td><td><div class="cellrow"><span class="av a">AG</span>Amit Gupta</div></td><td>Microwave</td><td>Rajesh Kumar</td><td>9 Jun, 5–7 PM</td><td class="s rupee">640</td><td><span class="st red"><span class="d"></span>Cancelled</span></td></tr>
+              <tr><td class="s">#INF-20379</td><td><div class="cellrow"><span class="av b">PR</span>Priya R.</div></td><td>Water Purifier</td><td>Sunita Devi</td><td>9 Jun, 9–11 AM</td><td class="s rupee">499</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
+              <tr><td class="s">#INF-20378</td><td><div class="cellrow"><span class="av">KS</span>Karan Shah</div></td><td>Laptop</td><td>Deepak Verma</td><td>8 Jun, 1–3 PM</td><td class="s rupee">2,340</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
+            </tbody>
+          </table>
+          <div class="row between" style="padding:14px 18px;border-top:1px solid var(--line)"><span class="muted f12">Showing 7 of 3,842</span><div class="row" style="gap:8px"><button class="btn sm">Prev</button><button class="btn sm pri">1</button><button class="btn sm">2</button><button class="btn sm">3</button><button class="btn sm">Next</button></div></div>
+        </div>
+      </section>
+
+      <!-- TECHNICIANS -->
+      <section class="view" data-view="techs">
+        <div class="row between bar" style="margin-bottom:16px">
+          <div class="tabs"><button class="on">All</button><button>Pending KYC <span style="color:var(--amber);font-weight:800">6</span></button><button>Active</button></div>
+          <button class="btn pri"><svg class="ic"><use href="#plus"/></svg>Add expert</button>
+        </div>
+        <div class="panel p0">
+          <table class="table">
+            <thead><tr><th>Expert</th><th>Categories</th><th>Area</th><th>Jobs</th><th>Rating</th><th>KYC</th><th style="text-align:right">Action</th></tr></thead>
+            <tbody>
+              <tr data-rid="t1"><td><div class="cellrow"><span class="av b">MK</span><div><div class="s">Manish Kumar</div><div class="muted f12">TC-1182</div></div></div></td><td>AC, Refrigerator</td><td>Bengaluru</td><td>—</td><td>—</td><td class="kyc"><span class="st warn"><span class="d"></span>Pending</span></td><td style="text-align:right"><button class="btn sm pri" data-approve="t1">Approve</button></td></tr>
+              <tr data-rid="t2"><td><div class="cellrow"><span class="av a">SP</span><div><div class="s">Suresh Patel</div><div class="muted f12">TC-1183</div></div></div></td><td>Mobile, Laptop</td><td>Pune</td><td>—</td><td>—</td><td class="kyc"><span class="st warn"><span class="d"></span>Pending</span></td><td style="text-align:right"><button class="btn sm pri" data-approve="t2">Approve</button></td></tr>
+              <tr><td><div class="cellrow"><span class="av">RK</span><div><div class="s">Rajesh Kumar</div><div class="muted f12">TC-1011</div></div></div></td><td>AC, Refrigerator</td><td>Bengaluru</td><td>1,240</td><td><span class="st ok">4.9 ★</span></td><td><span class="st ok"><span class="d"></span>Verified</span></td><td style="text-align:right"><button class="btn sm">View</button></td></tr>
+              <tr><td><div class="cellrow"><span class="av b">IA</span><div><div class="s">Imran Ali</div><div class="muted f12">TC-1042</div></div></div></td><td>Washing Machine</td><td>Bengaluru</td><td>980</td><td><span class="st ok">4.8 ★</span></td><td><span class="st ok"><span class="d"></span>Verified</span></td><td style="text-align:right"><button class="btn sm">View</button></td></tr>
+              <tr><td><div class="cellrow"><span class="av a">DV</span><div><div class="s">Deepak Verma</div><div class="muted f12">TC-1067</div></div></div></td><td>TV, Laptop</td><td>Pune</td><td>870</td><td><span class="st ok">4.8 ★</span></td><td><span class="st ok"><span class="d"></span>Verified</span></td><td style="text-align:right"><button class="btn sm">View</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- REPORTS -->
+      <section class="view" data-view="reports">
+        <div class="row between bar" style="margin-bottom:16px">
+          <div class="tabs"><button class="on">Revenue</button><button>Bookings</button><button>GST</button></div>
+          <button class="btn"><svg class="ic"><use href="#download"/></svg>Export</button>
+        </div>
+        <div class="grid g4">
+          <div class="kpi"><div class="v"><span class="rupee"></span>24.8L</div><div class="l">Gross revenue</div></div>
+          <div class="kpi"><div class="v"><span class="rupee"></span>21.1L</div><div class="l">Net of commission</div></div>
+          <div class="kpi"><div class="v"><span class="rupee"></span>62K</div><div class="l">Refunds</div></div>
+          <div class="kpi"><div class="v"><span class="rupee"></span>3.78L</div><div class="l">GST collected</div></div>
+        </div>
+        <div class="panel mt16">
+          <div class="ph"><div><h3>Revenue trend</h3><div class="s">Jan – Jun 2026</div></div></div>
+          <div class="bars">
+            <div class="b"><i style="height:46%"></i><span>Jan</span></div>
+            <div class="b"><i style="height:52%"></i><span>Feb</span></div>
+            <div class="b"><i style="height:64%"></i><span>Mar</span></div>
+            <div class="b"><i style="height:58%"></i><span>Apr</span></div>
+            <div class="b"><i style="height:80%"></i><span>May</span></div>
+            <div class="b on"><i style="height:100%"></i><span>Jun</span></div>
+          </div>
+        </div>
+        <div class="panel p0 mt16">
+          <div class="ph" style="padding:18px 18px 14px;margin:0"><h3>GST summary</h3></div>
+          <table class="table">
+            <thead><tr><th>Period</th><th>Taxable value</th><th>CGST</th><th>SGST</th><th>Total GST</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="s">Mar 2026</td><td class="rupee">19.4L</td><td class="rupee">1.74L</td><td class="rupee">1.74L</td><td class="s rupee">3.49L</td><td><span class="st ok"><span class="d"></span>Filed</span></td></tr>
+              <tr><td class="s">Apr 2026</td><td class="rupee">20.1L</td><td class="rupee">1.81L</td><td class="rupee">1.81L</td><td class="s rupee">3.62L</td><td><span class="st ok"><span class="d"></span>Filed</span></td></tr>
+              <tr><td class="s">May 2026</td><td class="rupee">22.6L</td><td class="rupee">2.03L</td><td class="rupee">2.03L</td><td class="s rupee">4.07L</td><td><span class="st ok"><span class="d"></span>Filed</span></td></tr>
+              <tr><td class="s">Jun 2026</td><td class="rupee">21.0L</td><td class="rupee">1.89L</td><td class="rupee">1.89L</td><td class="s rupee">3.78L</td><td><span class="st warn"><span class="d"></span>Due 20 Jul</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<div class="backdrop" id="bd"></div>
+<div class="toast" id="toast">Saved</div>
+
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="home" viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5M5 9.5V20h5v-6h4v6h5V9.5"/></symbol>
+<symbol id="receipt" viewBox="0 0 24 24"><path d="M5 3h14v18l-2.5-1.5L14 21l-2-1.5L10 21l-2.5-1.5L5 21V3ZM8.5 8h7M8.5 12h7M8.5 16h4"/></symbol>
+<symbol id="users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 19.5c0-3 2.9-5 6.5-5s6.5 2 6.5 5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.6c2 .6 3.5 2 3.5 4.9"/></symbol>
+<symbol id="chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M20 20H3"/></symbol>
+<symbol id="percent" viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="7.5" cy="7.5" r="1.6"/><circle cx="16.5" cy="16.5" r="1.6"/></symbol>
+<symbol id="shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 7.7 7 9 4-1.3 7-4.5 7-9V6l-7-3Z"/></symbol>
+<symbol id="cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.2A1.7 1.7 0 0 0 6.4 19l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0-1.2-2.9H2a2 2 0 1 1 0-4h.2A1.7 1.7 0 0 0 3.5 6.4l-.1-.1A2 2 0 1 1 6.2 3.5l.1.1a1.7 1.7 0 0 0 1.9.3H8a1.7 1.7 0 0 0 1-1.5V2a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V8a1.7 1.7 0 0 0 1.5 1H22a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
+<symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></symbol>
+<symbol id="bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6M9.5 21a2.5 2.5 0 0 0 5 0"/></symbol>
+<symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v5l-4 2v-7L3 5Z"/></symbol>
+<symbol id="download" viewBox="0 0 24 24"><path d="M12 3v12M7 11l5 4 5-4M5 21h14"/></symbol>
+<symbol id="rupee" viewBox="0 0 24 24"><path d="M7 4h10M7 8h10M7 4c5 0 7 2 7 5s-2 4.5-6 4.5H8l6 6.5"/></symbol>
+<symbol id="idcard" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1.5"/><circle cx="8" cy="11" r="2"/><path d="M5 16c.5-1.6 1.7-2.5 3-2.5s2.5.9 3 2.5M14 10h4M14 13.5h4"/></symbol>
+<symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+</defs></svg>
+
+<script>
+const titles={dashboard:['Dashboard','Welcome back, Priya · Mon, 11 Jun 2026'],bookings:['Bookings','Manage all service bookings'],techs:['Technicians','Approve & manage your experts'],reports:['Reports','Revenue, bookings & GST']};
+function go(id){
+  if(!titles[id]) return;
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.dataset.view===id));
+  document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('on',n.dataset.go===id));
+  document.getElementById('pg').textContent=titles[id][0];
+  document.getElementById('cr').textContent=titles[id][1];
+  document.querySelector('.content').scrollTop=0;
+}
+let tt;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2200);}
+// mobile drawer
+const sb=document.querySelector('.sidebar'),bd=document.getElementById('bd'),ham=document.getElementById('ham');
+function drawer(open){sb.classList.toggle('open',open);bd.classList.toggle('show',open);}
+ham.addEventListener('click',()=>drawer(!sb.classList.contains('open')));
+bd.addEventListener('click',()=>drawer(false));
+// wrap tables so they scroll horizontally on small screens (headers stay put)
+document.querySelectorAll('.table').forEach(t=>{const w=document.createElement('div');w.className='tw';t.parentNode.insertBefore(w,t);w.appendChild(t);});
+document.addEventListener('click',e=>{
+  const nav=e.target.closest('[data-go]'); if(nav){ go(nav.dataset.go); drawer(false); return; }
+  const ap=e.target.closest('[data-approve]'); if(ap){ const tr=document.querySelector('tr[data-rid="'+ap.dataset.approve+'"]');
+    tr.querySelector('.kyc').innerHTML='<span class="st ok"><span class="d"></span>Verified</span>';
+    ap.outerHTML='<button class="btn sm">View</button>'; toast('Technician approved'); return; }
+  const tab=e.target.closest('.tabs button'); if(tab){ tab.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('on')); tab.classList.add('on'); }
+});
+</script>
+</body>
+</html>
