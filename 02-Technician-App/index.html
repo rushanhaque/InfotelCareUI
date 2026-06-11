@@ -9,9 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --green:#0E9466; --green-d:#0A7350; --green-50:#E9F5EF; --green-100:#D2EBE0;
-  --ink:#14181D; --gray:#5B6472; --gray2:#8B93A0; --line:#E9EBEE; --bg:#FFFFFF; --soft:#F5F6F8;
-  --amber:#E2A33A; --amber-50:#FBF1E0; --red:#E0573C; --red-50:#FCEEEB; --blue:#2C6BD4; --blue-50:#EAF2FE;
+  --green:#0E9466;--green-d:#0A7350;--green-50:#E9F5EF;--green-100:#D2EBE0;
+  --ink:#14181D;--gray:#5B6472;--gray2:#8B93A0;--line:#E9EBEE;--bg:#FFFFFF;--soft:#F5F6F8;
+  --amber:#E2A33A;--amber-d:#B87A1A;--amber-50:#FBF1E0;--red:#E0573C;--red-50:#FCEEEB;--blue:#2C6BD4;--blue-50:#EAF2FE;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:Inter,system-ui,sans-serif;background:#E7E9EC;color:var(--ink);display:flex;justify-content:center;line-height:1.45;-webkit-font-smoothing:antialiased}
@@ -23,214 +23,489 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .screen{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg)}
 .screen.active{display:flex}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden}.scroll::-webkit-scrollbar{width:0}
-.hdr{padding:8px 20px 14px;display:flex;align-items:center;gap:12px}
-.hdr .back{width:40px;height:40px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center}
-.hdr h1{font-size:19px;font-weight:800;letter-spacing:-.02em}.hdr .sub{font-size:12.5px;color:var(--gray);font-weight:500}
 .grow{flex:1;min-width:0}
-.iconbtn{width:40px;height:40px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;position:relative}
-.iconbtn .dot{position:absolute;top:9px;right:10px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff}
-.pad{padding:0 20px}.row{display:flex;align-items:center}.col{display:flex;flex-direction:column}.between{justify-content:space-between}
-.muted{color:var(--gray)}.g2{color:var(--gray2)}.grow{flex:1}
-.sec{font-size:16px;font-weight:800;letter-spacing:-.02em;margin:22px 0 12px}
+.row{display:flex;align-items:center}.between{justify-content:space-between}
+.muted{color:var(--gray)}.g2{color:var(--gray2)}
 .fw6{font-weight:600}.fw7{font-weight:700}.fw8{font-weight:800}
 .f11{font-size:11px}.f12{font-size:12px}.f13{font-size:13px}.f14{font-size:14px}.f15{font-size:15px}
-.mt6{margin-top:6px}.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}
+.mt6{margin-top:6px}.mt8{margin-top:8px}.mt12{margin-top:12px}.mt14{margin-top:14px}.mt16{margin-top:16px}.mt20{margin-top:20px}
 .rupee::before{content:"\20B9"}
-.btn{display:flex;align-items:center;justify-content:center;gap:9px;height:52px;border-radius:13px;font-size:15px;font-weight:700;width:100%;transition:filter .12s,transform .1s}
+.pad{padding:0 18px}
+
+/* header */
+.hdr{padding:14px 18px 10px;display:flex;align-items:center;gap:10px}
+.back{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;flex:0 0 auto}
+.iconbtn{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;position:relative;flex:0 0 auto}
+.iconbtn .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff}
+.av{border-radius:50%;background:var(--green-50);color:var(--green-d);display:grid;place-items:center;font-weight:800;flex:0 0 auto}
+
+/* online pill */
+.online-pill{display:inline-flex;align-items:center;gap:6px;background:var(--amber-50);border:1px solid #F0D090;border-radius:20px;padding:5px 11px;font-size:12px;font-weight:800;color:#9A6A14;cursor:pointer;transition:.15s}
+.online-pill.off{background:var(--soft);border-color:var(--line);color:var(--gray2)}
+.online-pill .od{width:7px;height:7px;border-radius:50%;background:var(--amber);flex:0 0 auto}
+.online-pill.off .od{background:var(--gray2)}
+
+/* dark earnings card */
+.earn-card{background:#1B2030;border-radius:18px;padding:18px;color:#fff;margin-bottom:14px}
+.earn-card .ec-today{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;opacity:.6}
+.earn-card .ec-amt{font-size:34px;font-weight:800;letter-spacing:-.03em;margin-top:4px}
+.earn-card .ec-stats{display:flex;gap:0;margin-top:16px;border-top:1px solid rgba(255,255,255,.1);padding-top:14px}
+.earn-card .ec-stat{flex:1;text-align:center}
+.earn-card .ec-stat+.ec-stat{border-left:1px solid rgba(255,255,255,.1)}
+.earn-card .ec-stat .sv{font-size:18px;font-weight:800}
+.earn-card .ec-stat .sl{font-size:11px;opacity:.6;font-weight:600;margin-top:3px}
+
+/* inline tabs */
+.itabs{display:flex;gap:0;border-bottom:1px solid var(--line);padding:0 18px;margin-bottom:0}
+.itab{padding:10px 14px 11px;font-size:13px;font-weight:700;color:var(--gray2);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;position:relative}
+.itab.on{color:var(--green);border-bottom-color:var(--green)}
+.itab .badge{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;border-radius:9px;background:var(--amber);color:#fff;font-size:10px;font-weight:800;padding:0 4px;margin-left:5px;vertical-align:middle}
+
+/* buttons */
+.btn{display:flex;align-items:center;justify-content:center;gap:9px;height:52px;border-radius:14px;font-size:15px;font-weight:700;width:100%;transition:filter .12s,transform .1s}
 .btn:active{transform:scale(.99)}
 .btn.pri{background:var(--green);color:#fff}.btn.pri:active{filter:brightness(.95)}
+.btn.amber{background:var(--amber);color:#fff}.btn.amber:active{filter:brightness(.95)}
 .btn.out{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
 .btn.soft{background:var(--green-50);color:var(--green-d)}
-.btn.danger{background:var(--red-50);color:var(--red)}
+.btn.dark{background:#1B2030;color:#fff}
 .btn .ic{width:19px;height:19px;stroke-width:2.2}
-.btn.sm{height:44px;font-size:13.5px;border-radius:11px}
+.btn.sm{height:40px;font-size:13px;border-radius:10px;width:auto;padding:0 16px}
+
+/* cards */
 .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px}
-.tag{display:inline-flex;align-items:center;gap:4px;font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:7px;background:var(--soft);color:var(--gray)}
-.tag.star{background:var(--green-50);color:var(--green-d)}.tag.star .ic{width:12px;height:12px;fill:var(--green-d);stroke:none}
-.thumb{width:52px;height:52px;border-radius:13px;background:var(--soft);display:grid;place-items:center;color:var(--green-d);flex:0 0 auto}.thumb .ic{width:25px;height:25px}
-.st{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:8px}
+
+/* job card */
+.job-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px}
+.job-card .jc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.jc-new{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;color:var(--green-d);background:var(--green-50);padding:4px 10px;border-radius:7px}
+.jc-new .ic{width:12px;height:12px}
+.jc-timer{font-size:12px;font-weight:800;color:var(--red)}
+.jc-body{display:flex;gap:12px;align-items:flex-start}
+.thumb{width:50px;height:50px;border-radius:13px;background:var(--soft);display:grid;place-items:center;color:var(--green-d);flex:0 0 auto}
+.thumb .ic{width:24px;height:24px}
+.est-earn{display:inline-flex;align-items:center;background:var(--amber-50);color:var(--amber-d);font-size:11px;font-weight:800;padding:3px 9px;border-radius:7px;margin-top:5px}
+.jc-meta{display:flex;gap:14px;margin-top:11px;font-size:12px;font-weight:600;color:var(--gray)}
+.jc-meta span{display:inline-flex;align-items:center;gap:5px}
+.jc-meta .ic{width:13px;height:13px;color:var(--green-d)}
+.jc-actions{display:flex;gap:9px;margin-top:12px}
+
+/* status pills */
+.st{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:8px}
 .st .d{width:6px;height:6px;border-radius:50%;background:currentColor}
 .st.ok{background:var(--green-50);color:var(--green-d)}.st.go{background:var(--blue-50);color:var(--blue)}
 .st.warn{background:var(--amber-50);color:#9A6A14}.st.off{background:var(--soft);color:var(--gray)}.st.red{background:var(--red-50);color:var(--red)}
-.av{border-radius:50%;background:var(--green-50);color:var(--green-d);display:grid;place-items:center;font-weight:800;flex:0 0 auto}
-.stat{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px}
-.stat .v{font-size:19px;font-weight:800;letter-spacing:-.02em}.stat .l{font-size:11.5px;color:var(--gray);margin-top:4px}
-.switch{width:50px;height:29px;border-radius:99px;background:#D7DBE0;position:relative;flex:0 0 auto;transition:.18s}
-.switch i{position:absolute;top:3px;left:3px;width:23px;height:23px;border-radius:50%;background:#fff;transition:.18s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
-.switch.on{background:var(--green)}.switch.on i{left:24px}
-.lrow{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--line)}
-.lrow:last-child{border-bottom:none}
-.lrow .li{width:42px;height:42px;border-radius:11px;background:var(--soft);display:grid;place-items:center;color:var(--ink);flex:0 0 auto}.lrow .li .ic{width:20px;height:20px}
-.lrow .ttl{font-size:14.5px;font-weight:600}.lrow .ds{font-size:12.5px;color:var(--gray);margin-top:1px}
-.chev{color:var(--gray2)}.chev .ic{width:20px;height:20px}
+.st.ongoing{background:#1B2030;color:#fff;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
+
+/* map */
+.map{border-radius:16px;border:1px solid var(--line);position:relative;overflow:hidden;background:repeating-linear-gradient(0deg,#eef0f2 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,#eef0f2 0 1px,transparent 1px 28px),#f4f5f7}
+.map .pin{position:absolute;width:30px;height:30px;border-radius:50% 50% 50% 2px;background:var(--green);transform:translate(-50%,-100%) rotate(45deg);display:grid;place-items:center}
+.map .pin .ic{transform:rotate(-45deg);width:15px;height:15px;color:#fff;stroke-width:2.4}
+
+/* dist badge */
+.dist-badge{position:absolute;left:12px;top:12px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:6px 11px;font-size:12.5px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.07)}
+
+/* issue photos */
+.photo-row{display:flex;gap:10px;margin-top:10px}
+.photo-thumb{width:72px;height:56px;border-radius:10px;background:var(--soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--gray2)}
+.photo-thumb .ic{width:20px;height:20px}
+
+/* job progress */
+.prog-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.prog-row:last-child{border-bottom:none}
+.prog-row .pchk{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:0 0 auto}
+.prog-row.done .pchk{background:var(--green);border-color:var(--green)}
+.prog-row.now .pchk{border-color:var(--green)}
+.prog-row.now .pchk::after{content:"";display:block;width:8px;height:8px;border-radius:50%;background:var(--green)}
+.prog-row .plbl{font-size:13.5px;font-weight:600}
+.prog-row.done .plbl{color:var(--green-d)}.prog-row.wait .plbl{color:var(--gray2)}
+
+/* stats */
+.stat{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat .v{font-size:18px;font-weight:800;letter-spacing:-.02em}.stat .l{font-size:11.5px;color:var(--gray);margin-top:4px}
+
+/* bar chart */
 .bars{display:flex;align-items:flex-end;gap:9px;height:120px;margin-top:4px}
 .bars .b{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px;height:100%}
 .bars .b i{width:100%;max-width:26px;border-radius:6px 6px 3px 3px;background:var(--green-100);display:block}
 .bars .b.on i{background:var(--green)}.bars .b span{font-size:11px;color:var(--gray2);font-weight:600}
-.bill{display:flex;justify-content:space-between;padding:7px 0;font-size:13.5px}.bill .k{color:var(--gray)}.bill .v{font-weight:600}
-.bill.tot{border-top:1px solid var(--line);margin-top:6px;padding-top:12px}.bill.tot .k{font-weight:800;color:var(--ink);font-size:15px}.bill.tot .v{font-weight:800;font-size:17px}
-.map{height:150px;border-radius:14px;border:1px solid var(--line);position:relative;overflow:hidden;background:repeating-linear-gradient(0deg,#eef0f2 0 1px,transparent 1px 24px),repeating-linear-gradient(90deg,#eef0f2 0 1px,transparent 1px 24px),#f4f5f7}
-.map .pin{position:absolute;width:30px;height:30px;border-radius:50% 50% 50% 2px;background:var(--green);transform:translate(-50%,-100%) rotate(45deg);display:grid;place-items:center}.map .pin .ic{transform:rotate(-45deg);width:15px;height:15px;color:#fff;stroke-width:2.4}
-.dock{flex:0 0 auto;padding:12px 20px calc(22px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
-.dock .pl{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.dock .pl .a{font-size:19px;font-weight:800}.dock .pl .l{font-size:12px;color:var(--gray)}
-.tabbar{flex:0 0 auto;min-height:68px;display:flex;border-top:1px solid var(--line);background:#fff;padding-bottom:env(safe-area-inset-bottom)}.app.flow .tabbar{display:none}
-.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--gray2);font-size:10.5px;font-weight:600}.tab .ic{width:23px;height:23px}.tab.on{color:var(--green)}.tab.on .ic{stroke-width:2.2}
-.toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:11px;opacity:0;transition:.3s;pointer-events:none;z-index:30;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* bill */
+.bill{display:flex;justify-content:space-between;padding:7px 0;font-size:13.5px}
+.bill .k{color:var(--gray)}.bill .v{font-weight:600}
+.bill.tot{border-top:1px solid var(--line);margin-top:6px;padding-top:12px}
+.bill.tot .k{font-weight:800;color:var(--ink);font-size:15px}.bill.tot .v{font-weight:800;font-size:17px}
+
+/* list rows */
+.lrow{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--line)}
+.lrow:last-child{border-bottom:none}
+.lrow .li{width:42px;height:42px;border-radius:11px;background:var(--soft);display:grid;place-items:center;color:var(--ink);flex:0 0 auto}
+.lrow .ttl{font-size:14.5px;font-weight:600}.lrow .ds{font-size:12.5px;color:var(--gray);margin-top:1px}
+.chev2{color:var(--gray2)}
+
+/* KYC doc card */
+.doc-card{border:1.5px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;background:#fff}
+.doc-card.uploaded{border-color:var(--green-100)}
+.doc-card .dc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.doc-card .dc-icon{width:38px;height:38px;border-radius:10px;background:var(--soft);display:grid;place-items:center;flex:0 0 auto}
+.doc-card .dc-name{font-size:14px;font-weight:700}
+.doc-card .dc-sub{font-size:12px;color:var(--gray);margin-top:2px}
+.uploaded-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--green-d)}
+.doc-photos{display:flex;gap:10px}
+.doc-photo{width:90px;height:62px;border-radius:10px;background:var(--soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--gray2);overflow:hidden}
+.doc-photo img{width:100%;height:100%;object-fit:cover}
+.upload-zone{height:70px;border:1.5px dashed var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:600;color:var(--gray2);cursor:pointer}
+.secure-note{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray2);margin-top:12px}
+
+/* pending screen */
+.screen.dark-screen{background:#12161F}
+
+/* progress dots */
+.prog-steps{display:flex;align-items:center;justify-content:center;gap:0;margin-top:32px;width:100%}
+.ps-step{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1}
+.ps-dot{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:grid;place-items:center;font-size:11px;font-weight:800;color:rgba(255,255,255,.4)}
+.ps-dot.done{background:var(--amber);border-color:var(--amber);color:#fff}
+.ps-dot.now{border-color:var(--amber);color:var(--amber);box-shadow:0 0 0 4px rgba(226,163,58,.15)}
+.ps-lbl{font-size:11px;font-weight:600;color:rgba(255,255,255,.45);text-align:center}
+.ps-lbl.done{color:rgba(255,255,255,.8)}.ps-lbl.now{color:var(--amber)}
+.ps-line{flex:1;height:2px;background:rgba(255,255,255,.12);margin:0 -2px;margin-bottom:20px}
+.ps-line.done{background:var(--amber)}
+
+/* dock / tabbar */
+.dock{flex:0 0 auto;padding:12px 18px calc(18px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
+.tabbar{flex:0 0 auto;min-height:68px;display:flex;border-top:1px solid var(--line);background:#fff;padding-bottom:env(safe-area-inset-bottom)}
+.app.flow .tabbar{display:none}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--gray2);font-size:10.5px;font-weight:600}
+.tab .ic{width:23px;height:23px}.tab.on{color:var(--green)}.tab.on .ic{stroke-width:2.2}
+.toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:11px;opacity:0;transition:.3s;pointer-events:none;z-index:30;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
 <div class="app" id="app">
-  <div class="stage">
+<div class="stage">
 
-    <!-- ===== JOBS ===== -->
-    <section class="screen active" data-screen="jobs">
-      <div class="hdr">
-        <span class="av" style="width:42px;height:42px;font-size:15px">RK</span>
-        <div class="grow"><div class="sub">Partner</div><h1 style="font-size:18px">Rajesh Kumar</h1></div>
-        <button class="iconbtn"><svg class="ic"><use href="#bell"/></svg><span class="dot"></span></button>
-      </div>
-      <div class="scroll pad" style="padding-bottom:18px">
-        <div class="card row between" style="align-items:center">
-          <div class="row" style="gap:12px"><span class="switch on" id="online"><i></i></span><div><div class="fw7 f15" id="online-t">You're online</div><div class="muted f12 mt6" id="online-s">Accepting jobs near Indiranagar</div></div></div>
-          <span class="st ok" id="online-p"><span class="d"></span>Live</span>
-        </div>
-
-        <div class="row mt12" style="gap:10px">
-          <div class="stat"><div class="v rupee">2,450</div><div class="l">Earned today</div></div>
-          <div class="stat"><div class="v">4.9 ★</div><div class="l">Rating</div></div>
-          <div class="stat"><div class="v">96%</div><div class="l">Acceptance</div></div>
-        </div>
-
-        <div class="sec">New requests <span style="float:right;font-size:12px;color:var(--gray);font-weight:600;margin-top:4px">2 nearby</span></div>
-
-        <div class="card" id="req1">
-          <div class="row between"><span class="st ok"><svg class="ic" style="width:12px;height:12px;stroke-width:2.4"><use href="#bolt"/></svg>New request</span><span class="f12 fw7" style="color:var(--red)">00:48</span></div>
-          <div class="row mt12" style="gap:12px"><span class="thumb"><svg class="ic"><use href="#ac"/></svg></span><div class="grow"><div class="fw7 f15">AC service &amp; gas refill</div><div class="muted f12 mt6">Split AC · not cooling</div></div><div style="text-align:right"><div class="fw8 rupee f15" style="color:var(--green-d)">680</div><div class="muted f11">payout</div></div></div>
-          <div class="row mt12 f12 fw6 muted" style="gap:16px"><span class="row" style="gap:5px"><svg class="ic" style="width:14px;height:14px;color:var(--green-d)"><use href="#pin"/></svg>2.1 km</span><span class="row" style="gap:5px"><svg class="ic" style="width:14px;height:14px;color:var(--green-d)"><use href="#clock"/></svg>Today, 2–4 PM</span></div>
-          <div class="row mt12" style="gap:9px"><button class="btn out sm" style="flex:1" data-decline="req1">Decline</button><button class="btn pri sm" style="flex:1.4" data-go="job">Accept job</button></div>
-        </div>
-
-        <div class="card mt12" id="req2">
-          <div class="row between"><span class="st ok"><svg class="ic" style="width:12px;height:12px;stroke-width:2.4"><use href="#bolt"/></svg>New request</span><span class="f12 fw7" style="color:#9A6A14">01:12</span></div>
-          <div class="row mt12" style="gap:12px"><span class="thumb"><svg class="ic"><use href="#washer"/></svg></span><div class="grow"><div class="fw7 f15">Washing machine repair</div><div class="muted f12 mt6">Front load · not draining</div></div><div style="text-align:right"><div class="fw8 rupee f15" style="color:var(--green-d)">420</div><div class="muted f11">payout</div></div></div>
-          <div class="row mt12 f12 fw6 muted" style="gap:16px"><span class="row" style="gap:5px"><svg class="ic" style="width:14px;height:14px;color:var(--green-d)"><use href="#pin"/></svg>3.6 km</span><span class="row" style="gap:5px"><svg class="ic" style="width:14px;height:14px;color:var(--green-d)"><use href="#clock"/></svg>Today, 5–7 PM</span></div>
-          <div class="row mt12" style="gap:9px"><button class="btn out sm" style="flex:1" data-decline="req2">Decline</button><button class="btn pri sm" style="flex:1.4" data-go="job">Accept job</button></div>
+<!-- JOBS -->
+<section class="screen active" data-screen="jobs">
+  <div class="hdr">
+    <span class="av" style="width:42px;height:42px;font-size:14px">RK</span>
+    <div class="grow" style="margin-left:2px">
+      <div class="f12 muted fw6">Good morning</div>
+      <div style="font-size:18px;font-weight:800;letter-spacing:-.02em">Hi Ravi 👋</div>
+    </div>
+    <button class="online-pill" id="online-btn">
+      <span class="od"></span><span id="online-lbl">ONLINE</span>
+    </button>
+    <button class="iconbtn" style="margin-left:4px"><svg class="ic"><use href="#bell"/></svg><span class="dot"></span></button>
+  </div>
+  <div class="scroll">
+    <div class="pad" style="padding-bottom:20px">
+      <!-- dark earnings card -->
+      <div class="earn-card">
+        <div class="ec-today">Today</div>
+        <div class="ec-amt"><span class="rupee"></span>1,450</div>
+        <div class="ec-stats">
+          <div class="ec-stat"><div class="sv">3</div><div class="sl">Jobs</div></div>
+          <div class="ec-stat"><div class="sv">★4.9</div><div class="sl">Rating</div></div>
+          <div class="ec-stat"><div class="sv">96%</div><div class="sl">Accept</div></div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- ===== JOB DETAIL ===== -->
-    <section class="screen" data-screen="job" data-flow>
-      <div class="hdr">
-        <button class="back" data-go="jobs"><svg class="ic"><use href="#left"/></svg></button>
-        <div class="grow"><h1>Job #INF-20384</h1><div class="sub">Accepted · today 2–4 PM</div></div>
-        <span class="st ok"><span class="d"></span>Active</span>
-      </div>
-      <div class="scroll pad" style="padding-bottom:18px">
-        <div class="map mt8"><span style="position:absolute;left:24%;top:62%;width:14px;height:14px;border-radius:50%;background:var(--blue);border:3px solid #fff;box-shadow:0 0 0 4px rgba(44,107,212,.2)"></span><span class="pin" style="left:72%;top:34%"><svg class="ic"><use href="#pin"/></svg></span>
-          <button class="btn pri sm" style="position:absolute;right:12px;bottom:12px;width:auto;padding:0 16px"><svg class="ic"><use href="#nav"/></svg>Navigate</button>
-          <span class="st off" style="position:absolute;left:12px;top:12px;background:#fff;border:1px solid var(--line)">2.1 km · 8 min</span>
+    <!-- tabs -->
+    <div class="itabs">
+      <button class="itab on">New <span class="badge">2</span></button>
+      <button class="itab">Accepted</button>
+      <button class="itab">Ongoing</button>
+      <button class="itab">Completed</button>
+    </div>
+
+    <div class="pad" style="padding-top:14px;padding-bottom:20px">
+      <!-- job card 1 -->
+      <div class="job-card" id="req1">
+        <div class="jc-top">
+          <span class="jc-new"><svg class="ic"><use href="#bolt"/></svg>New request</span>
+          <span class="jc-timer">Respond in 04:32</span>
         </div>
-
-        <div class="card mt16">
-          <div class="row" style="gap:12px"><span class="thumb"><svg class="ic"><use href="#ac"/></svg></span><div class="grow"><div class="fw7 f15">AC service &amp; gas refill</div><div class="muted f12 mt6">Voltas Split AC 1.5T · cooling issue</div></div><div style="text-align:right"><div class="fw8 rupee f15" style="color:var(--green-d)">680</div><div class="muted f11">est. payout</div></div></div>
-          <div style="height:1px;background:var(--line);margin:14px 0"></div>
-          <div class="f12 fw7 muted" style="letter-spacing:.04em">REPORTED PROBLEM</div>
-          <p class="f13 muted mt8" style="line-height:1.5">"AC runs but doesn't cool. Some water dripping from the indoor unit. Last serviced over a year ago."</p>
-        </div>
-
-        <div class="card mt12 row" style="gap:13px">
-          <span class="av" style="width:46px;height:46px;font-size:15px">AS</span>
-          <div class="grow"><div class="fw7 f14">Aarav Sharma</div><div class="muted f12 mt6">221B, 5th Block, Koramangala</div></div>
-          <button class="iconbtn" style="border-color:var(--green-100);color:var(--green-d)"><svg class="ic" style="width:19px;height:19px"><use href="#call"/></svg></button>
-          <button class="iconbtn"><svg class="ic" style="width:19px;height:19px"><use href="#chat"/></svg></button>
-        </div>
-
-        <div class="card mt12 row" style="gap:11px;background:var(--green-50);border-color:var(--green-100)">
-          <svg class="ic" style="width:20px;height:20px;color:var(--green-d)"><use href="#lock"/></svg>
-          <span class="f13 fw6" style="color:var(--green-d)">Ask the customer for the 4-digit start PIN when you arrive.</span>
-        </div>
-      </div>
-      <div class="dock"><button class="btn pri" data-go="jobs" data-done>Mark job complete</button></div>
-    </section>
-
-    <!-- ===== EARNINGS ===== -->
-    <section class="screen" data-screen="earnings">
-      <div class="hdr"><div class="grow"><h1>Earnings</h1></div><button class="iconbtn"><svg class="ic"><use href="#bell"/></svg></button></div>
-      <div class="scroll pad" style="padding-bottom:18px">
-        <div class="card" style="background:var(--green);border:none;color:#fff;padding:18px">
-          <div class="f13" style="opacity:.9">Available for payout</div>
-          <div class="fw8" style="font-size:32px;letter-spacing:-.02em;margin-top:4px"><span class="rupee"></span>8,420</div>
-          <div class="row between mt16"><span class="f12" style="opacity:.85">Next auto-payout: Mon, 16 Jun</span><button class="btn sm" style="width:auto;padding:0 18px;background:#fff;color:var(--green-d);height:38px">Withdraw</button></div>
-        </div>
-
-        <div class="row mt12" style="gap:10px">
-          <div class="stat"><div class="v rupee">4,250</div><div class="l">This week</div></div>
-          <div class="stat"><div class="v">11</div><div class="l">Jobs</div></div>
-          <div class="stat"><div class="v rupee">386</div><div class="l">Avg / job</div></div>
-        </div>
-
-        <div class="sec">This week</div>
-        <div class="card">
-          <div class="bars">
-            <div class="b"><i style="height:35%"></i><span>M</span></div>
-            <div class="b"><i style="height:60%"></i><span>T</span></div>
-            <div class="b"><i style="height:45%"></i><span>W</span></div>
-            <div class="b"><i style="height:72%"></i><span>T</span></div>
-            <div class="b on"><i style="height:100%"></i><span>F</span></div>
-            <div class="b"><i style="height:55%"></i><span>S</span></div>
-            <div class="b"><i style="height:30%"></i><span>S</span></div>
+        <div class="jc-body">
+          <span class="thumb"><svg class="ic"><use href="#ac"/></svg></span>
+          <div class="grow">
+            <div class="fw7 f15">AC Repair — Not cooling</div>
+            <div class="muted f12 mt6">Civil Lines · 2.3 km</div>
+            <div class="est-earn mt6"><span class="rupee"></span>480 est. earning</div>
           </div>
         </div>
-
-        <div class="sec">Recent transactions</div>
-        <div class="card" style="padding:4px 15px">
-          <div class="lrow"><span class="li" style="color:var(--green-d)"><svg class="ic"><use href="#wrench"/></svg></span><div class="grow"><div class="ttl">AC service · #INF-20384</div><div class="ds">Today, 4:32 PM</div></div><span class="fw8 f14" style="color:var(--green-d)">+<span class="rupee"></span>680</span></div>
-          <div class="lrow"><span class="li" style="color:#9A6A14"><svg class="ic"><use href="#gift"/></svg></span><div class="grow"><div class="ttl">Weekend bonus</div><div class="ds">5 jobs completed</div></div><span class="fw8 f14" style="color:var(--green-d)">+<span class="rupee"></span>150</span></div>
-          <div class="lrow"><span class="li"><svg class="ic"><use href="#bank"/></svg></span><div class="grow"><div class="ttl">Payout to HDFC ••7782</div><div class="ds">9 Jun</div></div><span class="fw8 f14 muted">−<span class="rupee"></span>6,000</span></div>
+        <div class="jc-meta">
+          <span><svg class="ic"><use href="#clock"/></svg>Today 10–11 AM</span>
+        </div>
+        <div class="jc-actions">
+          <button class="btn out sm" style="flex:1" data-decline="req1">Decline</button>
+          <button class="btn amber sm" style="flex:1.5" data-go="job">Accept</button>
         </div>
       </div>
-    </section>
 
-    <!-- ===== PROFILE ===== -->
-    <section class="screen" data-screen="profile">
-      <div class="hdr"><div class="grow"><h1>Profile</h1></div><button class="iconbtn"><svg class="ic"><use href="#cog"/></svg></button></div>
-      <div class="scroll pad" style="padding-bottom:18px">
-        <div class="card row" style="gap:14px;align-items:center">
-          <span class="av" style="width:58px;height:58px;font-size:20px">RK</span>
-          <div class="grow"><div class="fw8" style="font-size:17px">Rajesh Kumar</div><div class="muted f12 mt6">Partner ID TC-1182 · since 2023</div></div>
-          <span class="st ok"><svg class="ic" style="width:13px;height:13px;stroke-width:2.4"><use href="#verified"/></svg>Verified</span>
+      <!-- job card 2 -->
+      <div class="job-card" id="req2">
+        <div class="jc-top">
+          <span class="jc-new"><svg class="ic"><use href="#bolt"/></svg>New request</span>
+          <span class="jc-timer" style="color:#9A6A14">Respond in 01:15</span>
         </div>
-        <div class="row mt16" style="gap:10px">
-          <div class="stat"><div class="v">4.9 ★</div><div class="l">Rating</div></div>
-          <div class="stat"><div class="v">1,240</div><div class="l">Jobs</div></div>
-          <div class="stat"><div class="v">98%</div><div class="l">On-time</div></div>
+        <div class="jc-body">
+          <span class="thumb"><svg class="ic"><use href="#drop"/></svg></span>
+          <div class="grow">
+            <div class="fw7 f15">Plumbing — Leakage</div>
+            <div class="muted f12 mt6">Vasant Vihar · 4.1 km</div>
+            <div class="est-earn mt6"><span class="rupee"></span>350 est. earning</div>
+          </div>
         </div>
-        <div class="card mt16 row" style="gap:11px;background:var(--green-50);border-color:var(--green-100)">
-          <svg class="ic" style="width:20px;height:20px;color:var(--green-d)"><use href="#verified"/></svg>
-          <div class="grow"><div class="fw7 f14" style="color:var(--green-d)">KYC verified</div><div class="f12" style="color:var(--green-d);opacity:.85;margin-top:2px">Aadhaar, PAN, photo &amp; bank confirmed</div></div>
+        <div class="jc-meta">
+          <span><svg class="ic"><use href="#clock"/></svg>Today 1–2 PM</span>
         </div>
-        <div class="card mt12" style="padding:4px 15px">
-          <div class="lrow"><span class="li"><svg class="ic"><use href="#wrench"/></svg></span><div class="grow"><div class="ttl">Service categories</div><div class="ds">AC, Refrigerator, Washing Machine</div></div><span class="chev"><svg class="ic"><use href="#right"/></svg></span></div>
-          <div class="lrow"><span class="li"><svg class="ic"><use href="#pin"/></svg></span><div class="grow"><div class="ttl">Service area</div><div class="ds">Bengaluru · 8 km radius</div></div><span class="chev"><svg class="ic"><use href="#right"/></svg></span></div>
-          <div class="lrow"><span class="li"><svg class="ic"><use href="#bank"/></svg></span><div class="grow"><div class="ttl">Bank &amp; payouts</div><div class="ds">HDFC ••7782</div></div><span class="chev"><svg class="ic"><use href="#right"/></svg></span></div>
-        </div>
-        <div class="card mt12" style="padding:4px 15px">
-          <div class="lrow"><span class="li"><svg class="ic"><use href="#help"/></svg></span><div class="grow"><div class="ttl">Help &amp; support</div></div><span class="chev"><svg class="ic"><use href="#right"/></svg></span></div>
-          <div class="lrow"><span class="li" style="color:var(--red)"><svg class="ic"><use href="#logout"/></svg></span><div class="grow"><div class="ttl" style="color:var(--red)">Log out</div></div></div>
+        <div class="jc-actions">
+          <button class="btn out sm" style="flex:1" data-decline="req2">Decline</button>
+          <button class="btn amber sm" style="flex:1.5" data-go="job">Accept</button>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
+<!-- JOB DETAIL -->
+<section class="screen" data-screen="job" data-flow>
+  <div class="hdr">
+    <button class="back" data-go="jobs"><svg class="ic"><use href="#left"/></svg></button>
+    <div class="grow">
+      <div class="row" style="gap:8px;align-items:center">
+        <span style="font-size:17px;font-weight:800;letter-spacing:-.02em">AC Repair — Daikin</span>
+        <span class="st ongoing">Ongoing</span>
+      </div>
+      <div style="font-size:12px;color:var(--gray);margin-top:2px">Booking #IC-20461</div>
+    </div>
+  </div>
+  <div class="scroll pad" style="padding-bottom:20px">
+    <!-- map -->
+    <div class="map" style="height:160px;margin-top:4px">
+      <span style="position:absolute;left:24%;top:60%;width:14px;height:14px;border-radius:50%;background:var(--blue);border:3px solid #fff;box-shadow:0 0 0 4px rgba(44,107,212,.2)"></span>
+      <span class="pin" style="left:70%;top:32%"><svg class="ic"><use href="#pin"/></svg></span>
+      <div class="dist-badge">2.3 km · 8 min</div>
+      <button class="btn amber sm" style="position:absolute;right:12px;bottom:12px;width:auto;padding:0 16px">
+        <svg class="ic"><use href="#nav"/></svg>Navigate
+      </button>
+    </div>
+
+    <!-- customer info -->
+    <div class="card mt14">
+      <div class="row" style="gap:12px;align-items:flex-start">
+        <span class="av" style="width:44px;height:44px;font-size:14px">AS</span>
+        <div class="grow">
+          <div class="fw7 f14">Anita Sharma</div>
+          <div class="f12 muted" style="margin-top:2px">Customer</div>
+          <div class="f12" style="margin-top:8px;line-height:1.5;color:var(--gray)">Flat 402, Sunshine Apartments,<br>Sector 45, DLF Phase 4,<br>Gurugram, Haryana 122002</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="btn amber sm" style="gap:6px"><svg class="ic" style="width:15px;height:15px"><use href="#call"/></svg>Call</button>
+          <button class="btn out sm" style="gap:6px"><svg class="ic" style="width:15px;height:15px"><use href="#nav"/></svg>Navigate</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- reported issues -->
+    <div class="card mt12">
+      <div class="row" style="gap:8px;margin-bottom:10px">
+        <svg class="ic" style="width:16px;height:16px;color:var(--amber)"><use href="#warn"/></svg>
+        <div class="fw7 f14">Reported Issues</div>
+      </div>
+      <div class="f13 muted" style="line-height:1.55">"AC is blowing warm air and making a loud rattling noise when the compressor kicks in. Water is also leaking from the indoor unit."</div>
+      <div class="photo-row">
+        <div class="photo-thumb"><svg class="ic"><use href="#image"/></svg></div>
+        <div class="photo-thumb"><svg class="ic"><use href="#image"/></svg></div>
+      </div>
+    </div>
+
+    <!-- job progress -->
+    <div class="card mt12">
+      <div class="fw7 f14" style="margin-bottom:10px">Job Progress</div>
+      <div class="prog-row done"><div class="pchk"><svg class="ic" style="width:11px;height:11px;stroke-width:2.8;color:#fff"><use href="#check"/></svg></div><div class="plbl">Accepted</div></div>
+      <div class="prog-row now"><div class="pchk"></div><div class="plbl">En route to customer</div></div>
+      <div class="prog-row wait"><div class="pchk"></div><div class="plbl">In progress</div></div>
+      <div class="prog-row wait"><div class="pchk"></div><div class="plbl">Completed &amp; payment collected</div></div>
+    </div>
+
+    <!-- start pin notice -->
+    <div class="card mt12 row" style="gap:11px;background:var(--green-50);border-color:var(--green-100)">
+      <svg class="ic" style="width:20px;height:20px;color:var(--green-d)"><use href="#lock"/></svg>
+      <span class="f13 fw6" style="color:var(--green-d)">Ask the customer for the 4-digit start PIN when you arrive.</span>
+    </div>
+  </div>
+  <div class="dock"><button class="btn amber" data-go="jobs" data-done>Mark job complete</button></div>
+</section>
+
+<!-- EARNINGS -->
+<section class="screen" data-screen="earnings">
+  <div class="hdr"><div class="grow"><div style="font-size:20px;font-weight:800;letter-spacing:-.02em">Earnings</div></div><button class="iconbtn"><svg class="ic"><use href="#bell"/></svg></button></div>
+  <div class="scroll pad" style="padding-bottom:20px">
+    <div class="card" style="background:var(--green);border:none;color:#fff;padding:18px">
+      <div class="f13" style="opacity:.9">Available for payout</div>
+      <div class="fw8" style="font-size:32px;letter-spacing:-.02em;margin-top:4px"><span class="rupee"></span>8,420</div>
+      <div class="row between mt16"><span class="f12" style="opacity:.85">Next auto-payout: Mon, 16 Jun</span><button class="btn sm" style="width:auto;padding:0 18px;background:#fff;color:var(--green-d);height:38px">Withdraw</button></div>
+    </div>
+    <div class="row mt12" style="gap:10px">
+      <div class="stat"><div class="v rupee">4,250</div><div class="l">This week</div></div>
+      <div class="stat"><div class="v">11</div><div class="l">Jobs</div></div>
+      <div class="stat"><div class="v rupee">386</div><div class="l">Avg/job</div></div>
+    </div>
+    <div style="font-size:15px;font-weight:800;letter-spacing:-.015em;margin:20px 0 12px">This week</div>
+    <div class="card">
+      <div class="bars">
+        <div class="b"><i style="height:35%"></i><span>M</span></div>
+        <div class="b"><i style="height:60%"></i><span>T</span></div>
+        <div class="b"><i style="height:45%"></i><span>W</span></div>
+        <div class="b"><i style="height:72%"></i><span>T</span></div>
+        <div class="b on"><i style="height:100%"></i><span>F</span></div>
+        <div class="b"><i style="height:55%"></i><span>S</span></div>
+        <div class="b"><i style="height:30%"></i><span>S</span></div>
+      </div>
+    </div>
+    <div style="font-size:15px;font-weight:800;letter-spacing:-.015em;margin:20px 0 12px">Recent transactions</div>
+    <div class="card" style="padding:4px 15px">
+      <div class="lrow"><span class="li" style="color:var(--green-d)"><svg class="ic"><use href="#wrench"/></svg></span><div class="grow"><div class="ttl">AC service · #INF-20384</div><div class="ds">Today, 4:32 PM</div></div><span class="fw8 f14" style="color:var(--green-d)">+<span class="rupee"></span>680</span></div>
+      <div class="lrow"><span class="li" style="color:#9A6A14"><svg class="ic"><use href="#gift"/></svg></span><div class="grow"><div class="ttl">Weekend bonus</div><div class="ds">5 jobs completed</div></div><span class="fw8 f14" style="color:var(--green-d)">+<span class="rupee"></span>150</span></div>
+      <div class="lrow"><span class="li"><svg class="ic"><use href="#bank"/></svg></span><div class="grow"><div class="ttl">Payout to HDFC ••7782</div><div class="ds">9 Jun</div></div><span class="fw8 f14 muted">−<span class="rupee"></span>6,000</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section class="screen" data-screen="profile">
+  <div class="hdr"><div class="grow"><div style="font-size:20px;font-weight:800;letter-spacing:-.02em">Profile</div></div><button class="iconbtn"><svg class="ic"><use href="#cog"/></svg></button></div>
+  <div class="scroll pad" style="padding-bottom:20px">
+    <div class="card row" style="gap:14px;align-items:center">
+      <span class="av" style="width:58px;height:58px;font-size:20px">RK</span>
+      <div class="grow"><div class="fw8" style="font-size:17px">Rajesh Kumar</div><div class="muted f12 mt6">Partner ID TC-1182 · since 2023</div></div>
+      <span class="st ok">Verified</span>
+    </div>
+    <div class="row mt16" style="gap:10px">
+      <div class="stat"><div class="v">4.9 ★</div><div class="l">Rating</div></div>
+      <div class="stat"><div class="v">1,240</div><div class="l">Jobs</div></div>
+      <div class="stat"><div class="v">98%</div><div class="l">On-time</div></div>
+    </div>
+    <div class="card mt16 row" style="gap:11px;background:var(--green-50);border-color:var(--green-100)">
+      <svg class="ic" style="width:20px;height:20px;color:var(--green-d)"><use href="#verified"/></svg>
+      <div class="grow"><div class="fw7 f14" style="color:var(--green-d)">KYC verified</div><div class="f12" style="color:var(--green-d);opacity:.85;margin-top:2px">Aadhaar, PAN, photo &amp; bank confirmed</div></div>
+    </div>
+    <div class="card mt12" style="padding:4px 15px">
+      <div class="lrow"><span class="li"><svg class="ic"><use href="#wrench"/></svg></span><div class="grow"><div class="ttl">Service categories</div><div class="ds">AC, Refrigerator, Washing Machine</div></div><span class="chev2"><svg class="ic" style="width:18px;height:18px"><use href="#right"/></svg></span></div>
+      <div class="lrow"><span class="li"><svg class="ic"><use href="#pin"/></svg></span><div class="grow"><div class="ttl">Service area</div><div class="ds">Bengaluru · 8 km radius</div></div><span class="chev2"><svg class="ic" style="width:18px;height:18px"><use href="#right"/></svg></span></div>
+      <div class="lrow"><span class="li"><svg class="ic"><use href="#bank"/></svg></span><div class="grow"><div class="ttl">Bank &amp; payouts</div><div class="ds">HDFC ••7782</div></div><span class="chev2"><svg class="ic" style="width:18px;height:18px"><use href="#right"/></svg></span></div>
+    </div>
+    <div class="card mt12" style="padding:4px 15px">
+      <div class="lrow"><span class="li"><svg class="ic"><use href="#help"/></svg></span><div class="grow"><div class="ttl">Help &amp; support</div></div><span class="chev2"><svg class="ic" style="width:18px;height:18px"><use href="#right"/></svg></span></div>
+      <div class="lrow" data-go="kyc" style="cursor:pointer"><span class="li"><svg class="ic"><use href="#idcard"/></svg></span><div class="grow"><div class="ttl">View KYC documents</div></div><span class="chev2"><svg class="ic" style="width:18px;height:18px"><use href="#right"/></svg></span></div>
+      <div class="lrow"><span class="li" style="color:var(--red)"><svg class="ic"><use href="#logout"/></svg></span><div class="grow"><div class="ttl" style="color:var(--red)">Log out</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- KYC -->
+<section class="screen" data-screen="kyc" data-flow>
+  <div class="hdr">
+    <button class="back" data-go="profile"><svg class="ic"><use href="#left"/></svg></button>
+    <div class="grow">
+      <div style="font-size:18px;font-weight:800;letter-spacing:-.02em">Verify your identity</div>
+      <div style="font-size:12px;color:var(--gray);margin-top:2px">Required once · reviewed within 24 hours</div>
+    </div>
+  </div>
+  <div class="scroll pad" style="padding-bottom:20px">
+    <!-- Aadhaar -->
+    <div class="doc-card uploaded">
+      <div class="dc-top">
+        <div class="row" style="gap:10px">
+          <div class="dc-icon"><svg class="ic" style="width:18px;height:18px"><use href="#idcard"/></svg></div>
+          <div><div class="dc-name">Aadhaar card</div><div class="dc-sub">Front &amp; back photos</div></div>
+        </div>
+        <div class="uploaded-badge"><svg class="ic" style="width:14px;height:14px;color:var(--green)"><use href="#check"/></svg>Uploaded</div>
+      </div>
+      <div class="doc-photos">
+        <div class="doc-photo" style="background:#D2EBE0"><svg class="ic" style="color:var(--green-d)"><use href="#idcard"/></svg></div>
+        <div class="doc-photo" style="background:#D2EBE0"><svg class="ic" style="color:var(--green-d)"><use href="#idcard"/></svg></div>
+      </div>
+    </div>
+
+    <!-- PAN -->
+    <div class="doc-card">
+      <div class="dc-top">
+        <div class="row" style="gap:10px">
+          <div class="dc-icon"><svg class="ic" style="width:18px;height:18px"><use href="#card"/></svg></div>
+          <div><div class="dc-name">PAN card</div><div class="dc-sub">Required for payments</div></div>
+        </div>
+      </div>
+      <div class="upload-zone">
+        <svg class="ic" style="width:18px;height:18px"><use href="#upload"/></svg>
+        Upload
+      </div>
+    </div>
+
+    <div class="secure-note">
+      <svg class="ic" style="width:16px;height:16px"><use href="#lock"/></svg>
+      Documents are used only for verification, never shared.
+    </div>
+  </div>
+  <div class="dock">
+    <button class="btn amber" data-go="pending">Continue</button>
+  </div>
+</section>
+
+<!-- PENDING (dark) -->
+<section class="screen dark-screen" data-screen="pending" data-flow>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;text-align:center">
+    <!-- icon -->
+    <div style="width:80px;height:80px;border-radius:24px;background:rgba(255,255,255,.08);display:grid;place-items:center;margin-bottom:8px">
+      <svg class="ic" style="width:36px;height:36px;color:var(--amber)"><use href="#search-doc"/></svg>
+    </div>
+
+    <div style="font-size:26px;font-weight:800;color:#fff;letter-spacing:-.025em;margin-top:20px;line-height:1.15">You're almost in!</div>
+    <div style="font-size:14px;color:rgba(255,255,255,.55);margin-top:12px;line-height:1.6;max-width:30ch">Our team is reviewing your documents — usually under 24 hours. We'll notify you the moment you're approved.</div>
+
+    <!-- progress steps -->
+    <div class="prog-steps">
+      <div class="ps-step">
+        <div class="ps-dot done">✓</div>
+        <div class="ps-lbl done">Submitted</div>
+      </div>
+      <div class="ps-line done"></div>
+      <div class="ps-step">
+        <div class="ps-dot now">●</div>
+        <div class="ps-lbl now">Under review</div>
+      </div>
+      <div class="ps-line"></div>
+      <div class="ps-step">
+        <div class="ps-dot">3</div>
+        <div class="ps-lbl">Approved</div>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;padding:14px 18px;background:rgba(255,255,255,.07);border-radius:14px;border:1px solid rgba(255,255,255,.08)">
+      <div style="font-size:15px;font-weight:800;color:#fff">Application ID PRT-1182</div>
+      <div style="font-size:12.5px;color:rgba(255,255,255,.45);margin-top:4px">Submitted 12 Jun, 4:05 PM</div>
+    </div>
   </div>
 
-  <div class="toast" id="toast">Job accepted</div>
+  <div style="padding:0 18px calc(22px + env(safe-area-inset-bottom))">
+    <button class="btn" style="background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.12);margin-bottom:12px">
+      <svg class="ic" style="width:18px;height:18px"><use href="#headset"/></svg>
+      Contact support
+    </button>
+    <button class="btn" style="background:none;color:rgba(255,255,255,.4);font-size:14px;height:40px" data-go="jobs">Log out</button>
+  </div>
+</section>
 
-  <nav class="tabbar">
-    <button class="tab on" data-go="jobs"><svg class="ic"><use href="#grid"/></svg>Jobs</button>
-    <button class="tab" data-go="earnings"><svg class="ic"><use href="#wallet"/></svg>Earnings</button>
-    <button class="tab" data-go="profile"><svg class="ic"><use href="#user"/></svg>Profile</button>
-  </nav>
+</div><!-- stage -->
+<div class="toast" id="toast">Job accepted</div>
+<nav class="tabbar">
+  <button class="tab on" data-go="jobs"><svg class="ic"><use href="#grid"/></svg>Jobs</button>
+  <button class="tab" data-go="earnings"><svg class="ic"><use href="#wallet"/></svg>Earnings</button>
+  <button class="tab" data-go="profile"><svg class="ic"><use href="#user"/></svg>Profile</button>
+</nav>
 </div>
 
 <svg width="0" height="0" style="position:absolute"><defs>
@@ -245,7 +520,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 <symbol id="bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></symbol>
 <symbol id="nav" viewBox="0 0 24 24"><path d="M3 11 21 3l-8 18-2-7-8-3Z"/></symbol>
 <symbol id="call" viewBox="0 0 24 24"><path d="M5 4h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5V19a2 2 0 0 1-2 2A16 16 0 0 1 4 6a2 2 0 0 1 1-2Z"/></symbol>
-<symbol id="chat" viewBox="0 0 24 24"><path d="M21 11.5a8.5 8.5 0 0 1-12.4 7.6L4 20l1-4.3A8.5 8.5 0 1 1 21 11.5Z"/></symbol>
 <symbol id="lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
 <symbol id="verified" viewBox="0 0 24 24"><path d="M9.5 3.6a3 3 0 0 1 5 0 3 3 0 0 1 3.5 3.5 3 3 0 0 1 0 5 3 3 0 0 1-3.5 3.5 3 3 0 0 1-5 0A3 3 0 0 1 6 12.1a3 3 0 0 1 0-5 3 3 0 0 1 3.5-3.5Z"/><path d="M9 12l2 2 4-4"/></symbol>
 <symbol id="wrench" viewBox="0 0 24 24"><path d="M14.5 6.5a3.5 3.5 0 0 1-4.6 4.6L5 16l3 3 4.9-4.9a3.5 3.5 0 0 0 4.6-4.6l-2.2 2.2-2.2-.7-.7-2.2 2.2-2.2Z"/></symbol>
@@ -254,30 +528,45 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 <symbol id="cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.2A1.7 1.7 0 0 0 6.4 19l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0-1.2-2.9H2a2 2 0 1 1 0-4h.2A1.7 1.7 0 0 0 3.5 6.4l-.1-.1A2 2 0 1 1 6.2 3.5l.1.1a1.7 1.7 0 0 0 1.9.3H8a1.7 1.7 0 0 0 1-1.5V2a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V8a1.7 1.7 0 0 0 1.5 1H22a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
 <symbol id="help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 .9-1 1.7M12 17h.01"/></symbol>
 <symbol id="logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 16l5-4-5-4M21 12H9"/></symbol>
-<symbol id="ac" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="6" rx="1.5"/><path d="M6 12v1.5a2 2 0 0 0 2 2M12 12v3.5a2 2 0 0 1-2 2M18 12v1M6 18h.01M10 18h.01M14 18h.01"/></symbol>
+<symbol id="ac" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="6" rx="1.5"/><path d="M6 12v1.5a2 2 0 0 0 2 2M12 12v3.5a2 2 0 0 1-2 2M18 12v1"/></symbol>
 <symbol id="washer" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="1.5"/><circle cx="12" cy="13.5" r="4.5"/><path d="M8 6h.01M11 6h.01"/></symbol>
+<symbol id="drop" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/></symbol>
+<symbol id="idcard" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1.5"/><circle cx="8" cy="11" r="2"/><path d="M5 16c.5-1.6 1.7-2.5 3-2.5s2.5.9 3 2.5M14 10h4M14 13.5h4"/></symbol>
+<symbol id="card" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 14h3"/></symbol>
+<symbol id="upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
+<symbol id="check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-9"/></symbol>
+<symbol id="warn" viewBox="0 0 24 24"><path d="M10.3 3.9 2 19h20L13.7 3.9a2 2 0 0 0-3.4 0ZM12 9v5M12 17h.01"/></symbol>
+<symbol id="image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></symbol>
+<symbol id="search-doc" viewBox="0 0 24 24"><path d="M14 3H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9l-4-6Z"/><path d="M14 3v6h6"/><circle cx="11" cy="15" r="2.5"/><path d="M16 20l-2.2-2.2"/></symbol>
+<symbol id="headset" viewBox="0 0 24 24"><path d="M3 12a9 9 0 0 1 18 0v4a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h1M3 16v-2a2 2 0 0 1 2-2h1a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></symbol>
 </defs></svg>
 
 <script>
 const app=document.getElementById('app');
 const screens=[...document.querySelectorAll('.screen')];
 function go(id){
-  const sc=screens.find(s=>s.dataset.screen===id); if(!sc) return;
+  const sc=screens.find(s=>s.dataset.screen===id);if(!sc)return;
   screens.forEach(s=>s.classList.toggle('active',s===sc));
-  app.classList.toggle('flow', sc.hasAttribute('data-flow'));
+  app.classList.toggle('flow',sc.hasAttribute('data-flow'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.go===id));
-  const sb=sc.querySelector('.scroll'); if(sb) sb.scrollTop=0;
+  const sb=sc.querySelector('.scroll');if(sb)sb.scrollTop=0;
 }
-let tt; function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2200);}
+let tt;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2200);}
+let online=true;
+document.getElementById('online-btn').addEventListener('click',()=>{
+  online=!online;
+  const btn=document.getElementById('online-btn');
+  const lbl=document.getElementById('online-lbl');
+  btn.classList.toggle('off',!online);
+  lbl.textContent=online?'ONLINE':'OFFLINE';
+});
 document.addEventListener('click',e=>{
   const nav=e.target.closest('[data-go]');
-  if(nav){ if(nav.matches('[data-go="job"]')) toast('Job accepted'); if(nav.hasAttribute('data-done')) toast('Job completed · '+'₹680 added'); go(nav.dataset.go); return; }
-  const dec=e.target.closest('[data-decline]'); if(dec){ const c=document.getElementById(dec.dataset.decline); c.style.transition='.25s'; c.style.opacity='0'; c.style.transform='scale(.97)'; setTimeout(()=>c.remove(),250); toast('Request declined'); return; }
-  const sw=e.target.closest('#online'); if(sw){ const on=sw.classList.toggle('on');
-    document.getElementById('online-t').textContent=on?"You're online":"You're offline";
-    document.getElementById('online-s').textContent=on?"Accepting jobs near Indiranagar":"You won't receive new requests";
-    const p=document.getElementById('online-p'); p.className='st '+(on?'ok':'off'); p.innerHTML='<span class="d"></span>'+(on?'Live':'Paused');
-  }
+  if(nav){if(nav.matches('[data-go="job"]'))toast('Job accepted');if(nav.hasAttribute('data-done'))toast('Job completed · ₹680 added');go(nav.dataset.go);return;}
+  const dec=e.target.closest('[data-decline]');
+  if(dec){const c=document.getElementById(dec.dataset.decline);c.style.transition='.25s';c.style.opacity='0';c.style.transform='scale(.97)';setTimeout(()=>c.remove(),250);toast('Request declined');return;}
+  const tab=e.target.closest('.itab');
+  if(tab){tab.closest('.itabs').querySelectorAll('.itab').forEach(b=>b.classList.remove('on'));tab.classList.add('on');}
 });
 </script>
 </body>
