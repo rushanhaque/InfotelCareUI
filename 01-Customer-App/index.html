@@ -9,20 +9,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --green:#0E9466;--green-d:#0A7350;--green-50:#E9F5EF;--green-100:#D2EBE0;
-  --ink:#14181D;--gray:#5B6472;--gray2:#8B93A0;--line:#E9EBEE;--bg:#FFFFFF;--soft:#F5F6F8;
-  --amber:#E2A33A;--red:#E0573C;--red-50:#FCEEEB;
+  --primary:#0A7350;--primary-d:#065F40;--primary-50:#E9F5EF;--primary-100:#D2EBE0;
+  --ink:#111827;--gray:#6B7280;--gray2:#9CA3AF;--line:#E5E7EB;--bg:#FFFFFF;--soft:#F9FAFB;
+  --amber:#D97706;--red:#DC2626;--red-50:#FEF2F2;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:Inter,system-ui,sans-serif;background:#E7E9EC;color:var(--ink);display:flex;justify-content:center;line-height:1.45;-webkit-font-smoothing:antialiased}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 input{font-family:inherit}
 .ic{width:22px;height:22px;stroke:currentColor;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;display:block}
-.app{width:430px;max-width:100%;height:100vh;height:100dvh;max-height:932px;background:var(--bg);position:relative;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 70px rgba(20,30,45,.16)}
+.app{width:430px;max-width:100%;height:100vh;height:100dvh;max-height:932px;background:var(--bg);position:relative;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 8px 30px rgba(20,30,45,.10),0 20px 70px rgba(20,30,45,.16)}
 @media(min-width:480px){.app{height:912px;margin:auto;border-radius:34px}}
 .stage{flex:1;position:relative;min-height:0}
 .screen{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg)}
-.screen.active{display:flex}
+.screen.active{display:flex;animation:fadeIn .28s ease}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden}.scroll::-webkit-scrollbar{width:0}
 .grow{flex:1;min-width:0}
 .row{display:flex;align-items:center}.between{justify-content:space-between}
@@ -33,96 +33,193 @@ input{font-family:inherit}
 .rupee::before{content:"\20B9"}
 .pad{padding:0 18px}
 
+/* login screen */
+.login-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 24px calc(28px + env(safe-area-inset-bottom))}
+.inp-field{width:100%;height:52px;border:1.5px solid var(--line);border-radius:14px;padding:0 16px;font-size:15px;font-family:inherit;color:var(--ink);outline:none;background:#fff;transition:border-color .15s}
+.inp-field:focus{border-color:var(--primary)}
+.inp-label{font-size:12px;font-weight:700;color:var(--gray);margin-bottom:6px;margin-top:16px;display:block;letter-spacing:.02em}
+.otp-row{display:flex;gap:10px;margin-top:2px}
+.otp-d{flex:1;height:54px;border:1.5px solid var(--line);border-radius:13px;display:grid;place-items:center;font-size:22px;font-weight:800;background:#fff;transition:border-color .15s}
+.otp-d.filled{border-color:var(--primary);background:var(--primary-50)}
+.otp-hint{font-size:12px;color:var(--gray2);margin-top:8px;text-align:center}
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes dotPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.6}}
+@keyframes float{0%,100%{transform:translate(-50%,-100%) rotate(45deg) translateY(0)}50%{transform:translate(-50%,-100%) rotate(45deg) translateY(-6px)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes gradientShine{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(5,150,105,.3)}50%{box-shadow:0 0 0 6px rgba(5,150,105,0)}}
+
 /* header */
 .hdr{padding:14px 18px 10px;display:flex;align-items:center;gap:10px}
-.back{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;flex:0 0 auto}
-.iconbtn{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;position:relative;flex:0 0 auto}
-.iconbtn .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff}
-.av-btn{width:38px;height:38px;border-radius:50%;background:var(--green-50);color:var(--green-d);display:grid;place-items:center;font-weight:800;font-size:13px;flex:0 0 auto}
+.back{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;flex:0 0 auto;transition:background .15s,border-color .15s}
+.back:hover{background:var(--soft);border-color:var(--primary-100)}
+.iconbtn{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;position:relative;flex:0 0 auto;transition:background .15s,border-color .15s}
+.iconbtn:hover{background:var(--soft);border-color:var(--primary-100)}
+.iconbtn .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff;animation:dotPulse 2s ease-in-out infinite}
+.av-btn{width:38px;height:38px;border-radius:50%;background:var(--primary-50);color:var(--primary-d);display:grid;place-items:center;font-weight:800;font-size:13px;flex:0 0 auto}
 
 /* location pill */
-.loc-pill{display:inline-flex;align-items:center;gap:5px;background:var(--soft);border:1px solid var(--line);border-radius:20px;padding:5px 10px 5px 8px;font-size:12.5px;font-weight:600}
+.loc-pill{display:inline-flex;align-items:center;gap:5px;background:var(--soft);border:1px solid var(--line);border-radius:20px;padding:5px 10px 5px 8px;font-size:12.5px;font-weight:600;transition:background .15s,border-color .15s}
+.loc-pill:hover{background:var(--primary-50);border-color:var(--primary-100)}
 
 /* search */
-.search{display:flex;align-items:center;gap:10px;height:46px;padding:0 14px;background:var(--soft);border:1px solid var(--line);border-radius:13px}
+.search{display:flex;align-items:center;gap:10px;height:46px;padding:0 14px;background:var(--soft);border:1px solid var(--line);border-radius:13px;transition:border-color .2s,box-shadow .2s}
+.search:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px rgba(5,150,105,.08)}
 .search input{flex:1;border:none;outline:none;background:none;font-size:14px;font-weight:500;color:var(--ink)}
 .search .ic{width:18px;height:18px;color:var(--gray2)}
 
 /* buttons */
-.btn{display:flex;align-items:center;justify-content:center;gap:9px;height:52px;border-radius:14px;font-size:15px;font-weight:700;width:100%;transition:filter .12s,transform .1s}
+.btn{display:flex;align-items:center;justify-content:center;gap:9px;height:52px;border-radius:14px;font-size:15px;font-weight:700;width:100%;transition:filter .12s,transform .1s,box-shadow .2s;white-space:nowrap}
 .btn:active{transform:scale(.99)}
-.btn.pri{background:var(--green);color:#fff}.btn.pri:active{filter:brightness(.95)}
+.btn.pri{background:linear-gradient(135deg,var(--primary-d),var(--primary));color:#fff;background-size:200% 200%;position:relative;overflow:hidden}
+.btn.pri::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.18) 50%,transparent 60%);background-size:200% 100%;animation:gradientShine 3s ease-in-out infinite}
+.btn.pri:active{filter:brightness(.95)}
+.btn.pri:hover{box-shadow:0 4px 16px rgba(5,150,105,.3)}
 .btn.out{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
-.btn.soft{background:var(--green-50);color:var(--green-d)}
+.btn.out:hover{border-color:var(--primary-100);background:var(--primary-50)}
+.btn.soft{background:var(--primary-50);color:var(--primary-d)}
+.btn.soft:hover{background:var(--primary-100)}
 .btn .ic{width:19px;height:19px;stroke-width:2.2}
 .btn.sm{height:38px;font-size:12.5px;border-radius:9px;width:auto;padding:0 13px}
 
 /* categories */
 .cats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px 6px}
-.cat{display:flex;flex-direction:column;align-items:center;gap:6px;padding:4px 2px;border-radius:12px;cursor:pointer}
-.cat .ci{width:54px;height:54px;border-radius:16px;background:var(--soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink)}
+.cat{display:flex;flex-direction:column;align-items:center;gap:6px;padding:4px 2px;border-radius:12px;cursor:pointer;transition:transform .18s}
+.cat:hover{transform:translateY(-2px)}
+.cat:active{transform:scale(.96)}
+.cat .ci{width:54px;height:54px;border-radius:16px;background:var(--soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);transition:background .18s,border-color .18s,box-shadow .18s}
+.cat:hover .ci{box-shadow:0 4px 12px rgba(0,0,0,.06)}
 .cat .ci .ic{width:24px;height:24px}
 .cat span{font-size:10.5px;font-weight:600;color:var(--gray);text-align:center;line-height:1.2}
+/* category color coding */
+.cat[data-book="Mobile Phones"] .ci{background:#EEF0FF;border-color:#D8DCFF;color:#4B5AE0}
+.cat[data-book="Laptop"] .ci{background:#EDF8FF;border-color:#D0EDFF;color:#2B7DB8}
+.cat[data-book="Desktop"] .ci{background:#F0EDFF;border-color:#DDD8FF;color:#6B4FD4}
+.cat[data-book="Television"] .ci{background:#FFF0ED;border-color:#FFD8CF;color:#D45340}
+.cat[data-book="Air Conditioner"] .ci{background:#E9F8F5;border-color:#C8EDE5;color:#0E9466}
+.cat[data-book="Refrigerator"] .ci{background:#EDF4FF;border-color:#D0E3FF;color:#2C6BD4}
+.cat[data-book="Washing Machine"] .ci{background:#F5EDFF;border-color:#E4D0FF;color:#8B44D4}
+.cat[data-book="Microwave"] .ci{background:#FFF6E8;border-color:#FFE4B0;color:#B87A1A}
+.cat[data-book="Water Purifier"] .ci{background:#E8F6FF;border-color:#C0E4FF;color:#1A7DB8}
+.cat[data-book="CCTV"] .ci{background:#F0F0F0;border-color:#DCDCDC;color:#5B6472}
+.cat[data-book="Printer"] .ci{background:#FFF0F5;border-color:#FFD0E0;color:#C44070}
+.cat[data-book="Other Electronics"] .ci{background:#F0F5EE;border-color:#D8E8D2;color:#4A7040}
 
 /* cards */
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;transition:box-shadow .2s,transform .2s}
 
 /* active booking */
-.active-bk{background:var(--green);border-radius:18px;padding:16px 18px;color:#fff}
-.active-bk .ab-lbl{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;opacity:.75}
-.active-bk .ab-name{font-size:15px;font-weight:800;margin-top:4px}
-.active-bk .ab-info{font-size:12px;opacity:.85;margin-top:2px}
-.active-bk .ab-row{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:10px}
-.active-bk .ab-track{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--green-d);font-size:13px;font-weight:800;padding:9px 14px;border-radius:11px}
+.active-bk{background:linear-gradient(135deg,var(--primary-d) 0%,var(--primary) 100%);border-radius:18px;padding:16px 18px;color:#fff;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.active-bk:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(5,150,105,.3)}
+.active-bk::before{content:"";position:absolute;top:-30px;right:-30px;width:90px;height:90px;border-radius:50%;background:rgba(255,255,255,.06)}
+.active-bk::after{content:"";position:absolute;bottom:-20px;left:-20px;width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.04)}
+.active-bk .ab-lbl{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;opacity:.75;position:relative;z-index:1}
+.active-bk .ab-lbl::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;margin-right:6px;animation:pulse 1.8s ease-in-out infinite}
+.active-bk .ab-name{font-size:15px;font-weight:800;margin-top:4px;position:relative;z-index:1}
+.active-bk .ab-info{font-size:12px;opacity:.85;margin-top:2px;position:relative;z-index:1}
+.active-bk .ab-row{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:10px;position:relative;z-index:1}
+.active-bk .ab-track{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--primary-d);font-size:13px;font-weight:800;padding:9px 14px;border-radius:11px;transition:transform .15s}
+.active-bk .ab-track:hover{transform:scale(1.02)}
 .active-bk .ab-track .ic{width:14px;height:14px}
 .active-bk .ab-eta{font-size:12.5px;opacity:.88;font-weight:600}
 
 /* AMC banner */
-.amc{background:var(--green);border-radius:18px;padding:16px 18px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.amc h3{font-size:16px;font-weight:800;letter-spacing:-.015em}
-.amc p{font-size:12px;opacity:.88;margin-top:3px}
-.amc-btn{flex:0 0 auto;background:#fff;color:var(--green-d);font-size:13px;font-weight:800;padding:9px 14px;border-radius:11px;border:none;cursor:pointer;white-space:nowrap}
+.amc{background:var(--primary);border-radius:18px;padding:16px 18px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.amc:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(5,150,105,.25)}
+.amc::before{content:"";position:absolute;top:-20px;right:-20px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.06)}
+.amc h3{font-size:16px;font-weight:800;letter-spacing:-.015em;position:relative}
+.amc p{font-size:12px;opacity:.88;margin-top:3px;position:relative}
+.amc-btn{flex:0 0 auto;background:#fff;color:var(--primary-d);font-size:13px;font-weight:800;padding:9px 14px;border-radius:11px;border:none;cursor:pointer;white-space:nowrap;position:relative;transition:transform .15s}
+.amc-btn:hover{transform:scale(1.03)}
 
 /* sec heading */
 .sec{font-size:15px;font-weight:800;letter-spacing:-.015em;margin:20px 0 12px}
-.sec .all{font-size:12.5px;font-weight:600;color:var(--green);float:right;margin-top:3px}
+.sec .all{font-size:12.5px;font-weight:600;color:var(--primary);float:right;margin-top:3px;transition:color .15s}
+.sec .all:hover{color:var(--primary-d)}
 
 /* service row */
-.svc{display:flex;gap:13px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:15px;padding:11px}
-.svc .thumb{width:52px;height:52px;border-radius:12px;background:var(--soft);display:grid;place-items:center;color:var(--green-d);flex:0 0 auto}
-.tag.star{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--green-50);color:var(--green-d)}
-.tag.star .ic{width:11px;height:11px;fill:var(--green-d);stroke:none}
+.svc{display:flex;gap:13px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:15px;padding:11px;transition:box-shadow .2s,transform .15s}
+.svc:hover{box-shadow:0 4px 12px rgba(0,0,0,.05);transform:translateY(-1px)}
+.svc .thumb{width:52px;height:52px;border-radius:12px;background:var(--soft);display:grid;place-items:center;color:var(--primary-d);flex:0 0 auto}
+.tag.star{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--primary-50);color:var(--primary-d)}
+.tag.star .ic{width:11px;height:11px;fill:var(--primary-d);stroke:none}
 .chev .ic{width:18px;height:18px;color:var(--gray2)}
 
 /* step bar */
 .step-bar{padding:0 18px 14px}
 .step-bar .lbl{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--gray);margin-bottom:7px}
 .step-bar .lbl .cur{color:var(--ink);font-weight:700}
-.step-bar .track{height:4px;background:var(--soft);border-radius:4px}
-.step-bar .fill{height:100%;border-radius:4px;background:var(--green)}
+.step-bar .track{height:4px;background:var(--soft);border-radius:4px;overflow:hidden}
+.step-bar .fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--primary-d),var(--primary));transition:width .4s ease}
+
+/* brand grid */
+.brand-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.brand-btn{display:flex;align-items:center;gap:10px;padding:13px 14px;border:1.5px solid var(--line);border-radius:14px;background:#fff;text-align:left;cursor:pointer;transition:border-color .15s,background .15s,transform .15s,box-shadow .15s;font-size:14px;font-weight:700;width:100%}
+.brand-btn:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.04)}
+.brand-btn .bi{width:36px;height:36px;border-radius:10px;background:var(--soft);display:grid;place-items:center;font-size:11px;font-weight:800;color:var(--gray2);flex:0 0 auto;transition:background .15s}
+.brand-btn.sel{border-color:var(--primary);background:var(--primary-50);color:var(--primary-d)}
+.brand-btn.sel .bi{background:var(--primary-100);color:var(--primary-d)}
 
 /* issue list */
-.issue{display:flex;align-items:center;gap:13px;padding:13px 14px;border:1.5px solid var(--line);border-radius:14px;margin-bottom:10px;background:#fff;text-align:left;width:100%;cursor:pointer;transition:border-color .15s,background .15s}
+.issue{display:flex;align-items:center;gap:13px;padding:13px 14px;border:1.5px solid var(--line);border-radius:14px;margin-bottom:10px;background:#fff;text-align:left;width:100%;cursor:pointer;transition:border-color .15s,background .15s,transform .12s,box-shadow .15s}
+.issue:hover{transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,.04)}
 .issue .ii{width:40px;height:40px;border-radius:11px;background:var(--soft);display:grid;place-items:center;flex:0 0 auto;color:var(--gray);transition:background .15s}
 .issue .ititle{font-size:14px;font-weight:700;display:block}
 .issue .idesc{font-size:12px;color:var(--gray);margin-top:2px;display:block}
 .issue .chk{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;flex:0 0 auto;margin-left:auto;transition:.15s}
-.issue.sel{border-color:var(--green);background:var(--green-50)}
-.issue.sel .ii{background:var(--green-100);color:var(--green-d)}
-.issue.sel .chk{background:var(--green);border-color:var(--green)}
+.issue.sel{border-color:var(--primary);background:var(--primary-50)}
+.issue.sel .ii{background:var(--primary-100);color:var(--primary-d)}
+.issue.sel .chk{background:var(--primary);border-color:var(--primary)}
+
+/* address option */
+.addr-opt{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1.5px solid var(--line);border-radius:14px;margin-bottom:10px;background:#fff;text-align:left;width:100%;cursor:pointer;transition:border-color .15s,background .15s,transform .12s}
+.addr-opt:hover{transform:translateY(-1px)}
+.addr-opt.sel{border-color:var(--primary);background:var(--primary-50)}
+.addr-ic{width:40px;height:40px;border-radius:11px;background:var(--soft);display:grid;place-items:center;flex:0 0 auto;color:var(--gray)}
+.addr-opt.sel .addr-ic{background:var(--primary-100);color:var(--primary-d)}
+.addr-chk{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;flex:0 0 auto;margin-left:auto}
+.addr-opt.sel .addr-chk{background:var(--primary);border-color:var(--primary)}
+
+/* AMC plan cards */
+.plan-card{border:1.5px solid var(--line);border-radius:18px;padding:18px;margin-bottom:12px;background:#fff;cursor:pointer;transition:border-color .15s,box-shadow .2s,transform .15s}
+.plan-card:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.plan-card.sel{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-50),0 4px 14px rgba(5,150,105,.1)}
+.plan-card .pc-badge{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:4px 10px;border-radius:7px;display:inline-flex;margin-bottom:10px}
+.plan-card .pc-price{font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.plan-card .pc-period{font-size:12px;color:var(--gray);font-weight:600;margin-left:2px}
+.plan-card .pc-feat{font-size:13px;color:var(--gray);margin-top:10px;line-height:1.6}
+.plan-card .pc-feat span{display:block;padding:2px 0}
+
+/* issue description & photos */
+.issue-note{width:100%;border:1.5px solid var(--line);border-radius:13px;padding:12px 14px;font-size:13.5px;font-family:inherit;resize:none;outline:none;color:var(--ink);line-height:1.5;min-height:82px;transition:border-color .2s,box-shadow .2s}
+.issue-note:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(5,150,105,.08)}
+.photo-row{display:flex;gap:10px}
+.photo-add{width:80px;height:80px;border-radius:13px;border:1.5px dashed var(--line);background:var(--soft);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;font-size:11px;font-weight:600;color:var(--gray2);transition:border-color .15s,background .15s,transform .15s;flex:0 0 80px}
+.photo-add:hover{border-color:var(--primary-100);background:var(--primary-50);transform:scale(1.02)}
+.photo-add.done{border-color:var(--primary);background:var(--primary-50);color:var(--primary-d);border-style:solid}
+.photo-add .ic{width:20px;height:20px}
 
 /* slots */
-.slot{flex:1;min-width:0;text-align:center;padding:12px 6px;border-radius:12px;border:1.5px solid var(--line);background:#fff;cursor:pointer}
+.slot{flex:1;min-width:0;text-align:center;padding:12px 6px;border-radius:12px;border:1.5px solid var(--line);background:#fff;cursor:pointer;transition:border-color .15s,background .15s,transform .12s}
+.slot:hover:not(.off){transform:translateY(-1px);border-color:var(--primary-100)}
 .slot .t{font-size:14px;font-weight:700;color:var(--ink)}
 .slot .d{font-size:11px;color:var(--gray2);margin-top:2px}
-.slot.sel{border-color:var(--green);background:var(--green-50)}.slot.sel .t{color:var(--green-d)}
+.slot.sel{border-color:var(--primary);background:var(--primary-50)}.slot.sel .t{color:var(--primary-d)}
 .slot.off{opacity:.42}
 
 /* review sections */
-.rv-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 15px;margin-bottom:11px}
+.rv-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 15px;margin-bottom:11px;transition:box-shadow .2s}
+.rv-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .rv-lbl{font-size:10.5px;font-weight:800;letter-spacing:.07em;color:var(--gray2);text-transform:uppercase;margin-bottom:9px}
 .rv-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
-.rv-edit{color:var(--green);font-size:13px;font-weight:700;flex:0 0 auto}
+.rv-edit{color:var(--primary);font-size:13px;font-weight:700;flex:0 0 auto;transition:color .15s}
+.rv-edit:hover{color:var(--primary-d)}
 
 /* bill */
 .bill{display:flex;justify-content:space-between;padding:7px 0;font-size:13.5px}
@@ -131,41 +228,43 @@ input{font-family:inherit}
 .bill.tot .k{color:var(--ink);font-weight:800;font-size:15px}.bill.tot .v{font-weight:800;font-size:17px}
 
 /* coupon */
-.coupon{display:flex;align-items:center;gap:10px;padding:11px 13px;border:1.5px dashed var(--line);border-radius:12px;margin-top:11px;font-size:13.5px;font-weight:600;color:var(--gray2);cursor:pointer}
+.coupon{display:flex;align-items:center;gap:10px;padding:11px 13px;border:1.5px dashed var(--line);border-radius:12px;margin-top:11px;font-size:13.5px;font-weight:600;color:var(--gray2);cursor:pointer;transition:border-color .15s,background .15s}
+.coupon:hover{border-color:var(--primary-100);background:var(--primary-50)}
 
 /* map */
-.map{border-radius:16px;border:1px solid var(--line);position:relative;overflow:hidden;background:repeating-linear-gradient(0deg,#eef0f2 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,#eef0f2 0 1px,transparent 1px 28px),#f4f5f7}
-.map .pin{position:absolute;width:30px;height:30px;border-radius:50% 50% 50% 2px;background:var(--green);transform:translate(-50%,-100%) rotate(45deg);display:grid;place-items:center}
+.map{border-radius:16px;border:1px solid var(--line);position:relative;overflow:hidden;background:repeating-linear-gradient(0deg,#eef0f2 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,#eef0f2 0 1px,transparent 1px 28px),linear-gradient(135deg,#f0f2f4,#f6f7f9)}
+.map .pin{position:absolute;width:30px;height:30px;border-radius:50% 50% 50% 2px;background:var(--primary);transform:translate(-50%,-100%) rotate(45deg);display:grid;place-items:center;animation:float 3s ease-in-out infinite;box-shadow:0 4px 12px rgba(5,150,105,.3)}
 .map .pin .ic{transform:rotate(-45deg);width:15px;height:15px;color:#fff;stroke-width:2.4}
-.map .eta{position:absolute;top:12px;right:12px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-size:13px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.map .eta{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(233,235,238,.6);border-radius:10px;padding:7px 12px;font-size:13px;font-weight:700;box-shadow:0 4px 16px rgba(0,0,0,.08)}
 
 /* OTP */
 .otp-row{display:flex;gap:8px}
-.otp-d{width:44px;height:52px;border:1.5px solid var(--line);border-radius:12px;display:grid;place-items:center;font-size:22px;font-weight:800}
+.otp-d{width:44px;height:52px;border:1.5px solid var(--line);border-radius:12px;display:grid;place-items:center;font-size:22px;font-weight:800;transition:border-color .2s}
 
 /* status */
 .st{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:8px}
 .st .d{width:6px;height:6px;border-radius:50%;background:currentColor}
-.st.ok{background:var(--green-50);color:var(--green-d)}.st.go{background:#EAF2FE;color:#2C6BD4}
+.st.ok{background:var(--primary-50);color:var(--primary-d)}.st.go{background:#EAF2FE;color:#2C6BD4}
+.st.go .d{animation:pulse 1.5s ease-in-out infinite}
 .st.warn{background:#FBF1E0;color:#9A6A14}.st.off{background:var(--soft);color:var(--gray)}.st.red{background:var(--red-50);color:var(--red)}
-.av{border-radius:50%;background:var(--green-50);color:var(--green-d);display:grid;place-items:center;font-weight:800;flex:0 0 auto}
+.av{border-radius:50%;background:var(--primary-50);color:var(--primary-d);display:grid;place-items:center;font-weight:800;flex:0 0 auto}
 
 /* timeline */
 .tl{position:relative;padding:0 0 20px 26px}
 .tl:last-child{padding-bottom:0}
 .tl::before{content:"";position:absolute;left:8px;top:18px;bottom:0;width:2px;background:var(--line)}
-.tl.done::before{background:var(--green)}.tl:last-child::before{display:none}
+.tl.done::before{background:var(--primary)}.tl:last-child::before{display:none}
 .tl .nd{position:absolute;left:0;top:1px;width:18px;height:18px;border-radius:50%;border:2px solid var(--line);background:#fff}
-.tl.done .nd{background:var(--green);border-color:var(--green)}
-.tl.now .nd{border-color:var(--green)}
-.tl.now .nd::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--green)}
+.tl.done .nd{background:var(--primary);border-color:var(--primary)}
+.tl.now .nd{border-color:var(--primary);animation:breathe 2.5s ease-in-out infinite}
+.tl.now .nd::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--primary)}
 .tl .tt{font-size:14px;font-weight:700}.tl .ts{font-size:12px;color:var(--gray);margin-top:1px}
 .tl.wait .tt{color:var(--gray2)}
 
 /* list rows */
-.lrow{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--line)}
+.lrow{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--line);transition:background .15s}
 .lrow:last-child{border-bottom:none}
-.lrow .li{width:42px;height:42px;border-radius:11px;background:var(--soft);display:grid;place-items:center;color:var(--ink);flex:0 0 auto}
+.lrow .li{width:42px;height:42px;border-radius:11px;background:var(--soft);display:grid;place-items:center;color:var(--ink);flex:0 0 auto;transition:background .15s}
 .lrow .ttl{font-size:14.5px;font-weight:600}.lrow .ds{font-size:12.5px;color:var(--gray);margin-top:1px}
 .chev2{color:var(--gray2)}
 
@@ -175,32 +274,79 @@ input{font-family:inherit}
 .dock .pl .a{font-size:20px;font-weight:800}.dock .pl .l{font-size:12px;color:var(--gray)}
 .tabbar{flex:0 0 auto;min-height:68px;display:flex;border-top:1px solid var(--line);background:#fff;padding-bottom:env(safe-area-inset-bottom)}
 .app.flow .tabbar{display:none}
-.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--gray2);font-size:10.5px;font-weight:600}
-.tab .ic{width:23px;height:23px}.tab.on{color:var(--green)}.tab.on .ic{stroke-width:2.2}
-.toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:11px;opacity:0;transition:.3s;pointer-events:none;z-index:30;white-space:nowrap}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--gray2);font-size:10.5px;font-weight:600;transition:color .15s}
+.tab .ic{width:23px;height:23px;transition:transform .15s}
+.tab.on{color:var(--primary)}.tab.on .ic{stroke-width:2.2;transform:scale(1.05)}
+.toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:11px;opacity:0;transition:.3s;pointer-events:none;z-index:30;white-space:nowrap;box-shadow:0 8px 24px rgba(20,24,29,.25)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* login */
+.login-btn{height:34px;padding:0 14px;border-radius:10px;background:var(--primary-50);color:var(--primary-d);font-size:13px;font-weight:700;border:1.5px solid var(--primary-100);white-space:nowrap;cursor:pointer;transition:background .15s,transform .12s}
+.login-btn:hover{background:var(--primary-100);transform:scale(1.02)}
+.login-opt{display:flex;align-items:center;gap:14px;width:100%;padding:15px 16px;border:1.5px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;margin-bottom:12px;text-align:left;transition:border-color .15s,background .15s,transform .12s,box-shadow .15s}
+.login-opt:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.04);border-color:var(--primary-100)}
+.login-opt:active{background:var(--soft);transform:none}
+.lo-ic{width:42px;height:42px;border-radius:12px;background:var(--soft);display:grid;place-items:center;font-size:16px;font-weight:800;color:var(--gray);flex:0 0 auto}
+.lo-t{font-size:15px;font-weight:700;color:var(--ink);display:block}
+/* hero img */
+.hero-img{width:100%;max-width:160px;border-radius:16px;float:right;margin:-8px -4px 0 12px;shape-outside:circle(50%);filter:drop-shadow(0 4px 12px rgba(5,150,105,.12))}
+/* banner images */
+.banner-img{width:56px;height:56px;border-radius:12px;object-fit:cover;flex:0 0 auto;margin-left:auto;filter:drop-shadow(0 2px 6px rgba(0,0,0,.1))}
 </style>
 </head>
 <body>
 <div class="app" id="app">
 <div class="stage">
 
+<!-- LOGIN -->
+<section class="screen active" data-screen="login" data-flow>
+  <div class="login-wrap">
+    <div style="margin-bottom:32px">
+      <div style="width:56px;height:56px;border-radius:18px;background:var(--primary-50);display:grid;place-items:center;margin-bottom:18px">
+        <svg class="ic" style="width:28px;height:28px;color:var(--primary-d)"><use href="#wrench"/></svg>
+      </div>
+      <div style="font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1.15">Welcome to<br><span style="color:var(--primary-d)">Infotel Care</span></div>
+      <div style="font-size:13.5px;color:var(--gray);margin-top:10px">Your trusted repair partner</div>
+    </div>
+
+    <label class="inp-label">Mobile number</label>
+    <div style="display:flex;align-items:center;gap:0;border:1.5px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;transition:border-color .15s" id="phone-wrap">
+      <span style="padding:0 12px;font-size:14px;font-weight:700;color:var(--gray);border-right:1.5px solid var(--line);height:52px;display:flex;align-items:center;background:var(--soft)">+91</span>
+      <input class="inp-field" type="tel" maxlength="10" placeholder="98765 43210" id="phone-inp" style="border:none;border-radius:0;flex:1" oninput="document.getElementById('phone-wrap').style.borderColor='var(--primary)'">
+    </div>
+
+    <label class="inp-label" style="margin-top:20px">OTP</label>
+    <div class="otp-row" id="otp-boxes">
+      <div class="otp-d">·</div>
+      <div class="otp-d">·</div>
+      <div class="otp-d">·</div>
+      <div class="otp-d">·</div>
+      <div class="otp-d filled">5</div>
+      <div class="otp-d filled">8</div>
+    </div>
+    <div class="otp-hint">OTP sent to +91 98765 43210</div>
+
+    <button class="btn pri" style="margin-top:28px" data-login>Verify &amp; Continue</button>
+    <div style="font-size:12.5px;color:var(--gray2);text-align:center;margin-top:16px">Didn't receive OTP? <span style="color:var(--primary-d);font-weight:700;cursor:pointer">Resend in 0:28</span></div>
+  </div>
+</section>
+
 <!-- HOME -->
-<section class="screen active" data-screen="home">
+<section class="screen" data-screen="home">
   <div class="hdr">
     <div class="grow">
       <button class="loc-pill">
-        <svg class="ic" style="width:14px;height:14px;color:var(--green)"><use href="#pin"/></svg>
+        <svg class="ic" style="width:14px;height:14px;color:var(--primary)"><use href="#pin"/></svg>
         Home · Moradabad
         <svg class="ic" style="width:13px;height:13px;color:var(--gray2)"><use href="#down"/></svg>
       </button>
     </div>
     <button class="iconbtn"><svg class="ic"><use href="#bell"/></svg><span class="dot"></span></button>
-    <button class="av-btn">AS</button>
   </div>
   <div class="scroll pad" style="padding-bottom:22px">
-    <div style="margin:4px 0 16px">
-      <div style="font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1.18">What needs<br><span style="color:var(--green)">fixing today?</span></div>
+    <div style="margin:4px 0 16px;position:relative;display:flow-root">
+      <img src="hero.png" alt="" class="hero-img">
+      <div style="font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1.18">What needs<br><span style="color:var(--primary)">fixing today?</span></div>
+      <div style="font-size:12.5px;color:var(--gray);margin-top:6px;font-weight:500">Expert repairs at your doorstep</div>
     </div>
     <div class="search" style="margin-bottom:18px">
       <svg class="ic"><use href="#search"/></svg>
@@ -220,39 +366,144 @@ input{font-family:inherit}
 
     <div class="sec">Categories <span class="all">See all →</span></div>
     <div class="cats">
-      <button class="cat" data-book="Mobile Phone"><span class="ci"><svg class="ic"><use href="#phone-d"/></svg></span><span>Mobile</span></button>
+      <button class="cat" data-book="Mobile Phones"><span class="ci"><svg class="ic"><use href="#phone-d"/></svg></span><span>Mobile<br>Phones</span></button>
       <button class="cat" data-book="Laptop"><span class="ci"><svg class="ic"><use href="#laptop"/></svg></span><span>Laptop</span></button>
       <button class="cat" data-book="Desktop"><span class="ci"><svg class="ic"><use href="#desktop"/></svg></span><span>Desktop</span></button>
-      <button class="cat" data-book="Television"><span class="ci"><svg class="ic"><use href="#tv"/></svg></span><span>TV</span></button>
-      <button class="cat" data-book="Air Conditioner"><span class="ci"><svg class="ic"><use href="#ac"/></svg></span><span>AC</span></button>
+      <button class="cat" data-book="Television"><span class="ci"><svg class="ic"><use href="#tv"/></svg></span><span>Television</span></button>
+      <button class="cat" data-book="Air Conditioner"><span class="ci"><svg class="ic"><use href="#ac"/></svg></span><span>Air<br>Conditioner</span></button>
       <button class="cat" data-book="Refrigerator"><span class="ci"><svg class="ic"><use href="#fridge"/></svg></span><span>Refrigerator</span></button>
       <button class="cat" data-book="Washing Machine"><span class="ci"><svg class="ic"><use href="#washer"/></svg></span><span>Washing<br>Machine</span></button>
       <button class="cat" data-book="Microwave"><span class="ci"><svg class="ic"><use href="#micro"/></svg></span><span>Microwave</span></button>
+      <button class="cat" data-book="Water Purifier"><span class="ci"><svg class="ic"><use href="#purifier"/></svg></span><span>Water<br>Purifier</span></button>
+      <button class="cat" data-book="CCTV"><span class="ci"><svg class="ic"><use href="#cctv"/></svg></span><span>CCTV</span></button>
+      <button class="cat" data-book="Printer"><span class="ci"><svg class="ic"><use href="#printer"/></svg></span><span>Printer</span></button>
+      <button class="cat" data-book="Other Electronics"><span class="ci"><svg class="ic"><use href="#chip"/></svg></span><span>Other<br>Electronics</span></button>
     </div>
 
-    <div class="amc mt20">
-      <div><h3>AMC Plans from <span class="rupee"></span>999</h3><p>Unlimited free visits · 20% off repairs</p></div>
-      <button class="amc-btn">Explore</button>
+    <div class="amc mt20" style="cursor:pointer" data-go="spareparts">
+      <div><h3>Spare Parts Store</h3><p>Genuine parts for all your devices · Same-day delivery</p></div>
+      <img src="spare_parts.png" alt="" class="banner-img" style="border-radius:14px;opacity:.9">
     </div>
+    <button class="amc mt12" style="width:100%;text-align:left;border:none;cursor:pointer;background:linear-gradient(135deg,var(--primary-d) 0%,var(--primary) 100%)" data-go="amc">
+      <div><h3>AMC Plans from <span class="rupee"></span>999/yr</h3><p>Silver · Gold · Platinum — unlimited visits, renewal reminders</p></div>
+      <img src="amc_shield.png" alt="" class="banner-img" style="border-radius:14px;opacity:.85">
+    </button>
   </div>
 </section>
 
-<!-- BOOKING — issue select -->
-<section class="screen" data-screen="booking" data-flow>
+<!-- BRAND -->
+<section class="screen" data-screen="brand" data-flow>
   <div class="hdr">
     <button class="back" data-go="home"><svg class="ic"><use href="#left"/></svg></button>
+    <div class="grow">
+      <div style="font-size:18px;font-weight:800;letter-spacing:-.02em" id="bk-brand-title">Air Conditioner</div>
+      <div style="font-size:12px;color:var(--gray);font-weight:500;margin-top:1px">Select brand</div>
+    </div>
+  </div>
+  <div class="step-bar">
+    <div class="lbl"><span>Step 1 of 6</span><span class="cur">Select brand</span></div>
+    <div class="track"><div class="fill" style="width:17%"></div></div>
+  </div>
+  <div class="scroll pad" style="padding-bottom:18px">
+    <p class="muted f13" style="margin-bottom:14px">Which brand is your <span id="bk-brand-cat">Air Conditioner</span>?</p>
+    <div class="brand-grid" id="brand-list"></div>
+  </div>
+  <div class="dock">
+    <button class="btn pri" id="brand-continue" data-brand-continue style="opacity:.45" disabled>Continue</button>
+  </div>
+</section>
+
+<!-- BOOKING — issue select + description + photos -->
+<section class="screen" data-screen="booking" data-flow>
+  <div class="hdr">
+    <button class="back" data-go="brand"><svg class="ic"><use href="#left"/></svg></button>
     <div class="grow">
       <div style="font-size:18px;font-weight:800;letter-spacing:-.02em" id="bk-cat-title">Air Conditioner</div>
       <div style="font-size:12px;color:var(--gray);font-weight:500;margin-top:1px">What's the issue?</div>
     </div>
   </div>
   <div class="step-bar">
-    <div class="lbl"><span>Step 2 of 5</span><span class="cur">Select problem</span></div>
-    <div class="track"><div class="fill" style="width:40%"></div></div>
+    <div class="lbl"><span>Step 2 of 6</span><span class="cur">Describe issue</span></div>
+    <div class="track"><div class="fill" style="width:33%"></div></div>
   </div>
   <div class="scroll pad" style="padding-bottom:18px">
-    <p class="muted f13" style="margin-bottom:16px">Select the main problem with your <span id="bk-cat">Air Conditioner</span>.</p>
+    <p class="muted f13" style="margin-bottom:16px">Select all that apply for your <span id="bk-cat">Air Conditioner</span>.</p>
     <div id="issue-list"></div>
+    <div style="font-size:15px;font-weight:800;letter-spacing:-.015em;margin:16px 0 10px">Describe in your words <span style="font-size:12px;font-weight:600;color:var(--gray2)">(optional)</span></div>
+    <textarea class="issue-note" placeholder="e.g. started 2 days ago, makes a clicking noise when cooling…"></textarea>
+  </div>
+  <div class="dock">
+    <button class="btn pri" data-go="photos">Continue</button>
+  </div>
+</section>
+
+<!-- PHOTOS / VIDEOS -->
+<section class="screen" data-screen="photos" data-flow>
+  <div class="hdr">
+    <button class="back" data-go="booking"><svg class="ic"><use href="#left"/></svg></button>
+    <div class="grow">
+      <div style="font-size:18px;font-weight:800;letter-spacing:-.02em">Photos &amp; videos</div>
+      <div style="font-size:12px;color:var(--gray);font-weight:500;margin-top:1px">Help the technician understand the issue</div>
+    </div>
+  </div>
+  <div class="step-bar">
+    <div class="lbl"><span>Step 3 of 6</span><span class="cur">Upload media</span></div>
+    <div class="track"><div class="fill" style="width:50%"></div></div>
+  </div>
+  <div class="scroll pad" style="padding-bottom:18px">
+    <div class="muted f13 fw6" style="margin-bottom:14px">Add up to 5 photos or 1 video <span style="font-weight:500">(optional)</span></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+      <button class="photo-add" data-photo style="width:100%;height:100px;flex:none"><svg class="ic"><use href="#camera"/></svg><span>Add photo</span></button>
+      <button class="photo-add" data-photo style="width:100%;height:100px;flex:none"><svg class="ic"><use href="#camera"/></svg><span>Add photo</span></button>
+      <button class="photo-add" data-photo style="width:100%;height:100px;flex:none"><svg class="ic"><use href="#camera"/></svg><span>Add photo</span></button>
+      <button class="photo-add" data-photo style="width:100%;height:100px;flex:none"><svg class="ic"><use href="#camera"/></svg><span>Add photo</span></button>
+    </div>
+    <button class="photo-add" data-photo style="width:100%;height:80px;flex:none;border-radius:13px;font-size:13px">
+      <svg class="ic"><use href="#video"/></svg><span>Add video clip</span>
+    </button>
+    <div class="card mt16 row" style="gap:11px;background:var(--soft);border-color:var(--line)">
+      <svg class="ic" style="width:18px;height:18px;color:var(--gray2)"><use href="#info"/></svg>
+      <span class="f13 muted">Clear photos help technicians arrive prepared with the right parts, reducing visit time.</span>
+    </div>
+  </div>
+  <div class="dock">
+    <button class="btn out" style="margin-bottom:10px" data-go="address">Skip, add later</button>
+    <button class="btn pri" data-go="address">Continue</button>
+  </div>
+</section>
+
+<!-- ADDRESS & GPS -->
+<section class="screen" data-screen="address" data-flow>
+  <div class="hdr">
+    <button class="back" data-go="photos"><svg class="ic"><use href="#left"/></svg></button>
+    <div class="grow">
+      <div style="font-size:18px;font-weight:800;letter-spacing:-.02em">Service address</div>
+      <div style="font-size:12px;color:var(--gray);font-weight:500;margin-top:1px">Where should the technician come?</div>
+    </div>
+  </div>
+  <div class="step-bar">
+    <div class="lbl"><span>Step 4 of 6</span><span class="cur">Address &amp; GPS</span></div>
+    <div class="track"><div class="fill" style="width:66%"></div></div>
+  </div>
+  <div class="scroll pad" style="padding-bottom:18px">
+    <button class="btn soft" style="gap:10px;margin-bottom:20px">
+      <svg class="ic"><use href="#gps"/></svg>Use my current location
+    </button>
+    <div style="font-size:15px;font-weight:800;letter-spacing:-.015em;margin-bottom:12px">Saved addresses</div>
+    <button class="addr-opt sel" data-addr>
+      <span class="addr-ic"><svg class="ic" style="width:18px;height:18px"><use href="#home2"/></svg></span>
+      <span class="grow"><span style="font-size:14px;font-weight:700;display:block">Home</span><span style="font-size:12.5px;color:var(--gray)">Civil Lines, Moradabad, UP 244001</span></span>
+      <span class="addr-chk"><svg class="ic" style="width:13px;height:13px;stroke-width:2.8;color:#fff"><use href="#check"/></svg></span>
+    </button>
+    <button class="addr-opt" data-addr>
+      <span class="addr-ic"><svg class="ic" style="width:18px;height:18px"><use href="#briefcase"/></svg></span>
+      <span class="grow"><span style="font-size:14px;font-weight:700;display:block">Work</span><span style="font-size:12.5px;color:var(--gray)">MG Road, Bengaluru, KA 560001</span></span>
+      <span class="addr-chk"></span>
+    </button>
+    <button class="addr-opt" data-addr>
+      <span class="addr-ic" style="color:var(--primary)"><svg class="ic" style="width:18px;height:18px"><use href="#plus"/></svg></span>
+      <span class="grow"><span style="font-size:14px;font-weight:700;display:block;color:var(--primary)">Add new address</span></span>
+    </button>
   </div>
   <div class="dock">
     <button class="btn pri" data-go="slot">Continue</button>
@@ -262,15 +513,15 @@ input{font-family:inherit}
 <!-- SLOT -->
 <section class="screen" data-screen="slot" data-flow>
   <div class="hdr">
-    <button class="back" data-go="booking"><svg class="ic"><use href="#left"/></svg></button>
+    <button class="back" data-go="address"><svg class="ic"><use href="#left"/></svg></button>
     <div class="grow">
       <div style="font-size:18px;font-weight:800;letter-spacing:-.02em">Pick a time slot</div>
       <div style="font-size:12px;color:var(--gray);font-weight:500;margin-top:1px">Choose date &amp; time</div>
     </div>
   </div>
   <div class="step-bar">
-    <div class="lbl"><span>Step 3 of 5</span><span class="cur">Date &amp; time</span></div>
-    <div class="track"><div class="fill" style="width:60%"></div></div>
+    <div class="lbl"><span>Step 5 of 6</span><span class="cur">Time slot</span></div>
+    <div class="track"><div class="fill" style="width:83%"></div></div>
   </div>
   <div class="scroll pad" style="padding-bottom:18px">
     <div class="muted f13 fw6" style="margin-bottom:10px">Thu, 12 June 2026</div>
@@ -284,11 +535,10 @@ input{font-family:inherit}
       <button class="slot off"><div class="t">6–8<span style="font-size:11px"> PM</span></div><div class="d">Full</div></button>
       <button class="slot"><div class="t">8–9<span style="font-size:11px"> PM</span></div><div class="d">Night</div></button>
     </div>
-    <div style="font-size:15px;font-weight:800;letter-spacing:-.015em;margin:20px 0 12px">Address</div>
-    <div class="card row" style="gap:12px">
+    <div class="card row mt16" style="gap:12px">
       <span style="width:40px;height:40px;border-radius:11px;background:var(--soft);display:grid;place-items:center;flex:0 0 auto"><svg class="ic"><use href="#pin"/></svg></span>
       <div class="grow"><div class="fw7 f14">Home</div><div class="muted f13 mt6" style="line-height:1.4">Civil Lines, Moradabad, UP 244001</div></div>
-      <button class="fw7 f13" style="color:var(--green)">Change</button>
+      <button class="fw7 f13" style="color:var(--primary)" data-go="address">Change</button>
     </div>
   </div>
   <div class="dock">
@@ -305,36 +555,36 @@ input{font-family:inherit}
     <div style="width:38px"></div>
   </div>
   <div class="step-bar">
-    <div class="lbl"><span>Step 4 of 5</span><span class="cur">Review booking</span></div>
-    <div class="track"><div class="fill" style="width:80%"></div></div>
+    <div class="lbl"><span>Step 6 of 6</span><span class="cur">Review &amp; confirm</span></div>
+    <div class="track"><div class="fill" style="width:100%"></div></div>
   </div>
   <div class="scroll pad" style="padding-bottom:18px">
     <div style="font-size:20px;font-weight:800;letter-spacing:-.025em;margin-bottom:16px">Review your booking</div>
     <div class="rv-card">
       <div class="rv-lbl">SERVICE</div>
       <div class="rv-row">
-        <div><div class="fw7 f14">AC Repair · Daikin · Gas refill</div><div class="muted f12 mt6">Not cooling, gas refill</div></div>
-        <button class="rv-edit">Edit</button>
+        <div><div class="fw7 f14" id="rv-service-title">AC Repair · Daikin · Gas refill</div><div class="muted f12 mt6" id="rv-service-desc">Not cooling, gas refill</div></div>
+        <button class="rv-edit" data-go="booking">Edit</button>
       </div>
     </div>
     <div class="rv-card">
       <div class="rv-lbl">ADDRESS</div>
       <div class="rv-row">
         <div class="row" style="gap:8px;align-items:flex-start">
-          <svg class="ic" style="width:15px;height:15px;color:var(--green);margin-top:1px"><use href="#pin"/></svg>
-          <span class="f13">Home · Civil Lines, Moradabad</span>
+          <svg class="ic" style="width:15px;height:15px;color:var(--primary);margin-top:1px"><use href="#pin"/></svg>
+          <span class="f13" id="rv-address">Home · Civil Lines, Moradabad</span>
         </div>
-        <button class="rv-edit">Edit</button>
+        <button class="rv-edit" data-go="address">Edit</button>
       </div>
     </div>
     <div class="rv-card">
       <div class="rv-lbl">SCHEDULE</div>
       <div class="rv-row">
         <div class="row" style="gap:8px">
-          <svg class="ic" style="width:15px;height:15px;color:var(--green)"><use href="#cal"/></svg>
-          <span class="f13 fw6">Thu 12 Jun · 10–11 AM</span>
+          <svg class="ic" style="width:15px;height:15px;color:var(--primary)"><use href="#cal"/></svg>
+          <span class="f13 fw6" id="rv-schedule">Thu 12 Jun · 10–11 AM</span>
         </div>
-        <button class="rv-edit">Edit</button>
+        <button class="rv-edit" data-go="slot">Edit</button>
       </div>
     </div>
     <div class="rv-card">
@@ -372,11 +622,11 @@ input{font-family:inherit}
     <div class="card mt14 row" style="gap:13px">
       <span class="av" style="width:48px;height:48px;font-size:16px">RK</span>
       <div class="grow">
-        <div class="row" style="gap:6px"><span class="fw7 f15">Ravi Kumar</span><svg class="ic" style="width:15px;height:15px;color:var(--green)"><use href="#verified"/></svg></div>
-        <div class="muted f12 mt6">AC Specialist · <span style="color:var(--green-d);font-weight:700">★4.9</span></div>
+        <div class="row" style="gap:6px"><span class="fw7 f15">Ravi Kumar</span><svg class="ic" style="width:15px;height:15px;color:var(--primary)"><use href="#verified"/></svg></div>
+        <div class="muted f12 mt6">AC Specialist · <span style="color:var(--primary-d);font-weight:700">★4.9</span></div>
       </div>
-      <button class="iconbtn" style="border-color:var(--green-100);color:var(--green-d)"><svg class="ic" style="width:18px;height:18px"><use href="#chat"/></svg></button>
-      <button class="iconbtn" style="border-color:var(--green-100);color:var(--green-d)"><svg class="ic" style="width:18px;height:18px"><use href="#call"/></svg></button>
+      <button class="iconbtn" style="border-color:var(--primary-100);color:var(--primary-d)"><svg class="ic" style="width:18px;height:18px"><use href="#chat"/></svg></button>
+      <button class="iconbtn" style="border-color:var(--primary-100);color:var(--primary-d)"><svg class="ic" style="width:18px;height:18px"><use href="#call"/></svg></button>
     </div>
 
     <div class="card mt12 row between" style="align-items:center">
@@ -400,6 +650,106 @@ input{font-family:inherit}
   <div class="dock"><button class="btn out" data-go="home">Back to home</button></div>
 </section>
 
+<!-- INVOICE -->
+<section class="screen" data-screen="invoice" data-flow>
+  <div class="hdr">
+    <button class="back" data-go="bookings"><svg class="ic"><use href="#left"/></svg></button>
+    <div class="grow" style="text-align:center"><div style="font-size:13px;font-weight:800;letter-spacing:.05em;text-transform:uppercase">TAX INVOICE</div></div>
+    <div style="width:38px"></div>
+  </div>
+  <div class="scroll pad" style="padding-bottom:24px;background:#F8FAFC">
+    <div style="background:#fff;border-radius:18px;border:1px solid var(--line);margin-top:12px;padding:24px 20px;box-shadow:0 4px 12px rgba(0,0,0,.03);position:relative;overflow:hidden">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1.5px dashed var(--line);padding-bottom:16px;margin-bottom:20px">
+        <div>
+          <div style="font-size:16px;font-weight:800;color:var(--primary-d)">INFOTEL CARE</div>
+          <div style="font-size:10.5px;color:var(--gray);margin-top:2px">GSTIN: 09AABCU9603R1ZV</div>
+        </div>
+        <div style="text-align:right">
+          <div class="st ok" style="font-size:10.5px;font-weight:800;padding:3px 8px">PAID</div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;margin-bottom:16px;font-size:12px;line-height:1.5">
+        <div style="flex:1">
+          <div class="muted fw6">INVOICE NO</div>
+          <div class="fw7" style="margin-top:2px">INF-INV-20290</div>
+        </div>
+        <div style="flex:1;text-align:right">
+          <div class="muted fw6">DATE & TIME</div>
+          <div class="fw7" style="margin-top:2px">08 Jun 2026, 4:15 PM</div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:space-between;margin-bottom:20px;font-size:12px;line-height:1.5;border-bottom:1px solid var(--line);padding-bottom:16px">
+        <div style="flex:1">
+          <div class="muted fw6">BILLED TO</div>
+          <div class="fw7" style="margin-top:2px">John Doe</div>
+          <div class="muted" style="margin-top:1px">Civil Lines, Moradabad</div>
+        </div>
+        <div style="flex:1;text-align:right">
+          <div class="muted fw6">TECHNICIAN</div>
+          <div class="fw7" style="margin-top:2px">Deepak V.</div>
+          <div class="muted" style="margin-top:1px">ID: TC-1182</div>
+        </div>
+      </div>
+
+      <div style="font-size:11px;font-weight:800;color:var(--gray2);letter-spacing:.05em;margin-bottom:10px">ITEMIZED CHARGES</div>
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:13px;border-bottom:1.5px dashed var(--line);padding-bottom:18px;margin-bottom:16px">
+        <div class="row between">
+          <div>
+            <div class="fw7">Refrigerator Diagnostics & Visit</div>
+            <div class="muted f11 mt4">Standard inspection charge</div>
+          </div>
+          <span class="fw7 rupee">199</span>
+        </div>
+        <div class="row between">
+          <div>
+            <div class="fw7">Compressor Relay Replacement</div>
+            <div class="muted f11 mt4">Genuine replacement part (1-year warranty)</div>
+          </div>
+          <span class="fw7 rupee">450</span>
+        </div>
+        <div class="row between">
+          <div>
+            <div class="fw7">Gas Top-up & Leakage Fix</div>
+            <div class="muted f11 mt4">R134a refrigerant charging</div>
+          </div>
+          <span class="fw7 rupee">350</span>
+        </div>
+        <div class="row between">
+          <div>
+            <div class="fw7">Professional Labor Charge</div>
+            <div class="muted f11 mt4">Deep cleaning & wiring check</div>
+          </div>
+          <span class="fw7 rupee">181</span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;margin-bottom:16px">
+        <div class="row between"><span class="muted">Subtotal</span><span class="fw6 rupee">1,180</span></div>
+        <div class="row between"><span class="muted">GST (Included)</span><span class="fw6 rupee">180</span></div>
+        <div class="row between" style="font-size:16px;font-weight:800;color:var(--ink);margin-top:6px;border-top:1px solid var(--line);padding-top:12px">
+          <span>Total Paid</span>
+          <span class="rupee">1,180</span>
+        </div>
+      </div>
+
+      <div style="background:var(--soft);border-radius:10px;padding:10px;text-align:center;font-size:11px;color:var(--gray)">
+        Paid online via UPI (Txn ID: UPI9981240166)
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:20px">
+      <button class="btn pri" style="flex:1" data-toast="Downloading invoice PDF…">
+        <svg class="ic" style="width:18px;height:18px"><use href="#download"/></svg>Download PDF
+      </button>
+      <button class="btn out" style="flex:1" data-toast="Sending invoice to your registered email…">
+        <svg class="ic" style="width:18px;height:18px"><use href="#mail"/></svg>Email receipt
+      </button>
+    </div>
+  </div>
+</section>
+
 <!-- BOOKINGS -->
 <section class="screen" data-screen="bookings">
   <div class="hdr"><div class="grow"><div style="font-size:20px;font-weight:800;letter-spacing:-.02em">My bookings</div></div></div>
@@ -412,7 +762,7 @@ input{font-family:inherit}
     <button class="card" style="width:100%;text-align:left;display:block" data-go="track">
       <div class="row between"><span class="st go"><span class="d"></span>On the way</span><span class="muted f12 fw6">#INF-20384</span></div>
       <div class="row mt12" style="gap:12px">
-        <span style="width:46px;height:46px;border-radius:12px;background:var(--soft);display:grid;place-items:center;color:var(--green-d);flex:0 0 auto"><svg class="ic" style="width:22px;height:22px"><use href="#ac"/></svg></span>
+        <span style="width:46px;height:46px;border-radius:12px;background:var(--soft);display:grid;place-items:center;color:var(--primary-d);flex:0 0 auto"><svg class="ic" style="width:22px;height:22px"><use href="#ac"/></svg></span>
         <span class="grow"><span class="fw7 f14" style="display:block">AC service &amp; gas refill</span><span class="muted f13">Today, 10–11 AM · Ravi K.</span></span>
         <span class="fw8 rupee f15">199</span>
       </div>
@@ -420,7 +770,7 @@ input{font-family:inherit}
     <div class="card mt12">
       <div class="row between"><span class="st warn"><span class="d"></span>Confirmed</span><span class="muted f12 fw6">#INF-20377</span></div>
       <div class="row mt12" style="gap:12px">
-        <span style="width:46px;height:46px;border-radius:12px;background:var(--soft);display:grid;place-items:center;color:var(--green-d);flex:0 0 auto"><svg class="ic" style="width:22px;height:22px"><use href="#washer"/></svg></span>
+        <span style="width:46px;height:46px;border-radius:12px;background:var(--soft);display:grid;place-items:center;color:var(--primary-d);flex:0 0 auto"><svg class="ic" style="width:22px;height:22px"><use href="#washer"/></svg></span>
         <span class="grow"><span class="fw7 f14" style="display:block">Washing machine repair</span><span class="muted f13">Sat, 14 Jun · 2–4 PM</span></span>
         <span class="fw8 rupee f15">349</span>
       </div>
@@ -429,11 +779,103 @@ input{font-family:inherit}
     <div class="card mt12">
       <div class="row between"><span class="st ok"><span class="d"></span>Completed</span><span class="muted f12 fw6">#INF-20290</span></div>
       <div class="row mt12" style="gap:12px">
-        <span style="width:46px;height:46px;border-radius:12px;background:var(--soft);display:grid;place-items:center;color:var(--green-d);flex:0 0 auto"><svg class="ic" style="width:22px;height:22px"><use href="#fridge"/></svg></span>
+        <span style="width:46px;height:46px;border-radius:12px;background:var(--soft);display:grid;place-items:center;color:var(--primary-d);flex:0 0 auto"><svg class="ic" style="width:22px;height:22px"><use href="#fridge"/></svg></span>
         <span class="grow"><span class="fw7 f14" style="display:block">Refrigerator repair</span><span class="muted f13">8 Jun · Deepak V.</span></span>
         <span class="fw8 rupee f15">1,180</span>
       </div>
-      <div class="row mt12" style="gap:9px"><button class="btn sm soft" style="flex:1">Rate service</button><button class="btn sm out" style="flex:1">Book again</button></div>
+      <div class="row mt12" style="gap:9px"><button class="btn sm soft" style="flex:1" data-go="invoice">View invoice</button><button class="btn sm out" style="flex:1">Book again</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- AMC PLANS -->
+<section class="screen" data-screen="amc" data-flow>
+  <div class="hdr">
+    <button class="back" data-go="home"><svg class="ic"><use href="#left"/></svg></button>
+    <div class="grow">
+      <div style="font-size:18px;font-weight:800;letter-spacing:-.02em">AMC Plans</div>
+      <div style="font-size:12px;color:var(--gray);font-weight:500;margin-top:1px">Annual Maintenance Contracts</div>
+    </div>
+  </div>
+  <div class="scroll pad" style="padding-bottom:22px">
+    <p class="muted f13" style="margin-bottom:18px">Cover all your appliances under one plan. Unlimited visits, priority service, spare part discounts.</p>
+
+    <div class="plan-card sel" data-plan>
+      <div class="row" style="justify-content:space-between;align-items:flex-start">
+        <span class="pc-badge" style="background:var(--soft);color:var(--gray)">SILVER</span>
+        <span class="st ok"><span class="d"></span>Most Popular</span>
+      </div>
+      <div><span class="pc-price rupee">999</span><span class="pc-period">/ year</span></div>
+      <div class="pc-feat">
+        <span>✓ 2 appliances covered</span>
+        <span>✓ 4 free service visits/year</span>
+        <span>✓ 10% off spare parts</span>
+        <span>✓ 48-hr response time</span>
+      </div>
+    </div>
+
+    <div class="plan-card" data-plan>
+      <span class="pc-badge" style="background:#FFF7E0;color:#9A6A14">GOLD</span>
+      <div><span class="pc-price rupee">1,999</span><span class="pc-period">/ year</span></div>
+      <div class="pc-feat">
+        <span>✓ 4 appliances covered</span>
+        <span>✓ 8 free service visits/year</span>
+        <span>✓ 20% off spare parts</span>
+        <span>✓ 24-hr response time</span>
+        <span>✓ Renewal reminders</span>
+      </div>
+    </div>
+
+    <div class="plan-card" data-plan>
+      <span class="pc-badge" style="background:#F0EBFF;color:#6B3FD4">PLATINUM</span>
+      <div><span class="pc-price rupee">3,499</span><span class="pc-period">/ year</span></div>
+      <div class="pc-feat">
+        <span>✓ Unlimited appliances</span>
+        <span>✓ Unlimited free visits</span>
+        <span>✓ 30% off spare parts</span>
+        <span>✓ Same-day response</span>
+        <span>✓ Dedicated support line</span>
+        <span>✓ Renewal reminders + auto-renew</span>
+      </div>
+    </div>
+  </div>
+  <div class="dock">
+    <button class="btn pri" data-go="home" data-confirm>Subscribe to Silver — <span class="rupee"></span>999/yr</button>
+  </div>
+</section>
+
+<!-- SPARE PARTS -->
+<section class="screen" data-screen="spareparts" data-flow>
+  <div class="hdr">
+    <button class="back" data-go="home"><svg class="ic"><use href="#left"/></svg></button>
+    <div class="grow">
+      <div style="font-size:18px;font-weight:800;letter-spacing:-.02em">Spare Parts</div>
+      <div style="font-size:12px;color:var(--gray);font-weight:500;margin-top:1px">Order genuine parts for your devices</div>
+    </div>
+    <button class="iconbtn"><svg class="ic" style="width:18px;height:18px"><use href="#cart"/></svg></button>
+  </div>
+  <div class="scroll pad" style="padding-bottom:22px">
+    <div class="search" style="margin-bottom:18px">
+      <svg class="ic"><use href="#search"/></svg>
+      <input placeholder="Search parts — screen, battery, motor…">
+    </div>
+    <div class="sec" style="margin-top:0">Categories</div>
+    <div class="cats" style="margin-bottom:20px">
+      <button class="cat"><span class="ci"><svg class="ic"><use href="#phone-d"/></svg></span><span>Mobile</span></button>
+      <button class="cat"><span class="ci"><svg class="ic"><use href="#laptop"/></svg></span><span>Laptop</span></button>
+      <button class="cat"><span class="ci"><svg class="ic"><use href="#ac"/></svg></span><span>AC</span></button>
+      <button class="cat"><span class="ci"><svg class="ic"><use href="#tv"/></svg></span><span>TV</span></button>
+    </div>
+    <div class="sec">Popular parts</div>
+    <div class="card" style="padding:4px 15px;margin-bottom:10px">
+      <div class="lrow"><span class="li"><svg class="ic"><use href="#battery"/></svg></span><div class="grow"><div class="ttl">Battery — Samsung Galaxy S22</div><div class="ds">OEM · In stock</div></div><span class="fw8 f14 rupee">1,299</span></div>
+      <div class="lrow"><span class="li"><svg class="ic"><use href="#display"/></svg></span><div class="grow"><div class="ttl">Screen — iPhone 13</div><div class="ds">OEM · In stock</div></div><span class="fw8 f14 rupee">3,499</span></div>
+      <div class="lrow"><span class="li"><svg class="ic"><use href="#gas"/></svg></span><div class="grow"><div class="ttl">AC Refrigerant (R-32)</div><div class="ds">1 kg · In stock</div></div><span class="fw8 f14 rupee">850</span></div>
+      <div class="lrow"><span class="li"><svg class="ic"><use href="#washer"/></svg></span><div class="grow"><div class="ttl">Drum Bearing — LG Front Load</div><div class="ds">OEM · 2–3 days</div></div><span class="fw8 f14 rupee">1,150</span></div>
+    </div>
+    <div class="card mt12" style="background:var(--primary-50);border-color:var(--primary-100);padding:14px 15px">
+      <div class="fw7 f14" style="color:var(--primary-d)">Parts delivered with technician</div>
+      <div class="f12 muted mt6">Order parts while booking a service and the technician brings them along — no extra delivery charge.</div>
     </div>
   </div>
 </section>
@@ -461,6 +903,79 @@ input{font-family:inherit}
       <div class="lrow"><span class="li"><svg class="ic"><use href="#help"/></svg></span><div class="grow"><div class="ttl">Help &amp; support</div></div><span class="chev2"><svg class="ic" style="width:18px;height:18px"><use href="#right"/></svg></span></div>
       <div class="lrow"><span class="li" style="color:var(--red)"><svg class="ic"><use href="#logout"/></svg></span><div class="grow"><div class="ttl" style="color:var(--red)">Log out</div></div></div>
     </div>
+  </div>
+</section>
+
+<!-- LOGIN -->
+<section class="screen" data-screen="login" data-flow>
+  <div class="hdr">
+    <button class="back" data-go="home"><svg class="ic"><use href="#left"/></svg></button>
+    <div class="grow"></div>
+  </div>
+  <div class="scroll pad" style="padding-bottom:40px">
+    <div style="margin:8px 0 32px">
+      <div style="font-size:27px;font-weight:800;letter-spacing:-.03em;line-height:1.2">Welcome to<br><span style="color:var(--primary)">Infotel Care</span></div>
+      <div class="muted f14 mt8">Sign in or create an account to book repairs and track your services.</div>
+    </div>
+    <button class="login-opt" data-go="otp">
+      <span class="lo-ic"><svg class="ic"><use href="#phone-d"/></svg></span>
+      <span class="grow"><span class="lo-t">Continue with Mobile OTP</span></span>
+      <svg class="ic" style="width:18px;height:18px;color:var(--gray2)"><use href="#right"/></svg>
+    </button>
+    <button class="login-opt" data-go="home">
+      <span class="lo-ic" style="background:#F0F4FF;color:#4285F4;font-size:17px;font-weight:800">G</span>
+      <span class="grow"><span class="lo-t">Continue with Google</span></span>
+      <svg class="ic" style="width:18px;height:18px;color:var(--gray2)"><use href="#right"/></svg>
+    </button>
+    <button class="login-opt" data-go="home">
+      <span class="lo-ic"><svg class="ic"><use href="#mail"/></svg></span>
+      <span class="grow"><span class="lo-t">Continue with Email</span></span>
+      <svg class="ic" style="width:18px;height:18px;color:var(--gray2)"><use href="#right"/></svg>
+    </button>
+    <div class="f12 muted" style="text-align:center;margin-top:28px;line-height:1.6">By continuing you agree to our <span style="color:var(--primary-d);font-weight:600">Terms of Service</span></div>
+  </div>
+</section>
+
+<!-- OTP — enter number -->
+<section class="screen" data-screen="otp" data-flow>
+  <div class="hdr">
+    <button class="back" data-go="login"><svg class="ic"><use href="#left"/></svg></button>
+    <div class="grow">
+      <div style="font-size:18px;font-weight:800;letter-spacing:-.02em">Mobile Login</div>
+    </div>
+  </div>
+  <div class="scroll pad" style="padding-bottom:32px">
+    <div style="margin:12px 0 24px">
+      <div class="fw7 f15">Enter your mobile number</div>
+      <div class="muted f13 mt6">We'll send a 6-digit OTP to verify your number</div>
+    </div>
+    <div class="search" style="margin-bottom:20px;height:52px;border-radius:14px;border:1.5px solid var(--line);background:#fff">
+      <span class="fw7 f14" style="color:var(--gray);border-right:1px solid var(--line);padding-right:10px;margin-right:4px;white-space:nowrap">+91</span>
+      <input placeholder="Enter mobile number" type="tel" style="font-size:15px;font-weight:600">
+    </div>
+    <button class="btn pri" data-go="otp-verify">Send OTP</button>
+  </div>
+</section>
+
+<!-- OTP VERIFY -->
+<section class="screen" data-screen="otp-verify" data-flow>
+  <div class="hdr">
+    <button class="back" data-go="otp"><svg class="ic"><use href="#left"/></svg></button>
+    <div class="grow">
+      <div style="font-size:18px;font-weight:800;letter-spacing:-.02em">Verify OTP</div>
+    </div>
+  </div>
+  <div class="scroll pad" style="padding-bottom:32px">
+    <div style="margin:12px 0 28px">
+      <div class="fw7 f15">OTP sent to +91 98765 43210</div>
+      <div class="muted f13 mt6">Enter the 6-digit code sent via SMS</div>
+    </div>
+    <div class="otp-row" style="justify-content:space-between;margin-bottom:28px">
+      <div class="otp-d">3</div><div class="otp-d">7</div><div class="otp-d">4</div>
+      <div class="otp-d">1</div><div class="otp-d" style="color:var(--gray2)">·</div><div class="otp-d" style="color:var(--gray2)">·</div>
+    </div>
+    <button class="btn pri" data-go="home">Verify &amp; Continue</button>
+    <button class="btn out mt12" style="height:42px;font-size:13.5px;color:var(--gray2)">Resend OTP in 28s</button>
   </div>
 </section>
 
@@ -513,13 +1028,29 @@ input{font-family:inherit}
 <symbol id="keyboard" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8M6 14h.01M18 14h.01"/></symbol>
 <symbol id="chip" viewBox="0 0 24 24"><rect x="8" y="8" width="8" height="8" rx="1"/><path d="M9 8V5M12 8V5M15 8V5M9 19v-3M12 19v-3M15 19v-3M8 9H5M8 12H5M8 15H5M19 9h-3M19 12h-3M19 15h-3"/></symbol>
 <symbol id="rotate" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 1-6.2 2.5M3 3v4h4"/></symbol>
+<symbol id="camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
+<symbol id="video" viewBox="0 0 24 24"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M22 8l-6 4 6 4V8Z"/></symbol>
+<symbol id="gps" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="9" stroke-dasharray="2 3"/></symbol>
+<symbol id="home2" viewBox="0 0 24 24"><path d="M3 10.5 12 4l9 6.5M5 9.5V20h5v-6h4v6h5V9.5"/></symbol>
+<symbol id="briefcase" viewBox="0 0 24 24"><rect x="2" y="8" width="20" height="13" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M12 13v2M10 15h4"/></symbol>
+<symbol id="cart" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4ZM3 6h18M16 10a4 4 0 0 1-8 0"/></symbol>
+<symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 7.5h.01"/></symbol>
 <symbol id="cal" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+<symbol id="purifier" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="20" rx="2"/><path d="M10 7h4M10 11h4M10 15h2"/><path d="M8 6H5a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h3"/></symbol>
+<symbol id="cctv" viewBox="0 0 24 24"><ellipse cx="10" cy="12" rx="7" ry="5"/><circle cx="10" cy="12" r="2"/><path d="M17 12h4M10 7V4M14 4l-4 3-4-3"/></symbol>
+<symbol id="printer" viewBox="0 0 24 24"><rect x="6" y="15" width="12" height="7" rx="1"/><path d="M6 18H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2"/><path d="M6 8V3h12v5"/><path d="M9 19h6M9 21.5h3"/></symbol>
 <symbol id="tag" viewBox="0 0 24 24"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3.4 13.4a2 2 0 0 1 0-2.8L10.6 3.4A2 2 0 0 1 12 3H19a2 2 0 0 1 2 2v7a2 2 0 0 1-.4 1.4Z"/><circle cx="16.5" cy="7.5" r="1"/></symbol>
+<symbol id="purifier" viewBox="0 0 24 24"><path d="M12 3c3.5 3 5 6 5 9a5 5 0 0 1-10 0c0-3 1.5-6 5-9Z"/><path d="M9 13h6M12 16v2"/></symbol>
+<symbol id="cctv" viewBox="0 0 24 24"><rect x="2" y="8" width="13" height="8" rx="1.5"/><path d="M15 11l5-3v6l-5-3ZM6 8V6M10 8V6"/></symbol>
+<symbol id="printer" viewBox="0 0 24 24"><path d="M6 9V4h12v5M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/><path d="M6 13h.01"/></symbol>
+<symbol id="mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></symbol>
+<symbol id="download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
 </defs></svg>
 
 <script>
 const ISSUES={
-  'Mobile Phone':[
+  'Mobile Phones':[
     {ic:'display',t:'Cracked / broken screen',d:'Shattered glass or display damage'},
     {ic:'bolt',t:'Not charging',d:'Cable, port or battery issue'},
     {ic:'battery',t:'Battery draining fast',d:'Poor backup or swollen battery'},
@@ -583,7 +1114,65 @@ const ISSUES={
     {ic:'wrench',t:'Door not closing properly',d:'Latch or seal replacement'},
     {ic:'wrench',t:'General service',d:'Cleaning & safety check'},
   ],
+  'Water Purifier':[
+    {ic:'drop',t:'Not dispensing water',d:'No water flow or blockage'},
+    {ic:'display',t:'TDS level high',d:'Water quality degraded'},
+    {ic:'wrench',t:'Filter replacement',d:'Clogged or expired filters'},
+    {ic:'drop',t:'Water leaking',d:'From body, pipes or fittings'},
+    {ic:'cog',t:'RO membrane issue',d:'Reduced output or bad taste'},
+    {ic:'wrench',t:'General service',d:'Annual servicing & checkup'},
+  ],
+  'CCTV':[
+    {ic:'display',t:'Camera not working',d:'No feed or blank screen'},
+    {ic:'cog',t:'Not recording',d:'DVR/NVR issue or storage full'},
+    {ic:'display',t:'Night vision issue',d:'Blurry or no IR output'},
+    {ic:'bolt',t:'Not connecting',d:'Network or power issue'},
+    {ic:'wrench',t:'Camera misaligned',d:'Field of view adjustment needed'},
+    {ic:'wrench',t:'New installation',d:'Mount, wire & configure cameras'},
+  ],
+  'Printer':[
+    {ic:'display',t:'Not printing',d:'Driver or connectivity issue'},
+    {ic:'wrench',t:'Paper jam',d:'Paper stuck inside printer'},
+    {ic:'drop',t:'Ink / toner empty',d:'Cartridge replacement needed'},
+    {ic:'display',t:'Faded / streaked prints',d:'Head clog or low ink'},
+    {ic:'bolt',t:'Not turning on',d:'Power board or fuse issue'},
+    {ic:'wrench',t:'General service',d:'Cleaning & calibration'},
+  ],
+  'Other Electronics':[
+    {ic:'bolt',t:'Not turning on',d:'Power or board issue'},
+    {ic:'display',t:'Physical damage',d:'Cracked screen or casing'},
+    {ic:'flame',t:'Overheating',d:'Cooling or ventilation issue'},
+    {ic:'sound',t:'No sound / display output',d:'Output device issue'},
+    {ic:'cog',t:'Software fault',d:'Firmware or settings reset'},
+    {ic:'wrench',t:'General repair',d:'Diagnostic & fix'},
+  ],
 };
+
+const BRANDS={
+  'Mobile Phones':['Samsung','Apple','Xiaomi','OnePlus','Vivo','OPPO','Realme','Other'],
+  'Laptop':['Dell','HP','Lenovo','Apple','Asus','Acer','Other'],
+  'Desktop':['Dell','HP','Lenovo','Asus','Custom Build','Other'],
+  'Television':['Samsung','LG','Sony','TCL','OnePlus','Xiaomi','Other'],
+  'Air Conditioner':['Daikin','LG','Samsung','Voltas','Blue Star','Carrier','Other'],
+  'Refrigerator':['Samsung','LG','Whirlpool','Godrej','Haier','Other'],
+  'Washing Machine':['Samsung','LG','Whirlpool','IFB','Bosch','Other'],
+  'Microwave':['Samsung','LG','Panasonic','IFB','Godrej','Other'],
+  'Water Purifier':['Kent','Aquaguard','Pureit','A.O. Smith','Livpure','Other'],
+  'CCTV':['Hikvision','CP Plus','Dahua','Godrej','Bosch','Other'],
+  'Printer':['HP','Canon','Epson','Brother','Lexmark','Other'],
+  'Other Electronics':['Samsung','Sony','LG','Philips','Other'],
+};
+
+function renderBrands(cat){
+  const list=document.getElementById('brand-list');
+  const brands=BRANDS[cat]||[];
+  list.innerHTML=brands.map(b=>`
+    <button class="brand-btn" data-brand="${b}">
+      <span class="bi">${b.slice(0,2).toUpperCase()}</span>${b}
+    </button>`).join('');
+  const cont=document.getElementById('brand-continue');
+  cont.disabled=true;cont.style.opacity='.45';
+}
 
 function renderIssues(cat){
   const list=document.getElementById('issue-list');
@@ -604,14 +1193,62 @@ function go(id){
   app.classList.toggle('flow',sc.hasAttribute('data-flow'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.go===id));
   const sb=sc.querySelector('.scroll');if(sb)sb.scrollTop=0;
+  if(id==='review'){
+    const cat=document.getElementById('bk-cat').textContent||'Air Conditioner';
+    const brandEl=document.querySelector('[data-brand].sel');
+    const brand=brandEl?brandEl.dataset.brand:'Other';
+    const selectedIssuesEls=document.querySelectorAll('#issue-list .issue.sel .ititle');
+    const selectedIssues=Array.from(selectedIssuesEls).map(el=>el.textContent);
+    let displayCat=cat;
+    if(cat==='Air Conditioner')displayCat='AC Repair';
+    else if(cat==='Mobile Phones')displayCat='Mobile Repair';
+    else if(!displayCat.endsWith('Repair')&&!displayCat.endsWith('Service'))displayCat=displayCat+' Repair';
+    const issuesText=selectedIssues.length>0?selectedIssues.join(', '):'General service';
+    const firstIssue=selectedIssues.length>0?selectedIssues[0]:'General service';
+    const titleEl=document.getElementById('rv-service-title');
+    const descEl=document.getElementById('rv-service-desc');
+    if(titleEl)titleEl.textContent=`${displayCat} · ${brand} · ${firstIssue}`;
+    if(descEl)descEl.textContent=issuesText;
+    const addrEl=document.querySelector('.addr-opt.sel');
+    if(addrEl){
+      const addrTitle=addrEl.querySelector('.grow span:first-child')?.textContent||'Home';
+      const addrDetails=addrEl.querySelector('.grow span:last-child')?.textContent||'';
+      const rvAddrEl=document.getElementById('rv-address');
+      if(rvAddrEl){
+        const cleanDetails=addrDetails.split(',').slice(0,2).join(',').trim();
+        rvAddrEl.textContent=`${addrTitle} · ${cleanDetails||addrDetails}`;
+      }
+    }
+    const slotEl=document.querySelector('.slot.sel');
+    if(slotEl){
+      const slotTime=slotEl.querySelector('.t')?.textContent||'10–11 AM';
+      const rvScheduleEl=document.getElementById('rv-schedule');
+      if(rvScheduleEl)rvScheduleEl.textContent=`Thu 12 Jun · ${slotTime}`;
+    }
+  }
 }
 document.addEventListener('click',e=>{
+  if(e.target.closest('[data-login]')){go('home');return;}
   const nav=e.target.closest('[data-go]');if(nav){go(nav.dataset.go);}
   const bk=e.target.closest('[data-book]');
   if(bk){
     const cat=bk.dataset.book;
     document.getElementById('bk-cat').textContent=cat;
     document.getElementById('bk-cat-title').textContent=cat;
+    document.getElementById('bk-brand-title').textContent=cat;
+    document.getElementById('bk-brand-cat').textContent=cat;
+    renderBrands(cat);
+    go('brand');
+  }
+  const brand=e.target.closest('[data-brand]');
+  if(brand){
+    document.querySelectorAll('[data-brand]').forEach(b=>b.classList.remove('sel'));
+    brand.classList.add('sel');
+    const cont=document.getElementById('brand-continue');
+    cont.disabled=false;cont.style.opacity='1';
+  }
+  if(e.target.closest('[data-brand-continue]')){
+    const cat=document.getElementById('bk-cat').textContent;
     renderIssues(cat);
     go('booking');
   }
@@ -621,6 +1258,28 @@ document.addEventListener('click',e=>{
     const chk=issue.querySelector('.chk');
     chk.innerHTML=issue.classList.contains('sel')
       ?'<svg class="ic" style="width:13px;height:13px;stroke-width:2.8;color:#fff"><use href="#check"/></svg>':'';
+  }
+  const photo=e.target.closest('[data-photo]');
+  if(photo){
+    photo.classList.toggle('done');
+    const isVid=photo.querySelector('[href="#video"]');
+    photo.innerHTML=photo.classList.contains('done')
+      ?'<svg class="ic" style="color:var(--primary-d)"><use href="#check"/></svg><span>Added</span>'
+      :(isVid?'<svg class="ic"><use href="#video"/></svg><span>Add video clip</span>':'<svg class="ic"><use href="#camera"/></svg><span>Add photo</span>');
+  }
+  const addr=e.target.closest('[data-addr]');
+  if(addr){
+    document.querySelectorAll('[data-addr]').forEach(a=>{a.classList.remove('sel');const c=a.querySelector('.addr-chk');if(c)c.innerHTML='';});
+    addr.classList.add('sel');
+    const chk=addr.querySelector('.addr-chk');
+    if(chk)chk.innerHTML='<svg class="ic" style="width:13px;height:13px;stroke-width:2.8;color:#fff"><use href="#check"/></svg>';
+  }
+  const plan=e.target.closest('[data-plan]');
+  if(plan){
+    document.querySelectorAll('[data-plan]').forEach(p=>p.classList.remove('sel'));
+    plan.classList.add('sel');
+    const badge=plan.querySelector('.pc-badge');
+    document.querySelector('[data-confirm]').textContent='Subscribe to '+badge?.textContent+' — ₹'+plan.querySelector('.pc-price')?.textContent?.replace(/[₹,]/g,'')+'/yr';
   }
   const slot=e.target.closest('.slot:not(.off)');
   if(slot){slot.closest('[data-screen]').querySelectorAll('.slot').forEach(s=>s.classList.remove('sel'));slot.classList.add('sel');}

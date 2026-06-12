@@ -9,9 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --green:#0E9466; --green-d:#0A7350; --green-50:#E9F5EF; --green-100:#D2EBE0;
-  --ink:#14181D; --gray:#5B6472; --gray2:#8B93A0; --line:#E9EBEE; --bg:#F6F7F8; --surface:#FFFFFF;
-  --amber:#E2A33A; --amber-50:#FBF1E0; --red:#E0573C; --red-50:#FCEEEB; --blue:#2C6BD4; --blue-50:#EAF2FE;
+  --primary:#4F46E5; --primary-d:#4338CA; --primary-50:#EEF2FF; --primary-100:#E0E7FF;
+  --ink:#111827; --gray:#6B7280; --gray2:#9CA3AF; --line:#E5E7EB; --bg:#F8FAFC; --surface:#FFFFFF;
+  --amber:#D97706; --amber-50:#FFFBEB; --red:#DC2626; --red-50:#FEF2F2; --blue:#2563EB; --blue-50:#DBEAFE;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45;-webkit-font-smoothing:antialiased;font-size:14px}
@@ -25,53 +25,72 @@ input{font-family:inherit}
 .f11{font-size:11px}.f12{font-size:12px}.f13{font-size:13px}.f15{font-size:15px}
 .mt6{margin-top:6px}.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt20{margin-top:20px}.mt24{margin-top:24px}
 
-.admin{display:grid;grid-template-columns:248px 1fr;height:100vh;overflow:hidden}
+/* ========== ANIMATIONS ========== */
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes dotPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.6}}
+@keyframes gradientShine{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes kpiIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes brandPulse{0%,100%{box-shadow:0 0 0 0 rgba(79,70,229,.2)}50%{box-shadow:0 0 0 6px rgba(79,70,229,0)}}
+
+.admin{display:grid;grid-template-columns:260px 1fr;height:100vh;overflow:hidden}
 
 /* sidebar */
 .sidebar{background:var(--surface);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:18px 14px;overflow-y:auto}
 .brand{display:flex;align-items:center;gap:11px;padding:4px 8px 14px}
-.brand .m{width:38px;height:38px;border-radius:11px;background:var(--green);display:grid;place-items:center;flex:0 0 auto}
+.brand .m{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--primary-d),var(--primary));display:grid;place-items:center;flex:0 0 auto;animation:brandPulse 3s ease-in-out infinite}
 .brand .m svg{width:21px;height:21px;color:#fff;stroke-width:2.4}
 .brand .n{font-size:16px;font-weight:800;letter-spacing:-.02em}
 .brand .t{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gray2)}
 .navlbl{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--gray2);padding:14px 10px 7px}
-.nav{display:flex;align-items:center;gap:11px;height:42px;border-radius:10px;padding:0 12px;color:var(--gray);font-weight:600;font-size:13.5px;width:100%;text-align:left;margin-bottom:2px}
+.nav{display:flex;align-items:center;gap:11px;min-height:42px;height:auto;border-radius:10px;padding:8px 12px;color:var(--gray);font-weight:600;font-size:13.5px;width:100%;text-align:left;margin-bottom:2px;line-height:1.35;transition:background .15s,color .15s}
 .nav:hover{background:var(--bg);color:var(--ink)}
-.nav.on{background:var(--green-50);color:var(--green-d);font-weight:700}
-.nav .badge{margin-left:auto;background:var(--green);color:#fff;font-size:11px;font-weight:800;min-width:19px;height:19px;border-radius:9px;display:grid;place-items:center;padding:0 5px}
-.nav.on .badge{background:var(--green-d)}
-.uchip{margin-top:auto;display:flex;align-items:center;gap:10px;padding:9px;border:1px solid var(--line);border-radius:12px}
+.nav.on{background:var(--primary-50);color:var(--primary-d);font-weight:700;border-left:3px solid var(--primary);padding:8px 12px 8px 9px}
+.nav .badge{margin-left:auto;background:var(--primary);color:#fff;font-size:11px;font-weight:800;min-width:19px;height:19px;border-radius:9px;display:grid;place-items:center;padding:0 5px}
+.nav.on .badge{background:var(--primary-d)}
+.uchip{margin-top:auto;display:flex;align-items:center;gap:10px;padding:9px;border:1px solid var(--line);border-radius:12px;transition:background .15s}
+.uchip:hover{background:var(--soft)}
+.sfooter{display:flex;gap:14px;padding:10px 8px 2px;flex-wrap:wrap}
+.sfooter a{font-size:11px;color:var(--gray2);font-weight:500;text-decoration:none;transition:color .12s}
+.sfooter a:hover{color:var(--primary-d)}
 
 /* main */
 .main{display:flex;flex-direction:column;min-width:0;overflow:hidden}
 .topbar{height:64px;flex:0 0 64px;display:flex;align-items:center;gap:16px;padding:0 24px;background:var(--surface);border-bottom:1px solid var(--line)}
 .topbar .pg{font-size:18px;font-weight:800;letter-spacing:-.02em}
 .topbar .cr{font-size:12px;color:var(--gray);font-weight:500;margin-top:1px}
-.searchbar{display:flex;align-items:center;gap:9px;height:40px;width:300px;padding:0 13px;background:var(--bg);border:1px solid var(--line);border-radius:10px}
+.searchbar{display:flex;align-items:center;gap:9px;height:40px;width:300px;padding:0 13px;background:var(--bg);border:1px solid var(--line);border-radius:10px;transition:border-color .2s,box-shadow .2s}
+.searchbar:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.08)}
 .searchbar input{flex:1;border:none;outline:none;background:none;font-size:13px;font-weight:500}
 .searchbar .ic{width:17px;height:17px;color:var(--gray2)}
-.iconbtn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);display:grid;place-items:center;color:var(--gray);position:relative}
-.iconbtn .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff}
+.iconbtn{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);display:grid;place-items:center;color:var(--gray);position:relative;transition:background .15s,border-color .15s}
+.iconbtn:hover{background:var(--bg);border-color:var(--primary-100)}
+.iconbtn .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff;animation:dotPulse 2s ease-in-out infinite}
 .content{flex:1;overflow-y:auto;padding:22px 24px 40px}
 
-.view{display:none}.view.active{display:block}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 15px;border-radius:10px;font-size:13px;font-weight:700;background:var(--surface);border:1px solid var(--line);color:var(--ink)}
-.btn:hover{background:var(--bg)}
-.btn.pri{background:var(--green);color:#fff;border:none}.btn.pri:hover{filter:brightness(.96)}
+.view{display:none}.view.active{display:block;animation:fadeIn .3s ease}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 15px;border-radius:10px;font-size:13px;font-weight:700;background:var(--surface);border:1px solid var(--line);color:var(--ink);transition:background .15s,border-color .15s,box-shadow .15s;white-space:nowrap}
+.btn:hover{background:var(--bg);border-color:var(--primary-100)}
+.btn.pri{background:linear-gradient(135deg,var(--primary-d),var(--primary));color:#fff;border:none;position:relative;overflow:hidden}
+.btn.pri::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.15) 50%,transparent 60%);background-size:200% 100%;animation:gradientShine 3s ease-in-out infinite}
+.btn.pri:hover{filter:brightness(.96);box-shadow:0 4px 14px rgba(79,70,229,.25)}
 .btn.sm{height:32px;padding:0 11px;font-size:12px;border-radius:8px}
 .btn .ic{width:16px;height:16px;stroke-width:2.2}
 
 .grid{display:grid;gap:16px}.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
-.kpi{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:17px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:17px;animation:kpiIn .5s ease-out both;transition:box-shadow .2s,transform .15s}
+.kpi:hover{box-shadow:0 4px 14px rgba(0,0,0,.05);transform:translateY(-1px)}
+.kpi:nth-child(1){animation-delay:0s}.kpi:nth-child(2){animation-delay:.08s}.kpi:nth-child(3){animation-delay:.16s}.kpi:nth-child(4){animation-delay:.24s}
 .kpi .top{display:flex;justify-content:space-between;align-items:center}
-.kpi .ci{width:38px;height:38px;border-radius:11px;background:var(--green-50);color:var(--green-d);display:grid;place-items:center}
+.kpi .ci{width:38px;height:38px;border-radius:11px;background:var(--primary-50);color:var(--primary-d);display:grid;place-items:center}
 .kpi .ci .ic{width:19px;height:19px}
 .kpi .v{font-size:25px;font-weight:800;letter-spacing:-.025em;margin-top:13px}
 .kpi .l{font-size:12.5px;color:var(--gray);margin-top:2px}
 .delta{font-size:12px;font-weight:800;padding:3px 8px;border-radius:7px}
-.delta.up{background:var(--green-50);color:var(--green-d)}.delta.down{background:var(--red-50);color:var(--red)}
+.delta.up{background:var(--primary-50);color:var(--primary-d)}.delta.down{background:var(--red-50);color:var(--red)}
 
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;transition:box-shadow .2s}
+.panel:hover{box-shadow:0 2px 10px rgba(0,0,0,.03)}
 .panel.p0{padding:0;overflow:hidden}
 .ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .ph h3{font-size:15px;font-weight:800;letter-spacing:-.01em}
@@ -79,34 +98,52 @@ input{font-family:inherit}
 
 .bars{display:flex;align-items:flex-end;gap:14px;height:170px}
 .bars .b{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:8px;height:100%}
-.bars .b i{width:100%;max-width:34px;border-radius:7px 7px 4px 4px;background:var(--green-100);display:block}
-.bars .b.on i{background:var(--green)}.bars .b span{font-size:11.5px;color:var(--gray2);font-weight:600}
+.bars .b i{width:100%;max-width:34px;border-radius:7px 7px 4px 4px;background:var(--primary-100);display:block;transform-origin:bottom;animation:barGrow .6s ease-out both}
+.bars .b:nth-child(1) i{animation-delay:.05s}.bars .b:nth-child(2) i{animation-delay:.1s}.bars .b:nth-child(3) i{animation-delay:.15s}
+.bars .b:nth-child(4) i{animation-delay:.2s}.bars .b:nth-child(5) i{animation-delay:.25s}.bars .b:nth-child(6) i{animation-delay:.3s}.bars .b:nth-child(7) i{animation-delay:.35s}
+.bars .b.on i{background:var(--primary)}.bars .b span{font-size:11.5px;color:var(--gray2);font-weight:600}
 
 .brk{display:flex;flex-direction:column;gap:14px}
 .brk .it .row{justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:7px}
-.brk .track{height:8px;border-radius:5px;background:var(--bg)}
-.brk .track i{display:block;height:100%;border-radius:5px;background:var(--green)}
+.brk .track{height:8px;border-radius:5px;background:var(--bg);overflow:hidden}
+.brk .track i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--primary-d),var(--primary))}
 
 .table{width:100%;border-collapse:collapse}
 .table th{font-size:11px;color:var(--gray2);text-transform:uppercase;text-align:left;padding:12px 16px;font-weight:800;letter-spacing:.04em;border-bottom:1px solid var(--line);background:var(--bg)}
 .table td{padding:13px 16px;border-bottom:1px solid var(--line);font-size:13px;font-weight:500;vertical-align:middle}
 .table tr:last-child td{border-bottom:none}
-.table tbody tr:hover{background:var(--bg)}
+.table tbody tr{transition:background .15s,border-left .15s}
+.table tbody tr:hover{background:var(--bg);box-shadow:inset 3px 0 0 var(--primary)}
 .table .s{font-weight:700;color:var(--ink)}
 .cellrow{display:flex;align-items:center;gap:9px}
-.av{border-radius:50%;background:var(--green-50);color:var(--green-d);display:grid;place-items:center;font-weight:800;flex:0 0 auto;font-size:12px;width:30px;height:30px}
+.av{border-radius:50%;display:grid;place-items:center;font-weight:800;flex:0 0 auto;font-size:12px;width:30px;height:30px;overflow:hidden}
+.av.ini{background:var(--primary-50);color:var(--primary-d)}
 .av.b{background:var(--blue-50);color:var(--blue)}.av.a{background:var(--amber-50);color:#9A6A14}
 .st{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:8px}
 .st .d{width:6px;height:6px;border-radius:50%;background:currentColor}
-.st.ok{background:var(--green-50);color:var(--green-d)}.st.go{background:var(--blue-50);color:var(--blue)}
+.st.ok{background:var(--primary-50);color:var(--primary-d)}.st.go{background:var(--blue-50);color:var(--blue)}
+.st.go .d{animation:dotPulse 2s ease-in-out infinite}
 .st.warn{background:var(--amber-50);color:#9A6A14}.st.off{background:var(--bg);color:var(--gray)}.st.red{background:var(--red-50);color:var(--red)}
 .tabs{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:4px;width:max-content}
-.tabs button{height:32px;padding:0 14px;border-radius:7px;font-size:12.5px;font-weight:700;color:var(--gray)}
-.tabs button.on{background:var(--green-50);color:var(--green-d)}
-.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:11px;opacity:0;transition:.3s;pointer-events:none;z-index:80}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.tabs button{height:32px;padding:0 14px;border-radius:7px;font-size:12.5px;font-weight:700;color:var(--gray);transition:background .15s,color .15s}
+.tabs button.on{background:var(--primary-50);color:var(--primary-d)}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:11px;opacity:0;transition:.3s;pointer-events:none;z-index:80;box-shadow:0 8px 24px rgba(20,24,29,.25)}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .hamburger{display:none}
 .tw{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .tabs{max-width:100%;overflow-x:auto}.tabs::-webkit-scrollbar{display:none}
+/* SVG avatar */
+.av-svg{border-radius:50%;flex:0 0 auto;overflow:hidden;display:block}
+
+/* Modal */
+.modal{position:fixed;inset:0;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:999;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.open{display:flex}
+.modal-content{background:#fff;border-radius:18px;width:100%;max-width:500px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.1),0 8px 10px -6px rgba(0,0,0,0.1);overflow:hidden;animation:modalScale .2s ease-out;color:var(--ink)}
+@keyframes modalScale{from{transform:scale(0.95);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-header{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.modal-body{padding:20px;max-height:70vh;overflow-y:auto}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--line);background:var(--bg);display:flex;justify-content:flex-end;gap:10px}
+.kyc-doc-img{width:100%;height:120px;border-radius:10px;background:var(--bg);border:1.5px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;position:relative}
+.kyc-doc-img span{position:absolute;font-size:10px;font-weight:800;color:#fff;background:var(--primary);padding:3px 6px;border-radius:4px;top:6px;left:6px}
 
 /* ---- responsive ---- */
 @media(max-width:1040px){.g4{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr!important}}
@@ -135,14 +172,14 @@ input{font-family:inherit}
   <aside class="sidebar">
     <div class="brand"><span class="m"><svg viewBox="0 0 24 24"><path d="M3 13h3l1.5-4 2.5 8 2-6 1.5 2h5" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div class="n">Infotel Care</div><div class="t">Admin</div></div></div>
     <button class="nav on" data-go="dashboard"><svg class="ic"><use href="#home"/></svg>Dashboard</button>
-    <button class="nav" data-go="bookings"><svg class="ic"><use href="#receipt"/></svg>Bookings <span class="badge">18</span></button>
-    <button class="nav" data-go="techs"><svg class="ic"><use href="#users"/></svg>Technicians <span class="badge">6</span></button>
-    <button class="nav" data-go="reports"><svg class="ic"><use href="#chart"/></svg>Reports</button>
-    <div class="navlbl">Manage</div>
-    <button class="nav" data-go="dashboard"><svg class="ic"><use href="#percent"/></svg>Commission</button>
-    <button class="nav" data-go="dashboard"><svg class="ic"><use href="#shield"/></svg>AMC Plans</button>
-    <button class="nav" data-go="dashboard"><svg class="ic"><use href="#cog"/></svg>Settings</button>
-    <div class="uchip"><span class="av">PM</span><div class="grow"><div class="fw7 f13">Priya Menon</div><div class="muted f12">Super Admin</div></div></div>
+    <button class="nav" data-go="users"><svg class="ic"><use href="#users"/></svg>User Management</button>
+    <button class="nav" data-go="techapproval"><svg class="ic"><use href="#idcard"/></svg>Technician Approval <span class="badge" style="background:var(--amber)">6</span></button>
+    <button class="nav" data-go="bookings"><svg class="ic"><use href="#receipt"/></svg>Booking Management <span class="badge">18</span></button>
+    <button class="nav" data-go="commission"><svg class="ic"><use href="#percent"/></svg>Commission Management</button>
+    <button class="nav" data-go="reports"><svg class="ic"><use href="#chart"/></svg>Reports (Booking, Revenue, Technician, GST)</button>
+    <div class="uchip"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M9 9 Q10 6 15 7 Q20 6 21 9" fill="#1A0F06"/><circle cx="15" cy="13" r="4.5" fill="#C49060"/><circle cx="13" cy="12" r=".8" fill="#14181D"/><circle cx="17" cy="12" r=".8" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none" stroke-linecap="round"/><circle cx="11" cy="13" r=".8" fill="#E0A870"/><circle cx="19" cy="13" r=".8" fill="#E0A870"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="var(--primary)"/></svg><div class="grow"><div class="fw7 f13">Priya Menon</div><div class="muted f12">Super Admin</div></div></div>
+    <div class="sfooter">
+    </div>
   </aside>
   <!-- MAIN -->
   <div class="main">
@@ -196,19 +233,19 @@ input{font-family:inherit}
             <table class="table">
               <thead><tr><th>Booking</th><th>Customer</th><th>Service</th><th>Amount</th><th>Status</th></tr></thead>
               <tbody>
-                <tr><td class="s">#INF-20384</td><td><div class="cellrow"><span class="av">AS</span>Aarav S.</div></td><td>AC gas refill</td><td class="s rupee">2,000</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
-                <tr><td class="s">#INF-20383</td><td><div class="cellrow"><span class="av b">NK</span>Neha K.</div></td><td>Washing machine</td><td class="s rupee">850</td><td><span class="st go"><span class="d"></span>Ongoing</span></td></tr>
-                <tr><td class="s">#INF-20382</td><td><div class="cellrow"><span class="av a">VR</span>Vikram R.</div></td><td>TV repair</td><td class="s rupee">1,499</td><td><span class="st warn"><span class="d"></span>Assigning</span></td></tr>
-                <tr><td class="s">#INF-20381</td><td><div class="cellrow"><span class="av">SM</span>Sara M.</div></td><td>Refrigerator</td><td class="s rupee">1,180</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
+                <tr><td class="s">#INF-20384</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#D4A06A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#2C6BD4"/></svg>Aarav S.</div></td><td>AC gas refill</td><td class="s rupee">2,000</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
+                <tr><td class="s">#INF-20383</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#EAF2FE"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M9 10 Q10 6 15 7 Q20 6 21 10 Q21 13 19 13 L11 13 Q9 13 9 10" fill="#1A0F06"/><circle cx="15" cy="13" r="4" fill="#C49060"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M14 15 Q15 15.8 16 15" stroke="#14181D" stroke-width=".4" fill="none"/><circle cx="11" cy="13" r=".7" fill="#E0A870"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#E2A33A"/></svg>Neha K.</div></td><td>Washing machine</td><td class="s rupee">850</td><td><span class="st go"><span class="d"></span>Ongoing</span></td></tr>
+                <tr><td class="s">#INF-20382</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#FBF1E0"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><rect x="10" y="8" width="10" height="4" rx="2" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#A0785A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><rect x="12.5" y="11" width="5" height="2.5" rx="1" fill="none" stroke="#14181D" stroke-width=".5"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#6B4FD4"/></svg>Vikram R.</div></td><td>TV repair</td><td class="s rupee">1,499</td><td><span class="st warn"><span class="d"></span>Assigning</span></td></tr>
+                <tr><td class="s">#INF-20381</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M10 11 Q12 7 15 8 Q18 7 20 11" fill="#1A0F06"/><circle cx="15" cy="13" r="4" fill="#B8845C"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="var(--primary)"/></svg>Sara M.</div></td><td>Refrigerator</td><td class="s rupee">1,180</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
               </tbody>
             </table>
           </div>
           <div class="panel">
             <div class="ph"><h3>Pending approvals</h3><span class="st warn">6 new</span></div>
             <div class="col" style="gap:13px">
-              <div class="row" style="gap:10px"><span class="av b">MK</span><div class="grow"><div class="fw7 f13">Manish Kumar</div><div class="muted f12">AC, Refrigerator</div></div><button class="btn sm pri" data-go="techs">Review</button></div>
-              <div class="row" style="gap:10px"><span class="av a">SP</span><div class="grow"><div class="fw7 f13">Suresh Patel</div><div class="muted f12">Mobile, Laptop</div></div><button class="btn sm pri" data-go="techs">Review</button></div>
-              <div class="row" style="gap:10px"><span class="av">RT</span><div class="grow"><div class="fw7 f13">Ravi Teja</div><div class="muted f12">TV, CCTV</div></div><button class="btn sm pri" data-go="techs">Review</button></div>
+              <div class="row" style="gap:10px"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#EAF2FE"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#D4A06A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#2C6BD4"/></svg><div class="grow"><div class="fw7 f13">Manish Kumar</div><div class="muted f12">AC, Refrigerator</div></div><button class="btn sm pri" data-go="techs">Review</button></div>
+              <div class="row" style="gap:10px"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#FBF1E0"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><rect x="10" y="8" width="10" height="4" rx="2" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#A0785A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#E2A33A"/></svg><div class="grow"><div class="fw7 f13">Suresh Patel</div><div class="muted f12">Mobile, Laptop</div></div><button class="btn sm pri" data-go="techs">Review</button></div>
+              <div class="row" style="gap:10px"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#B8845C"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="var(--primary)"/></svg><div class="grow"><div class="fw7 f13">Ravi Teja</div><div class="muted f12">TV, CCTV</div></div><button class="btn sm pri" data-go="techs">Review</button></div>
             </div>
           </div>
         </div>
@@ -224,13 +261,13 @@ input{font-family:inherit}
           <table class="table">
             <thead><tr><th>Booking</th><th>Customer</th><th>Category</th><th>Technician</th><th>Slot</th><th>Amount</th><th>Status</th></tr></thead>
             <tbody>
-              <tr><td class="s">#INF-20384</td><td><div class="cellrow"><span class="av">AS</span>Aarav Sharma</div></td><td>Air Conditioner</td><td>Rajesh Kumar</td><td>Today, 10–12 PM</td><td class="s rupee">2,000</td><td><span class="st go"><span class="d"></span>Ongoing</span></td></tr>
-              <tr><td class="s">#INF-20383</td><td><div class="cellrow"><span class="av b">NK</span>Neha Kapoor</div></td><td>Washing Machine</td><td>Imran Ali</td><td>Today, 2–4 PM</td><td class="s rupee">850</td><td><span class="st go"><span class="d"></span>Ongoing</span></td></tr>
-              <tr><td class="s">#INF-20382</td><td><div class="cellrow"><span class="av a">VR</span>Vikram Rao</div></td><td>Television</td><td class="muted">— unassigned</td><td>Tmrw, 11–1 PM</td><td class="s rupee">1,499</td><td><span class="st warn"><span class="d"></span>Assigning</span></td></tr>
-              <tr><td class="s">#INF-20381</td><td><div class="cellrow"><span class="av">SM</span>Sara Menon</div></td><td>Refrigerator</td><td>Deepak Verma</td><td>Yest, 4–6 PM</td><td class="s rupee">1,180</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
-              <tr><td class="s">#INF-20380</td><td><div class="cellrow"><span class="av a">AG</span>Amit Gupta</div></td><td>Microwave</td><td>Rajesh Kumar</td><td>9 Jun, 5–7 PM</td><td class="s rupee">640</td><td><span class="st red"><span class="d"></span>Cancelled</span></td></tr>
-              <tr><td class="s">#INF-20379</td><td><div class="cellrow"><span class="av b">PR</span>Priya R.</div></td><td>Water Purifier</td><td>Sunita Devi</td><td>9 Jun, 9–11 AM</td><td class="s rupee">499</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
-              <tr><td class="s">#INF-20378</td><td><div class="cellrow"><span class="av">KS</span>Karan Shah</div></td><td>Laptop</td><td>Deepak Verma</td><td>8 Jun, 1–3 PM</td><td class="s rupee">2,340</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
+              <tr><td class="s">#INF-20384</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#D4A06A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#2C6BD4"/></svg>Aarav Sharma</div></td><td>Air Conditioner</td><td>Rajesh Kumar</td><td>Today, 10–12 PM</td><td class="s rupee">2,000</td><td><span class="st go"><span class="d"></span>Ongoing</span></td></tr>
+              <tr><td class="s">#INF-20383</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#EAF2FE"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M9 10 Q10 6 15 7 Q20 6 21 10 Q21 13 19 13 L11 13 Q9 13 9 10" fill="#1A0F06"/><circle cx="15" cy="13" r="4" fill="#C49060"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M14 15 Q15 15.8 16 15" stroke="#14181D" stroke-width=".4" fill="none"/><circle cx="11" cy="13" r=".7" fill="#E0A870"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#E2A33A"/></svg>Neha Kapoor</div></td><td>Washing Machine</td><td>Imran Ali</td><td>Today, 2–4 PM</td><td class="s rupee">850</td><td><span class="st go"><span class="d"></span>Ongoing</span></td></tr>
+              <tr><td class="s">#INF-20382</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#FBF1E0"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><rect x="10" y="8" width="10" height="4" rx="2" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#A0785A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><rect x="12.5" y="11" width="5" height="2.5" rx="1" fill="none" stroke="#14181D" stroke-width=".5"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#6B4FD4"/></svg>Vikram Rao</div></td><td>Television</td><td class="muted">— unassigned</td><td>Tmrw, 11–1 PM</td><td class="s rupee">1,499</td><td><span class="st warn"><span class="d"></span>Assigning</span></td></tr>
+              <tr><td class="s">#INF-20381</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M10 11 Q12 7 15 8 Q18 7 20 11" fill="#1A0F06"/><circle cx="15" cy="13" r="4" fill="#B8845C"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="var(--primary)"/></svg>Sara Menon</div></td><td>Refrigerator</td><td>Deepak Verma</td><td>Yest, 4–6 PM</td><td class="s rupee">1,180</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
+              <tr><td class="s">#INF-20380</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#FBF1E0"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#D4A06A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#C44070"/></svg>Amit Gupta</div></td><td>Microwave</td><td>Rajesh Kumar</td><td>9 Jun, 5–7 PM</td><td class="s rupee">640</td><td><span class="st red"><span class="d"></span>Cancelled</span></td></tr>
+              <tr><td class="s">#INF-20379</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#EAF2FE"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M10 10 Q12 6 15 7 Q18 6 20 10" fill="#1A0F06"/><circle cx="15" cy="13" r="4" fill="#C49060"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="11" cy="13" r=".7" fill="#E0A870"/><circle cx="19" cy="13" r=".7" fill="#E0A870"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#2C6BD4"/></svg>Priya R.</div></td><td>Water Purifier</td><td>Sunita Devi</td><td>9 Jun, 9–11 AM</td><td class="s rupee">499</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
+              <tr><td class="s">#INF-20378</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#B8845C"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="var(--primary)"/></svg>Karan Shah</div></td><td>Laptop</td><td>Deepak Verma</td><td>8 Jun, 1–3 PM</td><td class="s rupee">2,340</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
             </tbody>
           </table>
           <div class="row between" style="padding:14px 18px;border-top:1px solid var(--line)"><span class="muted f12">Showing 7 of 3,842</span><div class="row" style="gap:8px"><button class="btn sm">Prev</button><button class="btn sm pri">1</button><button class="btn sm">2</button><button class="btn sm">3</button><button class="btn sm">Next</button></div></div>
@@ -247,11 +284,72 @@ input{font-family:inherit}
           <table class="table">
             <thead><tr><th>Expert</th><th>Categories</th><th>Area</th><th>Jobs</th><th>Rating</th><th>KYC</th><th style="text-align:right">Action</th></tr></thead>
             <tbody>
-              <tr data-rid="t1"><td><div class="cellrow"><span class="av b">MK</span><div><div class="s">Manish Kumar</div><div class="muted f12">TC-1182</div></div></div></td><td>AC, Refrigerator</td><td>Bengaluru</td><td>—</td><td>—</td><td class="kyc"><span class="st warn"><span class="d"></span>Pending</span></td><td style="text-align:right"><button class="btn sm pri" data-approve="t1">Approve</button></td></tr>
-              <tr data-rid="t2"><td><div class="cellrow"><span class="av a">SP</span><div><div class="s">Suresh Patel</div><div class="muted f12">TC-1183</div></div></div></td><td>Mobile, Laptop</td><td>Pune</td><td>—</td><td>—</td><td class="kyc"><span class="st warn"><span class="d"></span>Pending</span></td><td style="text-align:right"><button class="btn sm pri" data-approve="t2">Approve</button></td></tr>
-              <tr><td><div class="cellrow"><span class="av">RK</span><div><div class="s">Rajesh Kumar</div><div class="muted f12">TC-1011</div></div></div></td><td>AC, Refrigerator</td><td>Bengaluru</td><td>1,240</td><td><span class="st ok">4.9 ★</span></td><td><span class="st ok"><span class="d"></span>Verified</span></td><td style="text-align:right"><button class="btn sm">View</button></td></tr>
-              <tr><td><div class="cellrow"><span class="av b">IA</span><div><div class="s">Imran Ali</div><div class="muted f12">TC-1042</div></div></div></td><td>Washing Machine</td><td>Bengaluru</td><td>980</td><td><span class="st ok">4.8 ★</span></td><td><span class="st ok"><span class="d"></span>Verified</span></td><td style="text-align:right"><button class="btn sm">View</button></td></tr>
-              <tr><td><div class="cellrow"><span class="av a">DV</span><div><div class="s">Deepak Verma</div><div class="muted f12">TC-1067</div></div></div></td><td>TV, Laptop</td><td>Pune</td><td>870</td><td><span class="st ok">4.8 ★</span></td><td><span class="st ok"><span class="d"></span>Verified</span></td><td style="text-align:right"><button class="btn sm">View</button></td></tr>
+              <tr data-rid="t1"><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#EAF2FE"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#D4A06A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#2C6BD4"/></svg><div><div class="s">Manish Kumar</div><div class="muted f12">TC-1182</div></div></div></td><td>AC, Refrigerator</td><td>Bengaluru</td><td>—</td><td>—</td><td class="kyc"><span class="st warn"><span class="d"></span>Pending</span></td><td style="text-align:right"><button class="btn sm pri" data-review-kyc="ta1">Review</button></td></tr>
+              <tr data-rid="t2"><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#FBF1E0"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><rect x="10" y="8" width="10" height="4" rx="2" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#A0785A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#E2A33A"/></svg><div><div class="s">Suresh Patel</div><div class="muted f12">TC-1183</div></div></div></td><td>Mobile, Laptop</td><td>Pune</td><td>—</td><td>—</td><td class="kyc"><span class="st warn"><span class="d"></span>Pending</span></td><td style="text-align:right"><button class="btn sm pri" data-review-kyc="ta2">Review</button></td></tr>
+              <tr><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="4.5" fill="#C88A1A"/><rect x="10" y="8" width="10" height="4" rx="2" fill="#A06810"/><circle cx="15" cy="13" r="4" fill="#D4A06A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="var(--primary)"/></svg><div><div class="s">Rajesh Kumar</div><div class="muted f12">TC-1011</div></div></div></td><td>AC, Refrigerator</td><td>Bengaluru</td><td>1,240</td><td><span class="st ok">4.9 ★</span></td><td><span class="st ok"><span class="d"></span>Verified</span></td><td style="text-align:right"><button class="btn sm">View</button></td></tr>
+              <tr><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#EAF2FE"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#B8845C"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#2C6BD4"/></svg><div><div class="s">Imran Ali</div><div class="muted f12">TC-1042</div></div></div></td><td>Washing Machine</td><td>Bengaluru</td><td>980</td><td><span class="st ok">4.8 ★</span></td><td><span class="st ok"><span class="d"></span>Verified</span></td><td style="text-align:right"><button class="btn sm">View</button></td></tr>
+              <tr><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#FBF1E0"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#A0785A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#6B4FD4"/></svg><div><div class="s">Deepak Verma</div><div class="muted f12">TC-1067</div></div></div></td><td>TV, Laptop</td><td>Pune</td><td>870</td><td><span class="st ok">4.8 ★</span></td><td><span class="st ok"><span class="d"></span>Verified</span></td><td style="text-align:right"><button class="btn sm">View</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- USER MANAGEMENT -->
+      <section class="view" data-view="users">
+        <div class="row between bar" style="margin-bottom:16px">
+          <div class="tabs"><button class="on">All</button><button>Active</button><button>Inactive</button></div>
+          <button class="btn"><svg class="ic"><use href="#download"/></svg>Export</button>
+        </div>
+        <div class="panel p0">
+          <table class="table">
+            <thead><tr><th>Customer</th><th>Phone</th><th>City</th><th>Bookings</th><th>Total Spent</th><th>Status</th><th style="text-align:right">Action</th></tr></thead>
+            <tbody>
+              <tr><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#D4A06A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#2C6BD4"/></svg><div><div class="s">Aarav Sharma</div><div class="muted f12">aarav@email.com</div></div></div></td><td>+91 98765 43210</td><td>Moradabad</td><td>14</td><td class="s rupee">18,420</td><td><span class="st ok"><span class="d"></span>Active</span></td><td style="text-align:right"><button class="btn sm">View</button></td></tr>
+              <tr><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#EAF2FE"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M9 10 Q10 6 15 7 Q20 6 21 10 Q21 13 19 13 L11 13 Q9 13 9 10" fill="#1A0F06"/><circle cx="15" cy="13" r="4" fill="#C49060"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M14 15 Q15 15.8 16 15" stroke="#14181D" stroke-width=".4" fill="none"/><circle cx="11" cy="13" r=".7" fill="#E0A870"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#E2A33A"/></svg><div><div class="s">Neha Kapoor</div><div class="muted f12">neha.k@email.com</div></div></div></td><td>+91 91234 56789</td><td>Bengaluru</td><td>8</td><td class="s rupee">9,800</td><td><span class="st ok"><span class="d"></span>Active</span></td><td style="text-align:right"><button class="btn sm">View</button></td></tr>
+              <tr><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#FBF1E0"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><rect x="10" y="8" width="10" height="4" rx="2" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#A0785A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><rect x="12.5" y="11" width="5" height="2.5" rx="1" fill="none" stroke="#14181D" stroke-width=".5"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#6B4FD4"/></svg><div><div class="s">Vikram Rao</div><div class="muted f12">vikram.r@email.com</div></div></div></td><td>+91 87654 32109</td><td>Pune</td><td>3</td><td class="s rupee">4,139</td><td><span class="st warn"><span class="d"></span>Inactive</span></td><td style="text-align:right"><button class="btn sm">View</button></td></tr>
+              <tr><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M10 11 Q12 7 15 8 Q18 7 20 11" fill="#1A0F06"/><circle cx="15" cy="13" r="4" fill="#B8845C"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="var(--primary)"/></svg><div><div class="s">Sara Menon</div><div class="muted f12">sara.m@email.com</div></div></div></td><td>+91 99887 76655</td><td>Kochi</td><td>6</td><td class="s rupee">7,280</td><td><span class="st ok"><span class="d"></span>Active</span></td><td style="text-align:right"><button class="btn sm">View</button></td></tr>
+            </tbody>
+          </table>
+          <div class="row between" style="padding:14px 18px;border-top:1px solid var(--line)"><span class="muted f12">Showing 4 of 1,284 users</span><div class="row" style="gap:8px"><button class="btn sm">Prev</button><button class="btn sm pri">1</button><button class="btn sm">2</button><button class="btn sm">Next</button></div></div>
+        </div>
+      </section>
+
+      <!-- TECHNICIAN APPROVAL -->
+      <section class="view" data-view="techapproval">
+        <div class="row between bar" style="margin-bottom:16px">
+          <div class="tabs"><button class="on">Pending <span style="color:var(--amber);font-weight:800">6</span></button><button>Approved</button><button>Rejected</button></div>
+          <button class="btn"><svg class="ic"><use href="#download"/></svg>Export</button>
+        </div>
+        <div class="panel p0">
+          <table class="table">
+            <thead><tr><th>Technician</th><th>Categories</th><th>City</th><th>Submitted</th><th>Aadhaar</th><th>PAN</th><th>Bank</th><th style="text-align:right">Action</th></tr></thead>
+            <tbody>
+              <tr data-rid="ta1"><td><div class="cellrow"><span class="av b">MK</span><div><div class="s">Manish Kumar</div><div class="muted f12">TC-1182</div></div></div></td><td>AC, Refrigerator</td><td>Bengaluru</td><td>12 Jun</td><td><span class="st ok"><span class="d"></span>OK</span></td><td><span class="st ok"><span class="d"></span>OK</span></td><td><span class="st warn"><span class="d"></span>Pending</span></td><td style="text-align:right" class="kyca1"><button class="btn sm pri" data-review-kyc="ta1">Review KYC</button></td></tr>
+              <tr data-rid="ta2"><td><div class="cellrow"><span class="av a">SP</span><div><div class="s">Suresh Patel</div><div class="muted f12">TC-1183</div></div></div></td><td>Mobile, Laptop</td><td>Pune</td><td>11 Jun</td><td><span class="st ok"><span class="d"></span>OK</span></td><td><span class="st ok"><span class="d"></span>OK</span></td><td><span class="st ok"><span class="d"></span>OK</span></td><td style="text-align:right" class="kyca2"><button class="btn sm pri" data-review-kyc="ta2">Review KYC</button></td></tr>
+              <tr data-rid="ta3"><td><div class="cellrow"><span class="av">RT</span><div><div class="s">Ravi Teja</div><div class="muted f12">TC-1184</div></div></div></td><td>TV, CCTV</td><td>Hyderabad</td><td>10 Jun</td><td><span class="st warn"><span class="d"></span>Review</span></td><td><span class="st ok"><span class="d"></span>OK</span></td><td><span class="st ok"><span class="d"></span>OK</span></td><td style="text-align:right" class="kyca3"><button class="btn sm pri" data-review-kyc="ta3">Review KYC</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- COMMISSION MANAGEMENT -->
+      <section class="view" data-view="commission">
+        <div class="grid g4" style="margin-bottom:20px">
+          <div class="kpi"><div class="v"><span class="rupee"></span>3.72L</div><div class="l">Commission this month</div></div>
+          <div class="kpi"><div class="v">15%</div><div class="l">Avg commission rate</div></div>
+          <div class="kpi"><div class="v">214</div><div class="l">Active technicians</div></div>
+          <div class="kpi"><div class="v"><span class="rupee"></span>1,740</div><div class="l">Avg commission/tech</div></div>
+        </div>
+        <div class="panel p0">
+          <div class="ph" style="padding:18px 18px 14px;margin:0"><h3>Commission rules</h3><button class="btn sm pri"><svg class="ic"><use href="#plus"/></svg>Add rule</button></div>
+          <table class="table">
+            <thead><tr><th>Category</th><th>Rate</th><th>Min booking</th><th>Applicable to</th><th style="text-align:right">Action</th></tr></thead>
+            <tbody>
+              <tr><td class="s">Air Conditioner</td><td><span class="st ok">18%</span></td><td class="rupee">500</td><td>All technicians</td><td style="text-align:right"><button class="btn sm">Edit</button></td></tr>
+              <tr><td class="s">Mobile / Laptop</td><td><span class="st ok">15%</span></td><td class="rupee">300</td><td>All technicians</td><td style="text-align:right"><button class="btn sm">Edit</button></td></tr>
+              <tr><td class="s">Washing Machine</td><td><span class="st ok">16%</span></td><td class="rupee">400</td><td>All technicians</td><td style="text-align:right"><button class="btn sm">Edit</button></td></tr>
+              <tr><td class="s">Refrigerator</td><td><span class="st ok">16%</span></td><td class="rupee">400</td><td>All technicians</td><td style="text-align:right"><button class="btn sm">Edit</button></td></tr>
+              <tr><td class="s">General Service</td><td><span class="st warn">12%</span></td><td class="rupee">199</td><td>All technicians</td><td style="text-align:right"><button class="btn sm">Edit</button></td></tr>
             </tbody>
           </table>
         </div>
@@ -260,7 +358,7 @@ input{font-family:inherit}
       <!-- REPORTS -->
       <section class="view" data-view="reports">
         <div class="row between bar" style="margin-bottom:16px">
-          <div class="tabs"><button class="on">Revenue</button><button>Bookings</button><button>GST</button></div>
+          <div class="tabs"><button class="on">Revenue</button><button>Bookings</button><button>Technician</button><button>GST</button></div>
           <button class="btn"><svg class="ic"><use href="#download"/></svg>Export</button>
         </div>
         <div class="grid g4">
@@ -298,6 +396,56 @@ input{font-family:inherit}
   </div>
 </div>
 
+<div class="modal" id="kyc-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div>
+        <h3 id="modal-tech-name" style="margin:0">Manish Kumar</h3>
+        <div class="muted f12" id="modal-tech-id" style="margin-top:2px">TC-1182</div>
+      </div>
+      <button onclick="closeKycModal()" style="font-size:20px;font-weight:700;color:var(--gray2);cursor:pointer;background:none;border:none">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:18px">
+        <div class="fw6 f12 muted" style="margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase">Aadhaar Card (Front & Back)</div>
+        <div class="grid g2" style="gap:10px">
+          <div class="kyc-doc-img">
+            <span>FRONT</span>
+            <svg class="ic" style="width:32px;height:32px;color:var(--gray2)"><use href="#idcard"/></svg>
+            <div class="f11 muted fw6" style="margin-top:2px">Aadhaar_Front.jpg</div>
+          </div>
+          <div class="kyc-doc-img">
+            <span>BACK</span>
+            <svg class="ic" style="width:32px;height:32px;color:var(--gray2)"><use href="#idcard"/></svg>
+            <div class="f11 muted fw6" style="margin-top:2px">Aadhaar_Back.jpg</div>
+          </div>
+        </div>
+      </div>
+      
+      <div style="margin-bottom:18px">
+        <div class="fw6 f12 muted" style="margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase">PAN Card</div>
+        <div class="kyc-doc-img">
+          <svg class="ic" style="width:32px;height:32px;color:var(--gray2)"><use href="#card"/></svg>
+          <div class="f11 muted fw6" style="margin-top:2px">PAN_Card.jpg</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="fw6 f12 muted" style="margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase">Bank Details</div>
+        <div style="background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13px;line-height:1.6">
+          <div class="row between"><span class="muted">Account Holder:</span><span class="fw7" id="modal-bank-name">Manish Kumar</span></div>
+          <div class="row between" style="margin-top:4px"><span class="muted">Account Number:</span><span class="fw7" id="modal-bank-acc">50100482910</span></div>
+          <div class="row between" style="margin-top:4px"><span class="muted">IFSC Code:</span><span class="fw7" id="modal-bank-ifsc">HDFC0000001</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn sm" onclick="closeKycModal()" style="border:1px solid var(--line)">Close</button>
+      <button class="btn sm pri" id="modal-approve-btn">Approve KYC</button>
+    </div>
+  </div>
+</div>
+
 <div class="backdrop" id="bd"></div>
 <div class="toast" id="toast">Saved</div>
 
@@ -307,8 +455,6 @@ input{font-family:inherit}
 <symbol id="users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 19.5c0-3 2.9-5 6.5-5s6.5 2 6.5 5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.6c2 .6 3.5 2 3.5 4.9"/></symbol>
 <symbol id="chart" viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M20 20H3"/></symbol>
 <symbol id="percent" viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="7.5" cy="7.5" r="1.6"/><circle cx="16.5" cy="16.5" r="1.6"/></symbol>
-<symbol id="shield" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 3 7.7 7 9 4-1.3 7-4.5 7-9V6l-7-3Z"/></symbol>
-<symbol id="cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 13.5a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.2A1.7 1.7 0 0 0 6.4 19l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0-1.2-2.9H2a2 2 0 1 1 0-4h.2A1.7 1.7 0 0 0 3.5 6.4l-.1-.1A2 2 0 1 1 6.2 3.5l.1.1a1.7 1.7 0 0 0 1.9.3H8a1.7 1.7 0 0 0 1-1.5V2a2 2 0 1 1 4 0v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V8a1.7 1.7 0 0 0 1.5 1H22a2 2 0 1 1 0 4h-.2a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
 <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></symbol>
 <symbol id="bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6M9.5 21a2.5 2.5 0 0 0 5 0"/></symbol>
 <symbol id="plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
@@ -317,10 +463,27 @@ input{font-family:inherit}
 <symbol id="rupee" viewBox="0 0 24 24"><path d="M7 4h10M7 8h10M7 4c5 0 7 2 7 5s-2 4.5-6 4.5H8l6 6.5"/></symbol>
 <symbol id="idcard" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1.5"/><circle cx="8" cy="11" r="2"/><path d="M5 16c.5-1.6 1.7-2.5 3-2.5s2.5.9 3 2.5M14 10h4M14 13.5h4"/></symbol>
 <symbol id="menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+<symbol id="card" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 14h3"/></symbol>
 </defs></svg>
 
 <script>
-const titles={dashboard:['Dashboard','Welcome back, Priya · Mon, 11 Jun 2026'],bookings:['Bookings','Manage all service bookings'],techs:['Technicians','Approve & manage your experts'],reports:['Reports','Revenue, bookings & GST']};
+const kycData = {
+  ta1: { name: 'Manish Kumar', id: 'TC-1182', bankName: 'Manish Kumar', bankAcc: '50100482910', bankIfsc: 'HDFC0000001' },
+  ta2: { name: 'Suresh Patel', id: 'TC-1183', bankName: 'Suresh Patel', bankAcc: '00021059381', bankIfsc: 'ICIC0000002' },
+  ta3: { name: 'Ravi Teja', id: 'TC-1184', bankName: 'Ravi Teja', bankAcc: '30481290481', bankIfsc: 'SBIN0000003' }
+};
+window.closeKycModal = function() {
+  document.getElementById('kyc-modal').classList.remove('open');
+};
+const titles={
+  dashboard:['Dashboard','Welcome back, Priya · Mon, 11 Jun 2026'],
+  users:['User Management','Customer directory & registration'],
+  techapproval:['Technician Approval','Review KYC documents · 6 pending'],
+  bookings:['Booking Management','Manage service bookings & assignments'],
+  commission:['Commission Management','Commission split rules & payouts'],
+  reports:['Reports (Booking, Revenue, Technician, GST)','Financial & operational metrics'],
+  techs:['Technicians','Active & verified partners'],
+};
 function go(id){
   if(!titles[id]) return;
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.dataset.view===id));
@@ -342,6 +505,51 @@ document.addEventListener('click',e=>{
   const ap=e.target.closest('[data-approve]'); if(ap){ const tr=document.querySelector('tr[data-rid="'+ap.dataset.approve+'"]');
     tr.querySelector('.kyc').innerHTML='<span class="st ok"><span class="d"></span>Verified</span>';
     ap.outerHTML='<button class="btn sm">View</button>'; toast('Technician approved'); return; }
+  
+  const rk=e.target.closest('[data-review-kyc]');
+  if(rk){
+    const id=rk.dataset.reviewKyc;
+    const data=kycData[id];
+    if(data){
+      document.getElementById('modal-tech-name').textContent=data.name;
+      document.getElementById('modal-tech-id').textContent=data.id;
+      document.getElementById('modal-bank-name').textContent=data.bankName;
+      document.getElementById('modal-bank-acc').textContent=data.bankAcc;
+      document.getElementById('modal-bank-ifsc').textContent=data.bankIfsc;
+      const approveBtn=document.getElementById('modal-approve-btn');
+      approveBtn.setAttribute('data-approve-kyc-from-modal',id);
+      
+      const cell=document.querySelector('.kyca'+id.replace('ta',''));
+      const isApproved=cell && cell.textContent.includes('Approved');
+      if(isApproved){
+        approveBtn.disabled=true;
+        approveBtn.style.opacity='.45';
+        approveBtn.textContent='Already Approved';
+      } else {
+        approveBtn.disabled=false;
+        approveBtn.style.opacity='1';
+        approveBtn.textContent='Approve KYC';
+      }
+      document.getElementById('kyc-modal').classList.add('open');
+    }
+    return;
+  }
+  const modalApprove=e.target.closest('[data-approve-kyc-from-modal]');
+  if(modalApprove){
+    const id=modalApprove.getAttribute('data-approve-kyc-from-modal');
+    const tr=document.querySelector('tr[data-rid="'+id+'"]');
+    if(tr){
+      tr.querySelectorAll('.st.warn,.st.red').forEach(s=>{
+        s.className='st ok';
+        s.innerHTML='<span class="d"></span>OK';
+      });
+    }
+    const cell=document.querySelector('.kyca'+id.replace('ta',''));
+    if(cell)cell.innerHTML='<span class="st ok"><span class="d"></span>Approved</span>';
+    toast('Technician approved · Account activated');
+    closeKycModal();
+    return;
+  }
   const tab=e.target.closest('.tabs button'); if(tab){ tab.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('on')); tab.classList.add('on'); }
 });
 </script>

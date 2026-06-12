@@ -9,19 +9,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --green:#0E9466;--green-d:#0A7350;--green-50:#E9F5EF;--green-100:#D2EBE0;
-  --ink:#14181D;--gray:#5B6472;--gray2:#8B93A0;--line:#E9EBEE;--bg:#FFFFFF;--soft:#F5F6F8;
-  --amber:#E2A33A;--amber-d:#B87A1A;--amber-50:#FBF1E0;--red:#E0573C;--red-50:#FCEEEB;--blue:#2C6BD4;--blue-50:#EAF2FE;
+  --primary:#0A7350;--primary-d:#065F40;--primary-50:#E9F5EF;--primary-100:#D2EBE0;
+  --ink:#0F172A;--gray:#475569;--gray2:#94A3B8;--line:#E2E8F0;--bg:#FFFFFF;--soft:#F8FAFC;
+  --amber:#D97706;--amber-d:#9A6A14;--amber-50:#FFFBEB;--red:#DC2626;--red-50:#FEF2F2;--blue:#2563EB;--blue-50:#DBEAFE;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:Inter,system-ui,sans-serif;background:#E7E9EC;color:var(--ink);display:flex;justify-content:center;line-height:1.45;-webkit-font-smoothing:antialiased}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 .ic{width:22px;height:22px;stroke:currentColor;stroke-width:1.9;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;display:block}
-.app{width:430px;max-width:100%;height:100vh;height:100dvh;max-height:932px;background:var(--bg);position:relative;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 70px rgba(20,30,45,.16)}
+.app{width:430px;max-width:100%;height:100vh;height:100dvh;max-height:932px;background:var(--bg);position:relative;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 8px 30px rgba(20,30,45,.10),0 20px 70px rgba(20,30,45,.16)}
 @media(min-width:480px){.app{height:912px;margin:auto;border-radius:34px}}
 .stage{flex:1;position:relative;min-height:0}
 .screen{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg)}
-.screen.active{display:flex}
+.screen.active{display:flex;animation:fadeIn .28s ease}
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden}.scroll::-webkit-scrollbar{width:0}
 .grow{flex:1;min-width:0}
 .row{display:flex;align-items:center}.between{justify-content:space-between}
@@ -32,24 +32,48 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .rupee::before{content:"\20B9"}
 .pad{padding:0 18px}
 
+/* login screen */
+.login-wrap{flex:1;display:flex;flex-direction:column;justify-content:center;padding:32px 24px calc(28px + env(safe-area-inset-bottom))}
+.inp-field{width:100%;height:52px;border:1.5px solid var(--line);border-radius:14px;padding:0 16px;font-size:15px;font-family:inherit;color:var(--ink);outline:none;background:#fff;transition:border-color .15s}
+.inp-field:focus{border-color:var(--primary)}
+.inp-label{font-size:12px;font-weight:700;color:var(--gray);margin-bottom:6px;margin-top:16px;display:block;letter-spacing:.02em}
+.otp-row{display:flex;gap:10px;margin-top:2px}
+.otp-d{flex:1;height:54px;border:1.5px solid var(--line);border-radius:13px;display:grid;place-items:center;font-size:22px;font-weight:800;background:#fff;transition:border-color .15s}
+.otp-d.filled{border-color:var(--primary);background:var(--primary-50)}
+.otp-hint{font-size:12px;color:var(--gray2);margin-top:8px;text-align:center}
+/* ========== ANIMATIONS ========== */
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes dotPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.6}}
+@keyframes float{0%,100%{transform:translate(-50%,-100%) rotate(45deg) translateY(0)}50%{transform:translate(-50%,-100%) rotate(45deg) translateY(-6px)}}
+@keyframes gradientShine{0%{background-position:200% center}100%{background-position:-200% center}}
+@keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes onlinePulse{0%,100%{box-shadow:0 0 0 0 rgba(10,115,80,.35)}50%{box-shadow:0 0 0 5px rgba(10,115,80,0)}}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(10,115,80,.4)}50%{box-shadow:0 0 0 8px rgba(10,115,80,0)}}
+@keyframes reviewGlow{0%,100%{opacity:.8}50%{opacity:.3}}
+
 /* header */
 .hdr{padding:14px 18px 10px;display:flex;align-items:center;gap:10px}
-.back{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;flex:0 0 auto}
-.iconbtn{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;position:relative;flex:0 0 auto}
-.iconbtn .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff}
-.av{border-radius:50%;background:var(--green-50);color:var(--green-d);display:grid;place-items:center;font-weight:800;flex:0 0 auto}
+.back{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;flex:0 0 auto;transition:background .15s,border-color .15s}
+.back:hover{background:var(--soft);border-color:var(--amber-50)}
+.iconbtn{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);display:grid;place-items:center;position:relative;flex:0 0 auto;transition:background .15s}
+.iconbtn:hover{background:var(--soft)}
+.iconbtn .dot{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--red);border:1.5px solid #fff;animation:dotPulse 2s ease-in-out infinite}
+.av{border-radius:50%;background:var(--primary-50);color:var(--primary-d);display:grid;place-items:center;font-weight:800;flex:0 0 auto;overflow:hidden}
 
 /* online pill */
-.online-pill{display:inline-flex;align-items:center;gap:6px;background:var(--amber-50);border:1px solid #F0D090;border-radius:20px;padding:5px 11px;font-size:12px;font-weight:800;color:#9A6A14;cursor:pointer;transition:.15s}
+.online-pill{display:inline-flex;align-items:center;gap:6px;background:var(--primary-50);border:1px solid var(--primary-100);border-radius:20px;padding:5px 11px;font-size:12px;font-weight:800;color:var(--primary-d);cursor:pointer;transition:.2s}
 .online-pill.off{background:var(--soft);border-color:var(--line);color:var(--gray2)}
-.online-pill .od{width:7px;height:7px;border-radius:50%;background:var(--amber);flex:0 0 auto}
-.online-pill.off .od{background:var(--gray2)}
+.online-pill .od{width:7px;height:7px;border-radius:50%;background:var(--primary);flex:0 0 auto;animation:onlinePulse 2s ease-in-out infinite}
+.online-pill.off .od{background:var(--gray2);animation:none}
 
 /* dark earnings card */
-.earn-card{background:#1B2030;border-radius:18px;padding:18px;color:#fff;margin-bottom:14px}
-.earn-card .ec-today{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;opacity:.6}
-.earn-card .ec-amt{font-size:34px;font-weight:800;letter-spacing:-.03em;margin-top:4px}
-.earn-card .ec-stats{display:flex;gap:0;margin-top:16px;border-top:1px solid rgba(255,255,255,.1);padding-top:14px}
+.earn-card{background:linear-gradient(135deg,#141824 0%,#1B2030 50%,#222840 100%);border-radius:18px;padding:18px;color:#fff;margin-bottom:14px;position:relative;overflow:hidden}
+.earn-card::before{content:"";position:absolute;top:-30px;right:-30px;width:100px;height:100px;border-radius:50%;background:rgba(10,115,80,.08)}
+.earn-card::after{content:"";position:absolute;bottom:-20px;left:30%;width:80px;height:80px;border-radius:50%;background:rgba(10,115,80,.06)}
+.earn-card .ec-today{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;opacity:.6;position:relative}
+.earn-card .ec-amt{font-size:34px;font-weight:800;letter-spacing:-.03em;margin-top:4px;position:relative}
+.earn-card .ec-stats{display:flex;gap:0;margin-top:16px;border-top:1px solid rgba(255,255,255,.1);padding-top:14px;position:relative}
 .earn-card .ec-stat{flex:1;text-align:center}
 .earn-card .ec-stat+.ec-stat{border-left:1px solid rgba(255,255,255,.1)}
 .earn-card .ec-stat .sv{font-size:18px;font-weight:800}
@@ -57,78 +81,90 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
 /* inline tabs */
 .itabs{display:flex;gap:0;border-bottom:1px solid var(--line);padding:0 18px;margin-bottom:0}
-.itab{padding:10px 14px 11px;font-size:13px;font-weight:700;color:var(--gray2);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;position:relative}
-.itab.on{color:var(--green);border-bottom-color:var(--green)}
+.itab{padding:10px 14px 11px;font-size:13px;font-weight:700;color:var(--gray2);border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;position:relative;transition:color .15s}
+.itab.on{color:var(--primary);border-bottom-color:var(--primary)}
 .itab .badge{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;border-radius:9px;background:var(--amber);color:#fff;font-size:10px;font-weight:800;padding:0 4px;margin-left:5px;vertical-align:middle}
 
 /* buttons */
-.btn{display:flex;align-items:center;justify-content:center;gap:9px;height:52px;border-radius:14px;font-size:15px;font-weight:700;width:100%;transition:filter .12s,transform .1s}
+.btn{display:flex;align-items:center;justify-content:center;gap:9px;height:52px;border-radius:14px;font-size:15px;font-weight:700;width:100%;transition:filter .12s,transform .1s,box-shadow .2s;white-space:nowrap}
 .btn:active{transform:scale(.99)}
-.btn.pri{background:var(--green);color:#fff}.btn.pri:active{filter:brightness(.95)}
-.btn.amber{background:var(--amber);color:#fff}.btn.amber:active{filter:brightness(.95)}
-.btn.out{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
-.btn.soft{background:var(--green-50);color:var(--green-d)}
-.btn.dark{background:#1B2030;color:#fff}
+.btn.pri{background:linear-gradient(135deg,var(--primary-d),var(--primary));color:#fff;position:relative;overflow:hidden}
+.btn.pri::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.15) 50%,transparent 60%);background-size:200% 100%;animation:gradientShine 3s ease-in-out infinite}
+.btn.pri:active{filter:brightness(.95)}
+.btn.amber{background:linear-gradient(135deg,var(--primary-d),var(--primary));color:#fff;position:relative;overflow:hidden}
+.btn.amber::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.15) 50%,transparent 60%);background-size:200% 100%;animation:gradientShine 3s ease-in-out infinite}
+.btn.amber:active{filter:brightness(.95)}
+.btn.amber:hover{box-shadow:0 4px 16px rgba(10,115,80,.25)}
+.btn.out{background:#fff;border:1.5px solid var(--line);color:var(--ink);transition:border-color .15s,background .15s}
+.btn.out:hover{border-color:var(--amber-50);background:var(--amber-50)}
+.btn.soft{background:var(--primary-50);color:var(--primary-d)}
+.btn.dark{background:linear-gradient(135deg,#141824,#1B2030);color:#fff}
 .btn .ic{width:19px;height:19px;stroke-width:2.2}
 .btn.sm{height:40px;font-size:13px;border-radius:10px;width:auto;padding:0 16px}
 
 /* cards */
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;transition:box-shadow .2s,transform .15s}
 
 /* job card */
-.job-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px}
+.job-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;transition:box-shadow .2s,transform .15s}
+.job-card:hover{box-shadow:0 4px 14px rgba(0,0,0,.06);transform:translateY(-1px)}
 .job-card .jc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.jc-new{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;color:var(--green-d);background:var(--green-50);padding:4px 10px;border-radius:7px}
+.jc-new{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:800;color:var(--primary-d);background:var(--primary-50);padding:4px 10px;border-radius:7px}
 .jc-new .ic{width:12px;height:12px}
 .jc-timer{font-size:12px;font-weight:800;color:var(--red)}
 .jc-body{display:flex;gap:12px;align-items:flex-start}
-.thumb{width:50px;height:50px;border-radius:13px;background:var(--soft);display:grid;place-items:center;color:var(--green-d);flex:0 0 auto}
+.thumb{width:50px;height:50px;border-radius:13px;background:var(--soft);display:grid;place-items:center;color:var(--primary-d);flex:0 0 auto;transition:background .15s}
 .thumb .ic{width:24px;height:24px}
 .est-earn{display:inline-flex;align-items:center;background:var(--amber-50);color:var(--amber-d);font-size:11px;font-weight:800;padding:3px 9px;border-radius:7px;margin-top:5px}
 .jc-meta{display:flex;gap:14px;margin-top:11px;font-size:12px;font-weight:600;color:var(--gray)}
 .jc-meta span{display:inline-flex;align-items:center;gap:5px}
-.jc-meta .ic{width:13px;height:13px;color:var(--green-d)}
+.jc-meta .ic{width:13px;height:13px;color:var(--primary-d)}
 .jc-actions{display:flex;gap:9px;margin-top:12px}
 
 /* status pills */
 .st{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:8px}
 .st .d{width:6px;height:6px;border-radius:50%;background:currentColor}
-.st.ok{background:var(--green-50);color:var(--green-d)}.st.go{background:var(--blue-50);color:var(--blue)}
-.st.warn{background:var(--amber-50);color:#9A6A14}.st.off{background:var(--soft);color:var(--gray)}.st.red{background:var(--red-50);color:var(--red)}
+.st.ok{background:var(--primary-50);color:var(--primary-d)}.st.go{background:var(--blue-50);color:var(--blue)}
+.st.go .d{animation:pulse 1.5s ease-in-out infinite}
+.st.warn{background:var(--amber-50);color:var(--amber-d)}.st.off{background:var(--soft);color:var(--gray)}.st.red{background:var(--red-50);color:var(--red)}
 .st.ongoing{background:#1B2030;color:#fff;font-size:10.5px;letter-spacing:.05em;text-transform:uppercase}
 
 /* map */
-.map{border-radius:16px;border:1px solid var(--line);position:relative;overflow:hidden;background:repeating-linear-gradient(0deg,#eef0f2 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,#eef0f2 0 1px,transparent 1px 28px),#f4f5f7}
-.map .pin{position:absolute;width:30px;height:30px;border-radius:50% 50% 50% 2px;background:var(--green);transform:translate(-50%,-100%) rotate(45deg);display:grid;place-items:center}
+.map{border-radius:16px;border:1px solid var(--line);position:relative;overflow:hidden;background:repeating-linear-gradient(0deg,#eef0f2 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,#eef0f2 0 1px,transparent 1px 28px),linear-gradient(135deg,#f0f2f4,#f6f7f9)}
+.map .pin{position:absolute;width:30px;height:30px;border-radius:50% 50% 50% 2px;background:var(--primary);transform:translate(-50%,-100%) rotate(45deg);display:grid;place-items:center;animation:float 3s ease-in-out infinite;box-shadow:0 4px 12px rgba(28,53,87,.3)}
 .map .pin .ic{transform:rotate(-45deg);width:15px;height:15px;color:#fff;stroke-width:2.4}
 
 /* dist badge */
-.dist-badge{position:absolute;left:12px;top:12px;background:#fff;border:1px solid var(--line);border-radius:9px;padding:6px 11px;font-size:12.5px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.07)}
+.dist-badge{position:absolute;left:12px;top:12px;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(233,235,238,.6);border-radius:9px;padding:6px 11px;font-size:12.5px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.08)}
 
 /* issue photos */
 .photo-row{display:flex;gap:10px;margin-top:10px}
-.photo-thumb{width:72px;height:56px;border-radius:10px;background:var(--soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--gray2)}
+.photo-thumb{width:72px;height:56px;border-radius:10px;background:var(--soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--gray2);transition:border-color .15s}
+.photo-thumb:hover{border-color:var(--amber-50)}
 .photo-thumb .ic{width:20px;height:20px}
 
 /* job progress */
 .prog-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
 .prog-row:last-child{border-bottom:none}
-.prog-row .pchk{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:0 0 auto}
-.prog-row.done .pchk{background:var(--green);border-color:var(--green)}
-.prog-row.now .pchk{border-color:var(--green)}
-.prog-row.now .pchk::after{content:"";display:block;width:8px;height:8px;border-radius:50%;background:var(--green)}
+.prog-row .pchk{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:0 0 auto;transition:.2s}
+.prog-row.done .pchk{background:var(--primary);border-color:var(--primary)}
+.prog-row.now .pchk{border-color:var(--primary)}
+.prog-row.now .pchk::after{content:"";display:block;width:8px;height:8px;border-radius:50%;background:var(--primary)}
 .prog-row .plbl{font-size:13.5px;font-weight:600}
-.prog-row.done .plbl{color:var(--green-d)}.prog-row.wait .plbl{color:var(--gray2)}
+.prog-row.done .plbl{color:var(--primary-d)}.prog-row.wait .plbl{color:var(--gray2)}
 
 /* stats */
-.stat{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;transition:box-shadow .2s}
+.stat:hover{box-shadow:0 3px 10px rgba(0,0,0,.04)}
 .stat .v{font-size:18px;font-weight:800;letter-spacing:-.02em}.stat .l{font-size:11.5px;color:var(--gray);margin-top:4px}
 
 /* bar chart */
 .bars{display:flex;align-items:flex-end;gap:9px;height:120px;margin-top:4px}
 .bars .b{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:7px;height:100%}
-.bars .b i{width:100%;max-width:26px;border-radius:6px 6px 3px 3px;background:var(--green-100);display:block}
-.bars .b.on i{background:var(--green)}.bars .b span{font-size:11px;color:var(--gray2);font-weight:600}
+.bars .b i{width:100%;max-width:26px;border-radius:6px 6px 3px 3px;background:var(--primary-100);display:block;transform-origin:bottom;animation:barGrow .6s ease-out both}
+.bars .b:nth-child(1) i{animation-delay:.05s}.bars .b:nth-child(2) i{animation-delay:.1s}.bars .b:nth-child(3) i{animation-delay:.15s}
+.bars .b:nth-child(4) i{animation-delay:.2s}.bars .b:nth-child(5) i{animation-delay:.25s}.bars .b:nth-child(6) i{animation-delay:.3s}.bars .b:nth-child(7) i{animation-delay:.35s}
+.bars .b.on i{background:var(--primary)}.bars .b span{font-size:11px;color:var(--gray2);font-weight:600}
 
 /* bill */
 .bill{display:flex;justify-content:space-between;padding:7px 0;font-size:13.5px}
@@ -137,35 +173,54 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .bill.tot .k{font-weight:800;color:var(--ink);font-size:15px}.bill.tot .v{font-weight:800;font-size:17px}
 
 /* list rows */
-.lrow{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--line)}
+.lrow{display:flex;align-items:center;gap:13px;padding:14px 0;border-bottom:1px solid var(--line);transition:background .15s}
 .lrow:last-child{border-bottom:none}
-.lrow .li{width:42px;height:42px;border-radius:11px;background:var(--soft);display:grid;place-items:center;color:var(--ink);flex:0 0 auto}
+.lrow .li{width:42px;height:42px;border-radius:11px;background:var(--soft);display:grid;place-items:center;color:var(--ink);flex:0 0 auto;transition:background .15s}
 .lrow .ttl{font-size:14.5px;font-weight:600}.lrow .ds{font-size:12.5px;color:var(--gray);margin-top:1px}
 .chev2{color:var(--gray2)}
 
 /* KYC doc card */
-.doc-card{border:1.5px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;background:#fff}
-.doc-card.uploaded{border-color:var(--green-100)}
+.doc-card{border:1.5px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;background:#fff;transition:box-shadow .2s}
+.doc-card:hover{box-shadow:0 3px 10px rgba(0,0,0,.04)}
+.doc-card.uploaded{border-color:var(--primary-100)}
 .doc-card .dc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .doc-card .dc-icon{width:38px;height:38px;border-radius:10px;background:var(--soft);display:grid;place-items:center;flex:0 0 auto}
 .doc-card .dc-name{font-size:14px;font-weight:700}
 .doc-card .dc-sub{font-size:12px;color:var(--gray);margin-top:2px}
-.uploaded-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--green-d)}
+.uploaded-badge{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--primary-d)}
 .doc-photos{display:flex;gap:10px}
 .doc-photo{width:90px;height:62px;border-radius:10px;background:var(--soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--gray2);overflow:hidden}
 .doc-photo img{width:100%;height:100%;object-fit:cover}
-.upload-zone{height:70px;border:1.5px dashed var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:600;color:var(--gray2);cursor:pointer}
+.upload-zone{height:70px;border:1.5px dashed var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:600;color:var(--gray2);cursor:pointer;transition:border-color .15s,background .15s}
+.upload-zone:hover{border-color:var(--amber-50);background:var(--amber-50)}
 .secure-note{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray2);margin-top:12px}
 
+/* estimate rows */
+.est-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line)}
+.est-row:last-of-type{border-bottom:none}
+.er-lbl{font-size:13px;font-weight:600;color:var(--gray)}
+.er-in{display:flex;align-items:center;gap:4px}
+.est-inp{width:90px;text-align:right;border:1.5px solid var(--line);border-radius:8px;padding:5px 8px;font-size:14px;font-weight:700;font-family:inherit;outline:none;color:var(--ink);transition:border-color .2s,box-shadow .2s}
+.est-inp:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(10,115,80,.1)}
+.er-cur{font-size:13px;font-weight:700;color:var(--gray)}
+
+/* completion steps */
+.comp-step{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);width:100%;text-align:left;cursor:pointer;transition:background .15s}
+.comp-step:last-child{border-bottom:none}
+.cs-chk{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:0 0 auto;transition:.2s}
+.comp-step.done .cs-chk{background:var(--primary);border-color:var(--primary)}
+.cs-lbl{font-size:13.5px;font-weight:700}.cs-sub{font-size:12px;color:var(--gray);margin-top:2px}
+.comp-step.done .cs-lbl{color:var(--primary-d)}
+
 /* pending screen */
-.screen.dark-screen{background:#12161F}
+.screen.dark-screen{background:linear-gradient(180deg,#0D1019 0%,#12161F 40%,#171C2A 100%)}
 
 /* progress dots */
 .prog-steps{display:flex;align-items:center;justify-content:center;gap:0;margin-top:32px;width:100%}
 .ps-step{display:flex;flex-direction:column;align-items:center;gap:8px;flex:1}
 .ps-dot{width:32px;height:32px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:grid;place-items:center;font-size:11px;font-weight:800;color:rgba(255,255,255,.4)}
 .ps-dot.done{background:var(--amber);border-color:var(--amber);color:#fff}
-.ps-dot.now{border-color:var(--amber);color:var(--amber);box-shadow:0 0 0 4px rgba(226,163,58,.15)}
+.ps-dot.now{border-color:var(--amber);color:var(--amber);animation:breathe 2.5s ease-in-out infinite}
 .ps-lbl{font-size:11px;font-weight:600;color:rgba(255,255,255,.45);text-align:center}
 .ps-lbl.done{color:rgba(255,255,255,.8)}.ps-lbl.now{color:var(--amber)}
 .ps-line{flex:1;height:2px;background:rgba(255,255,255,.12);margin:0 -2px;margin-bottom:20px}
@@ -175,20 +230,56 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .dock{flex:0 0 auto;padding:12px 18px calc(18px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line)}
 .tabbar{flex:0 0 auto;min-height:68px;display:flex;border-top:1px solid var(--line);background:#fff;padding-bottom:env(safe-area-inset-bottom)}
 .app.flow .tabbar{display:none}
-.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--gray2);font-size:10.5px;font-weight:600}
-.tab .ic{width:23px;height:23px}.tab.on{color:var(--green)}.tab.on .ic{stroke-width:2.2}
-.toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:11px;opacity:0;transition:.3s;pointer-events:none;z-index:30;white-space:nowrap}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--gray2);font-size:10.5px;font-weight:600;transition:color .15s}
+.tab .ic{width:23px;height:23px;transition:transform .15s}
+.tab.on{color:var(--primary)}.tab.on .ic{stroke-width:2.2;transform:scale(1.05)}
+.toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13px;font-weight:600;padding:11px 18px;border-radius:11px;opacity:0;transition:.3s;pointer-events:none;z-index:30;white-space:nowrap;box-shadow:0 8px 24px rgba(20,24,29,.25)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* SVG avatar styles */
+.av-svg{border-radius:50%;flex:0 0 auto;overflow:hidden;display:block}
 </style>
 </head>
 <body>
-<div class="app" id="app">
+<div class="app flow" id="app">
 <div class="stage">
 
+<!-- LOGIN -->
+<section class="screen active" data-screen="login" data-flow>
+  <div class="login-wrap">
+    <div style="margin-bottom:32px">
+      <div style="width:56px;height:56px;border-radius:18px;background:var(--amber-50);display:grid;place-items:center;margin-bottom:18px">
+        <svg class="ic" style="width:28px;height:28px;color:var(--amber-d)"><use href="#wrench"/></svg>
+      </div>
+      <div style="font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1.15">Welcome to<br><span style="color:var(--amber-d)">Infotel Partner</span></div>
+      <div style="font-size:13.5px;color:var(--gray);margin-top:10px">Enter your mobile number to continue</div>
+    </div>
+
+    <label class="inp-label">Mobile number</label>
+    <div style="display:flex;align-items:center;gap:0;border:1.5px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;transition:border-color .15s" id="phone-wrap">
+      <span style="padding:0 12px;font-size:14px;font-weight:700;color:var(--gray);border-right:1.5px solid var(--line);height:52px;display:flex;align-items:center;background:var(--soft)">+91</span>
+      <input class="inp-field" type="tel" maxlength="10" placeholder="98765 43210" id="phone-inp" style="border:none;border-radius:0;flex:1" oninput="document.getElementById('phone-wrap').style.borderColor='var(--amber)'">
+    </div>
+
+    <label class="inp-label" style="margin-top:20px">OTP</label>
+    <div class="otp-row" id="otp-boxes">
+      <div class="otp-d">·</div>
+      <div class="otp-d">·</div>
+      <div class="otp-d">·</div>
+      <div class="otp-d">·</div>
+      <div class="otp-d filled">2</div>
+      <div class="otp-d filled">7</div>
+    </div>
+    <div class="otp-hint">OTP sent to +91 98765 43210</div>
+
+    <button class="btn amber" style="margin-top:28px" data-login>Verify &amp; Continue</button>
+    <div style="font-size:12.5px;color:var(--gray2);text-align:center;margin-top:16px">Didn't receive OTP? <span style="color:var(--amber-d);font-weight:700;cursor:pointer">Resend in 0:28</span></div>
+  </div>
+</section>
+
 <!-- JOBS -->
-<section class="screen active" data-screen="jobs">
+<section class="screen" data-screen="jobs">
   <div class="hdr">
-    <span class="av" style="width:42px;height:42px;font-size:14px">RK</span>
+    <svg class="av-svg" width="42" height="42" viewBox="0 0 42 42"><circle cx="21" cy="21" r="21" fill="var(--primary-50)"/><circle cx="21" cy="16" r="7" fill="var(--primary)"/><rect x="14" y="9" width="14" height="5" rx="2" fill="var(--primary-d)"/><circle cx="21" cy="18" r="6" fill="#D4A06A"/><circle cx="18" cy="17" r="1" fill="#14181D"/><circle cx="24" cy="17" r="1" fill="#14181D"/><path d="M18.5 20 Q21 22 23.5 20" stroke="#14181D" stroke-width=".8" fill="none" stroke-linecap="round"/><path d="M10 35 Q11 27 21 27 Q31 27 32 35" fill="var(--primary)"/><rect x="18" y="27" width="6" height="3" rx="1" fill="var(--primary-d)"/></svg>
     <div class="grow" style="margin-left:2px">
       <div class="f12 muted fw6">Good morning</div>
       <div style="font-size:18px;font-weight:800;letter-spacing:-.02em">Hi Ravi 👋</div>
@@ -205,9 +296,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
         <div class="ec-today">Today</div>
         <div class="ec-amt"><span class="rupee"></span>1,450</div>
         <div class="ec-stats">
-          <div class="ec-stat"><div class="sv">3</div><div class="sl">Jobs</div></div>
+          <div class="ec-stat"><div class="sv">3</div><div class="sl">Today's Jobs</div></div>
           <div class="ec-stat"><div class="sv">★4.9</div><div class="sl">Rating</div></div>
-          <div class="ec-stat"><div class="sv">96%</div><div class="sl">Accept</div></div>
+          <div class="ec-stat"><div class="sv">98%</div><div class="sl">On-time</div></div>
         </div>
       </div>
     </div>
@@ -224,8 +315,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
       <!-- job card 1 -->
       <div class="job-card" id="req1">
         <div class="jc-top">
-          <span class="jc-new"><svg class="ic"><use href="#bolt"/></svg>New request</span>
-          <span class="jc-timer">Respond in 04:32</span>
+          <span class="jc-new" style="background:var(--blue-50);color:var(--blue)"><svg class="ic"><use href="#assign"/></svg>Assigned by Admin</span>
+          <span class="muted f12 fw6">#IC-20461</span>
         </div>
         <div class="jc-body">
           <span class="thumb"><svg class="ic"><use href="#ac"/></svg></span>
@@ -237,33 +328,37 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
         </div>
         <div class="jc-meta">
           <span><svg class="ic"><use href="#clock"/></svg>Today 10–11 AM</span>
+          <span><svg class="ic"><use href="#pin"/></svg>2.3 km away</span>
         </div>
         <div class="jc-actions">
-          <button class="btn out sm" style="flex:1" data-decline="req1">Decline</button>
-          <button class="btn amber sm" style="flex:1.5" data-go="job">Accept</button>
+          <button class="btn sm" style="flex:0 0 auto;background:var(--primary-50);color:var(--primary-d);padding:0 14px;gap:6px" data-toast="Calling customer…"><svg class="ic" style="width:15px;height:15px"><use href="#call"/></svg>Call</button>
+          <button class="btn sm" style="flex:0 0 auto;background:var(--blue-50);color:var(--blue);padding:0 14px;gap:6px" data-toast="Opening navigation…"><svg class="ic" style="width:15px;height:15px"><use href="#nav"/></svg>Navigate</button>
+          <button class="btn amber sm" style="flex:1" data-go="job">View details →</button>
         </div>
       </div>
 
       <!-- job card 2 -->
       <div class="job-card" id="req2">
         <div class="jc-top">
-          <span class="jc-new"><svg class="ic"><use href="#bolt"/></svg>New request</span>
-          <span class="jc-timer" style="color:#9A6A14">Respond in 01:15</span>
+          <span class="jc-new" style="background:var(--blue-50);color:var(--blue)"><svg class="ic"><use href="#assign"/></svg>Assigned by Admin</span>
+          <span class="muted f12 fw6">#IC-20459</span>
         </div>
         <div class="jc-body">
-          <span class="thumb"><svg class="ic"><use href="#drop"/></svg></span>
+          <span class="thumb"><svg class="ic"><use href="#washer"/></svg></span>
           <div class="grow">
-            <div class="fw7 f15">Plumbing — Leakage</div>
-            <div class="muted f12 mt6">Vasant Vihar · 4.1 km</div>
+            <div class="fw7 f15">Washing Machine — Not spinning</div>
+            <div class="muted f12 mt6">Sector 22 · 4.1 km</div>
             <div class="est-earn mt6"><span class="rupee"></span>350 est. earning</div>
           </div>
         </div>
         <div class="jc-meta">
           <span><svg class="ic"><use href="#clock"/></svg>Today 1–2 PM</span>
+          <span><svg class="ic"><use href="#pin"/></svg>4.1 km away</span>
         </div>
         <div class="jc-actions">
-          <button class="btn out sm" style="flex:1" data-decline="req2">Decline</button>
-          <button class="btn amber sm" style="flex:1.5" data-go="job">Accept</button>
+          <button class="btn sm" style="flex:0 0 auto;background:var(--primary-50);color:var(--primary-d);padding:0 14px;gap:6px" data-toast="Calling customer…"><svg class="ic" style="width:15px;height:15px"><use href="#call"/></svg>Call</button>
+          <button class="btn sm" style="flex:0 0 auto;background:var(--blue-50);color:var(--blue);padding:0 14px;gap:6px" data-toast="Opening navigation…"><svg class="ic" style="width:15px;height:15px"><use href="#nav"/></svg>Navigate</button>
+          <button class="btn amber sm" style="flex:1" data-go="job">View details →</button>
         </div>
       </div>
     </div>
@@ -288,23 +383,16 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
       <span style="position:absolute;left:24%;top:60%;width:14px;height:14px;border-radius:50%;background:var(--blue);border:3px solid #fff;box-shadow:0 0 0 4px rgba(44,107,212,.2)"></span>
       <span class="pin" style="left:70%;top:32%"><svg class="ic"><use href="#pin"/></svg></span>
       <div class="dist-badge">2.3 km · 8 min</div>
-      <button class="btn amber sm" style="position:absolute;right:12px;bottom:12px;width:auto;padding:0 16px">
-        <svg class="ic"><use href="#nav"/></svg>Navigate
-      </button>
     </div>
 
     <!-- customer info -->
     <div class="card mt14">
       <div class="row" style="gap:12px;align-items:flex-start">
-        <span class="av" style="width:44px;height:44px;font-size:14px">AS</span>
+        <svg class="av-svg" width="44" height="44" viewBox="0 0 44 44"><circle cx="22" cy="22" r="22" fill="#EAF2FE"/><circle cx="22" cy="18" r="6.5" fill="#8B5E34"/><path d="M14 14 Q16 8 22 9 Q28 8 30 14" fill="#2D1B0E"/><path d="M13 16 Q14 13 22 13 Q30 13 31 16 Q31 19 30 20 L14 20 Q13 19 13 16" fill="#2D1B0E"/><circle cx="22" cy="19" r="6" fill="#C49060"/><circle cx="19.5" cy="18" r="1" fill="#14181D"/><circle cx="24.5" cy="18" r="1" fill="#14181D"/><path d="M20 21 Q22 22.5 24 21" stroke="#14181D" stroke-width=".7" fill="none" stroke-linecap="round"/><circle cx="16" cy="19" r="1.2" fill="#E8B874"/><circle cx="28" cy="19" r="1.2" fill="#E8B874"/><path d="M11 36 Q12 28 22 28 Q32 28 33 36" fill="#2C6BD4"/></svg>
         <div class="grow">
           <div class="fw7 f14">Anita Sharma</div>
           <div class="f12 muted" style="margin-top:2px">Customer</div>
           <div class="f12" style="margin-top:8px;line-height:1.5;color:var(--gray)">Flat 402, Sunshine Apartments,<br>Sector 45, DLF Phase 4,<br>Gurugram, Haryana 122002</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <button class="btn amber sm" style="gap:6px"><svg class="ic" style="width:15px;height:15px"><use href="#call"/></svg>Call</button>
-          <button class="btn out sm" style="gap:6px"><svg class="ic" style="width:15px;height:15px"><use href="#nav"/></svg>Navigate</button>
         </div>
       </div>
     </div>
@@ -322,32 +410,72 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
       </div>
     </div>
 
-    <!-- job progress -->
-    <div class="card mt12">
-      <div class="fw7 f14" style="margin-bottom:10px">Job Progress</div>
-      <div class="prog-row done"><div class="pchk"><svg class="ic" style="width:11px;height:11px;stroke-width:2.8;color:#fff"><use href="#check"/></svg></div><div class="plbl">Accepted</div></div>
-      <div class="prog-row now"><div class="pchk"></div><div class="plbl">En route to customer</div></div>
-      <div class="prog-row wait"><div class="pchk"></div><div class="plbl">In progress</div></div>
-      <div class="prog-row wait"><div class="pchk"></div><div class="plbl">Completed &amp; payment collected</div></div>
+    <!-- start pin notice -->
+    <div class="card mt12 row" style="gap:11px;background:var(--primary-50);border-color:var(--primary-100)">
+      <svg class="ic" style="width:20px;height:20px;color:var(--primary-d)"><use href="#lock"/></svg>
+      <span class="f13 fw6" style="color:var(--primary-d)">Ask the customer for the 4-digit start PIN when you arrive.</span>
     </div>
 
-    <!-- start pin notice -->
-    <div class="card mt12 row" style="gap:11px;background:var(--green-50);border-color:var(--green-100)">
-      <svg class="ic" style="width:20px;height:20px;color:var(--green-d)"><use href="#lock"/></svg>
-      <span class="f13 fw6" style="color:var(--green-d)">Ask the customer for the 4-digit start PIN when you arrive.</span>
+    <!-- ESTIMATE MODULE -->
+    <div class="card mt12">
+      <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--ink)">Estimate Details</div>
+      <div class="est-row">
+        <span class="er-lbl">Service Charges</span>
+        <span class="er-in"><span class="er-cur rupee"></span><input type="number" class="est-inp" value="199" id="est-service" oninput="calcTotal()"></span>
+      </div>
+      <div class="est-row">
+        <span class="er-lbl">Labour Charges</span>
+        <span class="er-in"><span class="er-cur rupee"></span><input type="number" class="est-inp" value="350" id="est-labour" oninput="calcTotal()"></span>
+      </div>
+      <div class="est-row">
+        <span class="er-lbl">Parts & Materials</span>
+        <span class="er-in"><span class="er-cur rupee"></span><input type="number" class="est-inp" value="450" id="est-parts" oninput="calcTotal()"></span>
+      </div>
+      <div class="est-row" style="border-top:1px solid var(--line);padding-top:12px;margin-top:4px">
+        <span class="er-lbl" style="font-weight:800;color:var(--ink)">Total Estimate</span>
+        <span class="er-in" style="font-weight:800;color:var(--primary);font-size:16px"><span class="rupee"></span><span id="est-total">999</span></span>
+      </div>
+    </div>
+
+    <!-- COMPLETION MODULE -->
+    <div class="card mt12">
+      <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--ink)">Job Completion</div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <button class="comp-step" data-comp="photos">
+          <span class="cs-chk"></span>
+          <span class="grow">
+            <span class="cs-lbl">Upload work photos</span>
+            <span class="cs-sub">Before &amp; after repair photos</span>
+          </span>
+        </button>
+        <button class="comp-step" data-comp="payment">
+          <span class="cs-chk"></span>
+          <span class="grow">
+            <span class="cs-lbl">Collect payment</span>
+            <span class="cs-sub">Confirm payment collection (Cash/UPI)</span>
+          </span>
+        </button>
+        <button class="comp-step" data-comp="invoice">
+          <span class="cs-chk"></span>
+          <span class="grow">
+            <span class="cs-lbl">Generate digital invoice</span>
+            <span class="cs-sub">Send final tax receipt to customer</span>
+          </span>
+        </button>
+      </div>
     </div>
   </div>
-  <div class="dock"><button class="btn amber" data-go="jobs" data-done>Mark job complete</button></div>
+  <div class="dock"><button class="btn amber" id="close-job-btn" data-go="jobs" data-done style="opacity:.45" disabled>Close job</button></div>
 </section>
 
 <!-- EARNINGS -->
 <section class="screen" data-screen="earnings">
   <div class="hdr"><div class="grow"><div style="font-size:20px;font-weight:800;letter-spacing:-.02em">Earnings</div></div><button class="iconbtn"><svg class="ic"><use href="#bell"/></svg></button></div>
   <div class="scroll pad" style="padding-bottom:20px">
-    <div class="card" style="background:var(--green);border:none;color:#fff;padding:18px">
+    <div class="card" style="background:var(--primary);border:none;color:#fff;padding:18px">
       <div class="f13" style="opacity:.9">Available for payout</div>
       <div class="fw8" style="font-size:32px;letter-spacing:-.02em;margin-top:4px"><span class="rupee"></span>8,420</div>
-      <div class="row between mt16"><span class="f12" style="opacity:.85">Next auto-payout: Mon, 16 Jun</span><button class="btn sm" style="width:auto;padding:0 18px;background:#fff;color:var(--green-d);height:38px">Withdraw</button></div>
+      <div class="row between mt16"><span class="f12" style="opacity:.85">Next auto-payout: Mon, 16 Jun</span></div>
     </div>
     <div class="row mt12" style="gap:10px">
       <div class="stat"><div class="v rupee">4,250</div><div class="l">This week</div></div>
@@ -368,8 +496,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
     </div>
     <div style="font-size:15px;font-weight:800;letter-spacing:-.015em;margin:20px 0 12px">Recent transactions</div>
     <div class="card" style="padding:4px 15px">
-      <div class="lrow"><span class="li" style="color:var(--green-d)"><svg class="ic"><use href="#wrench"/></svg></span><div class="grow"><div class="ttl">AC service · #INF-20384</div><div class="ds">Today, 4:32 PM</div></div><span class="fw8 f14" style="color:var(--green-d)">+<span class="rupee"></span>680</span></div>
-      <div class="lrow"><span class="li" style="color:#9A6A14"><svg class="ic"><use href="#gift"/></svg></span><div class="grow"><div class="ttl">Weekend bonus</div><div class="ds">5 jobs completed</div></div><span class="fw8 f14" style="color:var(--green-d)">+<span class="rupee"></span>150</span></div>
+      <div class="lrow"><span class="li" style="color:var(--primary-d)"><svg class="ic"><use href="#wrench"/></svg></span><div class="grow"><div class="ttl">AC service · #INF-20384</div><div class="ds">Today, 4:32 PM</div></div><span class="fw8 f14" style="color:var(--primary-d)">+<span class="rupee"></span>680</span></div>
+      <div class="lrow"><span class="li" style="color:var(--amber)"><svg class="ic"><use href="#gift"/></svg></span><div class="grow"><div class="ttl">Weekend bonus</div><div class="ds">5 jobs completed</div></div><span class="fw8 f14" style="color:var(--primary-d)">+<span class="rupee"></span>150</span></div>
       <div class="lrow"><span class="li"><svg class="ic"><use href="#bank"/></svg></span><div class="grow"><div class="ttl">Payout to HDFC ••7782</div><div class="ds">9 Jun</div></div><span class="fw8 f14 muted">−<span class="rupee"></span>6,000</span></div>
     </div>
   </div>
@@ -380,7 +508,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   <div class="hdr"><div class="grow"><div style="font-size:20px;font-weight:800;letter-spacing:-.02em">Profile</div></div><button class="iconbtn"><svg class="ic"><use href="#cog"/></svg></button></div>
   <div class="scroll pad" style="padding-bottom:20px">
     <div class="card row" style="gap:14px;align-items:center">
-      <span class="av" style="width:58px;height:58px;font-size:20px">RK</span>
+      <svg class="av-svg" width="58" height="58" viewBox="0 0 58 58"><circle cx="29" cy="29" r="29" fill="var(--primary-50)"/><circle cx="29" cy="22" r="8" fill="var(--primary)"/><rect x="20" y="14" width="18" height="6" rx="2.5" fill="var(--primary-d)"/><circle cx="29" cy="24" r="7.5" fill="#D4A06A"/><circle cx="26" cy="23" r="1.3" fill="#14181D"/><circle cx="32" cy="23" r="1.3" fill="#14181D"/><path d="M26 27 Q29 29.5 32 27" stroke="#14181D" stroke-width=".9" fill="none" stroke-linecap="round"/><path d="M14 48 Q16 38 29 38 Q42 38 44 48" fill="var(--primary)"/><rect x="25" y="38" width="8" height="4" rx="1.5" fill="var(--primary-d)"/></svg>
       <div class="grow"><div class="fw8" style="font-size:17px">Rajesh Kumar</div><div class="muted f12 mt6">Partner ID TC-1182 · since 2023</div></div>
       <span class="st ok">Verified</span>
     </div>
@@ -389,9 +517,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
       <div class="stat"><div class="v">1,240</div><div class="l">Jobs</div></div>
       <div class="stat"><div class="v">98%</div><div class="l">On-time</div></div>
     </div>
-    <div class="card mt16 row" style="gap:11px;background:var(--green-50);border-color:var(--green-100)">
-      <svg class="ic" style="width:20px;height:20px;color:var(--green-d)"><use href="#verified"/></svg>
-      <div class="grow"><div class="fw7 f14" style="color:var(--green-d)">KYC verified</div><div class="f12" style="color:var(--green-d);opacity:.85;margin-top:2px">Aadhaar, PAN, photo &amp; bank confirmed</div></div>
+    <div class="card mt16 row" style="gap:11px;background:var(--primary-50);border-color:var(--primary-100)">
+      <svg class="ic" style="width:20px;height:20px;color:var(--primary-d)"><use href="#verified"/></svg>
+      <div class="grow"><div class="fw7 f14" style="color:var(--primary-d)">KYC verified</div><div class="f12" style="color:var(--primary-d);opacity:.85;margin-top:2px">Aadhaar, PAN, photo &amp; bank confirmed</div></div>
     </div>
     <div class="card mt12" style="padding:4px 15px">
       <div class="lrow"><span class="li"><svg class="ic"><use href="#wrench"/></svg></span><div class="grow"><div class="ttl">Service categories</div><div class="ds">AC, Refrigerator, Washing Machine</div></div><span class="chev2"><svg class="ic" style="width:18px;height:18px"><use href="#right"/></svg></span></div>
@@ -409,7 +537,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 <!-- KYC -->
 <section class="screen" data-screen="kyc" data-flow>
   <div class="hdr">
-    <button class="back" data-go="profile"><svg class="ic"><use href="#left"/></svg></button>
+    <button class="back" data-go="login"><svg class="ic"><use href="#left"/></svg></button>
     <div class="grow">
       <div style="font-size:18px;font-weight:800;letter-spacing:-.02em">Verify your identity</div>
       <div style="font-size:12px;color:var(--gray);margin-top:2px">Required once · reviewed within 24 hours</div>
@@ -423,11 +551,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
           <div class="dc-icon"><svg class="ic" style="width:18px;height:18px"><use href="#idcard"/></svg></div>
           <div><div class="dc-name">Aadhaar card</div><div class="dc-sub">Front &amp; back photos</div></div>
         </div>
-        <div class="uploaded-badge"><svg class="ic" style="width:14px;height:14px;color:var(--green)"><use href="#check"/></svg>Uploaded</div>
+        <div class="uploaded-badge"><svg class="ic" style="width:14px;height:14px;color:var(--primary)"><use href="#check"/></svg>Uploaded</div>
       </div>
       <div class="doc-photos">
-        <div class="doc-photo" style="background:#D2EBE0"><svg class="ic" style="color:var(--green-d)"><use href="#idcard"/></svg></div>
-        <div class="doc-photo" style="background:#D2EBE0"><svg class="ic" style="color:var(--green-d)"><use href="#idcard"/></svg></div>
+        <div class="doc-photo" style="background:var(--primary-100)"><svg class="ic" style="color:var(--primary-d)"><use href="#idcard"/></svg></div>
+        <div class="doc-photo" style="background:var(--primary-100)"><svg class="ic" style="color:var(--primary-d)"><use href="#idcard"/></svg></div>
       </div>
     </div>
 
@@ -436,22 +564,49 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
       <div class="dc-top">
         <div class="row" style="gap:10px">
           <div class="dc-icon"><svg class="ic" style="width:18px;height:18px"><use href="#card"/></svg></div>
-          <div><div class="dc-name">PAN card</div><div class="dc-sub">Required for payments</div></div>
+          <div><div class="dc-name">PAN card</div><div class="dc-sub">Required for tax & payments</div></div>
         </div>
       </div>
       <div class="upload-zone">
-        <svg class="ic" style="width:18px;height:18px"><use href="#upload"/></svg>
-        Upload
+        <svg class="ic" style="width:18px;height:18px"><use href="#upload"/></svg>Upload PAN
+      </div>
+    </div>
+
+    <!-- Profile Photo -->
+    <div class="doc-card">
+      <div class="dc-top">
+        <div class="row" style="gap:10px">
+          <div class="dc-icon"><svg class="ic" style="width:18px;height:18px"><use href="#user"/></svg></div>
+          <div><div class="dc-name">Profile photo</div><div class="dc-sub">Clear face photo on white background</div></div>
+        </div>
+      </div>
+      <div class="upload-zone">
+        <svg class="ic" style="width:18px;height:18px"><use href="#camera"/></svg>Take or upload photo
+      </div>
+    </div>
+
+    <!-- Bank Details -->
+    <div class="doc-card">
+      <div class="dc-top">
+        <div class="row" style="gap:10px">
+          <div class="dc-icon"><svg class="ic" style="width:18px;height:18px"><use href="#bank"/></svg></div>
+          <div><div class="dc-name">Bank details</div><div class="dc-sub">For earnings payout (Admin verified)</div></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <input type="text" placeholder="Account holder name" style="border:1.5px solid var(--line);border-radius:10px;padding:10px 13px;font-size:13.5px;font-family:inherit;outline:none;color:var(--ink)">
+        <input type="text" placeholder="Account number" style="border:1.5px solid var(--line);border-radius:10px;padding:10px 13px;font-size:13.5px;font-family:inherit;outline:none;color:var(--ink)">
+        <input type="text" placeholder="IFSC code" style="border:1.5px solid var(--line);border-radius:10px;padding:10px 13px;font-size:13.5px;font-family:inherit;outline:none;color:var(--ink)">
       </div>
     </div>
 
     <div class="secure-note">
       <svg class="ic" style="width:16px;height:16px"><use href="#lock"/></svg>
-      Documents are used only for verification, never shared.
+      All documents require Admin approval before your account is activated.
     </div>
   </div>
   <div class="dock">
-    <button class="btn amber" data-go="pending">Continue</button>
+    <button class="btn amber" data-kyc-submit>Submit for approval</button>
   </div>
 </section>
 
@@ -535,6 +690,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 <symbol id="card" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M3 10h18M7 14h3"/></symbol>
 <symbol id="upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></symbol>
 <symbol id="check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-9"/></symbol>
+<symbol id="assign" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M5 7H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-1M9 12l2 2 4-4"/></symbol>
+<symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-3.3 3-5.5 7-5.5s7 2.2 7 5.5"/></symbol>
+<symbol id="camera" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></symbol>
 <symbol id="warn" viewBox="0 0 24 24"><path d="M10.3 3.9 2 19h20L13.7 3.9a2 2 0 0 0-3.4 0ZM12 9v5M12 17h.01"/></symbol>
 <symbol id="image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></symbol>
 <symbol id="search-doc" viewBox="0 0 24 24"><path d="M14 3H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V9l-4-6Z"/><path d="M14 3v6h6"/><circle cx="11" cy="15" r="2.5"/><path d="M16 20l-2.2-2.2"/></symbol>
@@ -544,6 +702,12 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 <script>
 const app=document.getElementById('app');
 const screens=[...document.querySelectorAll('.screen')];
+function calcTotal(){
+  const service = parseFloat(document.getElementById('est-service').value) || 0;
+  const labour = parseFloat(document.getElementById('est-labour').value) || 0;
+  const parts = parseFloat(document.getElementById('est-parts').value) || 0;
+  document.getElementById('est-total').textContent = (service + labour + parts).toLocaleString();
+}
 function go(id){
   const sc=screens.find(s=>s.dataset.screen===id);if(!sc)return;
   screens.forEach(s=>s.classList.toggle('active',s===sc));
@@ -560,13 +724,29 @@ document.getElementById('online-btn').addEventListener('click',()=>{
   btn.classList.toggle('off',!online);
   lbl.textContent=online?'ONLINE':'OFFLINE';
 });
+let compDone=0;
 document.addEventListener('click',e=>{
+  if(e.target.closest('[data-login]')){go('kyc');return;}
+  if(e.target.closest('[data-kyc-submit]')){
+    go('jobs');
+    setTimeout(()=>toast('✓ KYC approved — welcome aboard, Ravi!'),400);
+    return;
+  }
+  const toastBtn=e.target.closest('[data-toast]');
+  if(toastBtn){toast(toastBtn.dataset.toast);return;}
   const nav=e.target.closest('[data-go]');
-  if(nav){if(nav.matches('[data-go="job"]'))toast('Job accepted');if(nav.hasAttribute('data-done'))toast('Job completed · ₹680 added');go(nav.dataset.go);return;}
-  const dec=e.target.closest('[data-decline]');
-  if(dec){const c=document.getElementById(dec.dataset.decline);c.style.transition='.25s';c.style.opacity='0';c.style.transform='scale(.97)';setTimeout(()=>c.remove(),250);toast('Request declined');return;}
+  if(nav){if(nav.hasAttribute('data-done'))toast('Job closed · Invoice sent · ₹680 added');go(nav.dataset.go);return;}
   const tab=e.target.closest('.itab');
   if(tab){tab.closest('.itabs').querySelectorAll('.itab').forEach(b=>b.classList.remove('on'));tab.classList.add('on');}
+  const comp=e.target.closest('[data-comp]');
+  if(comp&&!comp.classList.contains('done')){
+    comp.classList.add('done');
+    comp.querySelector('.cs-chk').innerHTML='<svg class="ic" style="width:11px;height:11px;stroke-width:2.8;color:#fff"><use href="#check"/></svg>';
+    compDone++;
+    const btn=document.getElementById('close-job-btn');
+    if(btn&&compDone>=3){btn.disabled=false;btn.style.opacity='1';}
+  }
+  const estInp=e.target.closest('.est-inp');
 });
 </script>
 </body>
