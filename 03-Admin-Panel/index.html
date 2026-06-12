@@ -172,7 +172,7 @@ input{font-family:inherit}
   <aside class="sidebar">
     <div class="brand"><span class="m"><svg viewBox="0 0 24 24"><path d="M3 13h3l1.5-4 2.5 8 2-6 1.5 2h5" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><div class="n">Infotel Care</div><div class="t">Admin</div></div></div>
     <button class="nav on" data-go="dashboard"><svg class="ic"><use href="#home"/></svg>Dashboard</button>
-    <button class="nav" data-go="users"><svg class="ic"><use href="#users"/></svg>User Management</button>
+    <button class="nav" data-go="users"><svg class="ic"><use href="#users"/></svg>Technician Management</button>
     <button class="nav" data-go="techapproval"><svg class="ic"><use href="#idcard"/></svg>Technician Approval <span class="badge" style="background:var(--amber)">6</span></button>
     <button class="nav" data-go="bookings"><svg class="ic"><use href="#receipt"/></svg>Booking Management <span class="badge">18</span></button>
     <button class="nav" data-go="commission"><svg class="ic"><use href="#percent"/></svg>Commission Management</button>
@@ -259,15 +259,78 @@ input{font-family:inherit}
         </div>
         <div class="panel p0">
           <table class="table">
-            <thead><tr><th>Booking</th><th>Customer</th><th>Category</th><th>Technician</th><th>Slot</th><th>Amount</th><th>Status</th></tr></thead>
+            <thead><tr><th>Booking</th><th>Customer</th><th>Category</th><th>Technician</th><th>Slot</th><th>Amount</th><th>Status</th><th style="text-align:right">Action</th></tr></thead>
             <tbody>
-              <tr><td class="s">#INF-20384</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#D4A06A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#2C6BD4"/></svg>Aarav Sharma</div></td><td>Air Conditioner</td><td>Rajesh Kumar</td><td>Today, 10–12 PM</td><td class="s rupee">2,000</td><td><span class="st go"><span class="d"></span>Ongoing</span></td></tr>
-              <tr><td class="s">#INF-20383</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#EAF2FE"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M9 10 Q10 6 15 7 Q20 6 21 10 Q21 13 19 13 L11 13 Q9 13 9 10" fill="#1A0F06"/><circle cx="15" cy="13" r="4" fill="#C49060"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M14 15 Q15 15.8 16 15" stroke="#14181D" stroke-width=".4" fill="none"/><circle cx="11" cy="13" r=".7" fill="#E0A870"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#E2A33A"/></svg>Neha Kapoor</div></td><td>Washing Machine</td><td>Imran Ali</td><td>Today, 2–4 PM</td><td class="s rupee">850</td><td><span class="st go"><span class="d"></span>Ongoing</span></td></tr>
-              <tr><td class="s">#INF-20382</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#FBF1E0"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><rect x="10" y="8" width="10" height="4" rx="2" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#A0785A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><rect x="12.5" y="11" width="5" height="2.5" rx="1" fill="none" stroke="#14181D" stroke-width=".5"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#6B4FD4"/></svg>Vikram Rao</div></td><td>Television</td><td class="muted">— unassigned</td><td>Tmrw, 11–1 PM</td><td class="s rupee">1,499</td><td><span class="st warn"><span class="d"></span>Assigning</span></td></tr>
-              <tr><td class="s">#INF-20381</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M10 11 Q12 7 15 8 Q18 7 20 11" fill="#1A0F06"/><circle cx="15" cy="13" r="4" fill="#B8845C"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="var(--primary)"/></svg>Sara Menon</div></td><td>Refrigerator</td><td>Deepak Verma</td><td>Yest, 4–6 PM</td><td class="s rupee">1,180</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
-              <tr><td class="s">#INF-20380</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#FBF1E0"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#D4A06A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#C44070"/></svg>Amit Gupta</div></td><td>Microwave</td><td>Rajesh Kumar</td><td>9 Jun, 5–7 PM</td><td class="s rupee">640</td><td><span class="st red"><span class="d"></span>Cancelled</span></td></tr>
-              <tr><td class="s">#INF-20379</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#EAF2FE"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M10 10 Q12 6 15 7 Q18 6 20 10" fill="#1A0F06"/><circle cx="15" cy="13" r="4" fill="#C49060"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="11" cy="13" r=".7" fill="#E0A870"/><circle cx="19" cy="13" r=".7" fill="#E0A870"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#2C6BD4"/></svg>Priya R.</div></td><td>Water Purifier</td><td>Sunita Devi</td><td>9 Jun, 9–11 AM</td><td class="s rupee">499</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
-              <tr><td class="s">#INF-20378</td><td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#B8845C"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="var(--primary)"/></svg>Karan Shah</div></td><td>Laptop</td><td>Deepak Verma</td><td>8 Jun, 1–3 PM</td><td class="s rupee">2,340</td><td><span class="st ok"><span class="d"></span>Completed</span></td></tr>
+              <tr data-bid="INF-20384">
+                <td class="s">#INF-20384</td>
+                <td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#D4A06A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#2C6BD4"/></svg>Aarav Sharma</div></td>
+                <td>Air Conditioner</td>
+                <td class="tech-cell">Rajesh Kumar</td>
+                <td>Today, 10–12 PM</td>
+                <td class="s rupee">2,000</td>
+                <td class="status-cell"><span class="st go"><span class="d"></span>Ongoing</span></td>
+                <td style="text-align:right" class="action-cell"><button class="btn sm">View</button></td>
+              </tr>
+              <tr data-bid="INF-20383">
+                <td class="s">#INF-20383</td>
+                <td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#EAF2FE"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M9 10 Q10 6 15 7 Q20 6 21 10 Q21 13 19 13 L11 13 Q9 13 9 10" fill="#1A0F06"/><circle cx="15" cy="13" r="4" fill="#C49060"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M14 15 Q15 15.8 16 15" stroke="#14181D" stroke-width=".4" fill="none"/><circle cx="11" cy="13" r=".7" fill="#E0A870"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#E2A33A"/></svg>Neha Kapoor</div></td>
+                <td>Washing Machine</td>
+                <td class="tech-cell">Imran Ali</td>
+                <td>Today, 2–4 PM</td>
+                <td class="s rupee">850</td>
+                <td class="status-cell"><span class="st go"><span class="d"></span>Ongoing</span></td>
+                <td style="text-align:right" class="action-cell"><button class="btn sm">View</button></td>
+              </tr>
+              <tr data-bid="INF-20382">
+                <td class="s">#INF-20382</td>
+                <td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#FBF1E0"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><rect x="10" y="8" width="10" height="4" rx="2" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#A0785A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><rect x="12.5" y="11" width="5" height="2.5" rx="1" fill="none" stroke="#14181D" stroke-width=".5"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#6B4FD4"/></svg>Vikram Rao</div></td>
+                <td>Television</td>
+                <td class="tech-cell muted">— unassigned</td>
+                <td>Tmrw, 11–1 PM</td>
+                <td class="s rupee">1,499</td>
+                <td class="status-cell"><span class="st warn"><span class="d"></span>Assigning</span></td>
+                <td style="text-align:right" class="action-cell"><button class="btn sm pri" data-assign-booking="INF-20382">Assign</button></td>
+              </tr>
+              <tr data-bid="INF-20381">
+                <td class="s">#INF-20381</td>
+                <td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M10 11 Q12 7 15 8 Q18 7 20 11" fill="#1A0F06"/><circle cx="15" cy="13" r="4" fill="#B8845C"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="var(--primary)"/></svg>Sara Menon</div></td>
+                <td>Refrigerator</td>
+                <td class="tech-cell">Deepak Verma</td>
+                <td>Yest, 4–6 PM</td>
+                <td class="s rupee">1,180</td>
+                <td class="status-cell"><span class="st ok"><span class="d"></span>Completed</span></td>
+                <td style="text-align:right" class="action-cell"><button class="btn sm">View</button></td>
+              </tr>
+              <tr data-bid="INF-20380">
+                <td class="s">#INF-20380</td>
+                <td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#FBF1E0"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#D4A06A"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#C44070"/></svg>Amit Gupta</div></td>
+                <td>Microwave</td>
+                <td class="tech-cell">Rajesh Kumar</td>
+                <td>9 Jun, 5–7 PM</td>
+                <td class="s rupee">640</td>
+                <td class="status-cell"><span class="st red"><span class="d"></span>Cancelled</span></td>
+                <td style="text-align:right" class="action-cell"><button class="btn sm">View</button></td>
+              </tr>
+              <tr data-bid="INF-20379">
+                <td class="s">#INF-20379</td>
+                <td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="#EAF2FE"/><circle cx="15" cy="12" r="5" fill="#2D1B0E"/><path d="M10 10 Q12 6 15 7 Q18 6 20 10" fill="#1A0F06"/><circle cx="15" cy="13" r="4" fill="#C49060"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="11" cy="13" r=".7" fill="#E0A870"/><circle cx="19" cy="13" r=".7" fill="#E0A870"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="#2C6BD4"/></svg>Priya R.</div></td>
+                <td>Water Purifier</td>
+                <td class="tech-cell">Sunita Devi</td>
+                <td>9 Jun, 9–11 AM</td>
+                <td class="s rupee">499</td>
+                <td class="status-cell"><span class="st ok"><span class="d"></span>Completed</span></td>
+                <td style="text-align:right" class="action-cell"><button class="btn sm">View</button></td>
+              </tr>
+              <tr data-bid="INF-20378">
+                <td class="s">#INF-20378</td>
+                <td><div class="cellrow"><svg class="av-svg" width="30" height="30" viewBox="0 0 30 30"><circle cx="15" cy="15" r="15" fill="var(--primary-50)"/><circle cx="15" cy="12" r="4.5" fill="#14181D"/><circle cx="15" cy="13" r="4" fill="#B8845C"/><circle cx="13.5" cy="12.5" r=".7" fill="#14181D"/><circle cx="16.5" cy="12.5" r=".7" fill="#14181D"/><path d="M13.5 14.5 Q15 15.5 16.5 14.5" stroke="#14181D" stroke-width=".5" fill="none"/><path d="M7 24 Q8 19 15 19 Q22 19 23 24" fill="var(--primary)"/></svg>Karan Shah</div></td>
+                <td>Laptop</td>
+                <td class="tech-cell">Deepak Verma</td>
+                <td>8 Jun, 1–3 PM</td>
+                <td class="s rupee">2,340</td>
+                <td class="status-cell"><span class="st ok"><span class="d"></span>Completed</span></td>
+                <td style="text-align:right" class="action-cell"><button class="btn sm">View</button></td>
+              </tr>
             </tbody>
           </table>
           <div class="row between" style="padding:14px 18px;border-top:1px solid var(--line)"><span class="muted f12">Showing 7 of 3,842</span><div class="row" style="gap:8px"><button class="btn sm">Prev</button><button class="btn sm pri">1</button><button class="btn sm">2</button><button class="btn sm">3</button><button class="btn sm">Next</button></div></div>
@@ -446,6 +509,31 @@ input{font-family:inherit}
   </div>
 </div>
 
+<!-- Assign Modal -->
+<div class="modal" id="assign-modal">
+  <div class="modal-content" style="max-width:400px">
+    <div class="modal-header">
+      <h3 style="margin:0">Assign Technician</h3>
+      <button onclick="closeAssignModal()" style="font-size:20px;font-weight:700;color:var(--gray2);cursor:pointer;background:none;border:none">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;font-weight:700;color:var(--gray);display:block;margin-bottom:6px">Select Technician</label>
+        <select id="assign-tech-select" style="width:100%;height:40px;border:1.5px solid var(--line);border-radius:10px;padding:0 10px;font-family:inherit;outline:none;background:#fff">
+          <option value="Rajesh Kumar">Rajesh Kumar (AC, Refrigerator)</option>
+          <option value="Imran Ali">Imran Ali (Washing Machine)</option>
+          <option value="Deepak Verma">Deepak Verma (TV, Laptop)</option>
+          <option value="Suresh Patel">Suresh Patel (Mobile, Laptop)</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn sm" onclick="closeAssignModal()">Cancel</button>
+      <button class="btn sm pri" id="confirm-assign-btn">Assign</button>
+    </div>
+  </div>
+</div>
+
 <div class="backdrop" id="bd"></div>
 <div class="toast" id="toast">Saved</div>
 
@@ -472,12 +560,16 @@ const kycData = {
   ta2: { name: 'Suresh Patel', id: 'TC-1183', bankName: 'Suresh Patel', bankAcc: '00021059381', bankIfsc: 'ICIC0000002' },
   ta3: { name: 'Ravi Teja', id: 'TC-1184', bankName: 'Ravi Teja', bankAcc: '30481290481', bankIfsc: 'SBIN0000003' }
 };
+let activeBookingId = null;
+window.closeAssignModal = function() {
+  document.getElementById('assign-modal').classList.remove('open');
+};
 window.closeKycModal = function() {
   document.getElementById('kyc-modal').classList.remove('open');
 };
 const titles={
   dashboard:['Dashboard','Welcome back, Priya · Mon, 11 Jun 2026'],
-  users:['User Management','Customer directory & registration'],
+  users:['Technician Management','Customer directory & registration'],
   techapproval:['Technician Approval','Review KYC documents · 6 pending'],
   bookings:['Booking Management','Manage service bookings & assignments'],
   commission:['Commission Management','Commission split rules & payouts'],
@@ -548,6 +640,36 @@ document.addEventListener('click',e=>{
     if(cell)cell.innerHTML='<span class="st ok"><span class="d"></span>Approved</span>';
     toast('Technician approved · Account activated');
     closeKycModal();
+    return;
+  }
+  const ab=e.target.closest('[data-assign-booking]');
+  if(ab){
+    activeBookingId = ab.getAttribute('data-assign-booking');
+    document.getElementById('assign-modal').classList.add('open');
+    return;
+  }
+  const confirmAssign = e.target.closest('#confirm-assign-btn');
+  if(confirmAssign && activeBookingId) {
+    const selectedTech = document.getElementById('assign-tech-select').value;
+    const tr = document.querySelector('tr[data-bid="'+activeBookingId+'"]');
+    if(tr) {
+      const techCell = tr.querySelector('.tech-cell');
+      if(techCell) {
+        techCell.textContent = selectedTech;
+        techCell.classList.remove('muted');
+      }
+      const statusCell = tr.querySelector('.status-cell');
+      if(statusCell) {
+        statusCell.innerHTML = '<span class="st go"><span class="d"></span>Ongoing</span>';
+      }
+      const actionCell = tr.querySelector('.action-cell');
+      if(actionCell) {
+        actionCell.innerHTML = '<button class="btn sm">View</button>';
+      }
+    }
+    toast('Technician assigned successfully');
+    closeAssignModal();
+    activeBookingId = null;
     return;
   }
   const tab=e.target.closest('.tabs button'); if(tab){ tab.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('on')); tab.classList.add('on'); }

@@ -237,6 +237,20 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 /* SVG avatar styles */
 .av-svg{border-radius:50%;flex:0 0 auto;overflow:hidden;display:block}
+.gender-btn.sel{border-color:var(--primary) !important;background:var(--primary-50) !important;color:var(--primary-d) !important}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);z-index:999;display:none;align-items:center;justify-content:center;padding:16px}
+.modal.open{display:flex}
+.modal-content{background:#fff;border-radius:18px;width:100%;max-width:380px;box-shadow:0 10px 25px -5px rgba(0,0,0,0.1),0 8px 10px -6px rgba(0,0,0,0.1);overflow:hidden;animation:modalScale .2s ease-out;color:var(--ink)}
+@keyframes modalScale{from{transform:scale(0.95);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-header{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.modal-body{padding:20px;max-height:70vh;overflow-y:auto}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--line);background:var(--soft);display:flex;justify-content:flex-end;gap:10px}
+.photo-add{width:100%;height:110px;border-radius:14px;border:1.5px dashed var(--line);background:var(--soft);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;font-size:13px;font-weight:700;color:var(--ink);transition:border-color .15s,background .15s,transform .15s}
+.photo-add:hover{border-color:var(--primary-100);background:var(--primary-50);transform:scale(1.02)}
+.photo-add.done{border-color:var(--primary);background:var(--primary-50);color:var(--primary-d);border-style:solid}
+.photo-add .ic{width:22px;height:22px;color:var(--gray2);transition:color .15s}
+.photo-add.done .ic{color:var(--primary)}
+.photo-add .sub{font-size:11px;font-weight:500;color:var(--gray2)}
 </style>
 </head>
 <body>
@@ -273,6 +287,42 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
     <button class="btn amber" style="margin-top:28px" data-login>Verify &amp; Continue</button>
     <div style="font-size:12.5px;color:var(--gray2);text-align:center;margin-top:16px">Didn't receive OTP? <span style="color:var(--amber-d);font-weight:700;cursor:pointer">Resend in 0:28</span></div>
+  </div>
+</section>
+
+<!-- SIGNUP DETAILS -->
+<section class="screen" data-screen="signup-details" data-flow>
+  <div class="scroll pad" style="padding-top:28px;padding-bottom:32px">
+    <div style="margin-bottom:24px">
+      <div style="font-size:26px;font-weight:800;letter-spacing:-.03em;line-height:1.2">Complete your profile</div>
+      <div style="font-size:13.5px;color:var(--gray);margin-top:8px">Just a few more details to get started</div>
+    </div>
+
+    <label class="inp-label">Full Name</label>
+    <input class="inp-field" type="text" placeholder="e.g. Rajesh Kumar" id="tech-name-inp">
+
+    <label class="inp-label" style="margin-top:16px">Email Address</label>
+    <input class="inp-field" type="email" placeholder="e.g. rajesh@example.com" id="tech-email-inp">
+
+    <div style="display:flex;gap:12px;margin-top:16px">
+      <div style="flex:1">
+        <label class="inp-label" style="margin-top:0">Age</label>
+        <input class="inp-field" type="number" placeholder="e.g. 28" id="tech-age-inp">
+      </div>
+      <div style="flex:1">
+        <label class="inp-label" style="margin-top:0">City</label>
+        <input class="inp-field" type="text" placeholder="e.g. Bengaluru" id="tech-city-inp">
+      </div>
+    </div>
+
+    <label class="inp-label" style="margin-top:16px">Gender</label>
+    <div style="display:flex;gap:10px;margin-top:2px" id="tech-gender-select">
+      <button class="btn out gender-btn" style="flex:1;height:46px;font-size:14px" data-gender="Male">Male</button>
+      <button class="btn out gender-btn" style="flex:1;height:46px;font-size:14px" data-gender="Female">Female</button>
+      <button class="btn out gender-btn" style="flex:1;height:46px;font-size:14px" data-gender="Other">Other</button>
+    </div>
+
+    <button class="btn pri" style="margin-top:28px" id="tech-signup-submit">Next: Verify KYC</button>
   </div>
 </section>
 
@@ -441,21 +491,27 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
     <div class="card mt12">
       <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--ink)">Job Completion</div>
       <div style="display:flex;flex-direction:column;gap:4px">
-        <button class="comp-step" data-comp="photos">
-          <span class="cs-chk"></span>
-          <span class="grow">
-            <span class="cs-lbl">Upload work photos</span>
-            <span class="cs-sub">Before &amp; after repair photos</span>
-          </span>
-        </button>
-        <button class="comp-step" data-comp="payment">
+        <div class="comp-step" data-comp="photos" style="display:block;cursor:default">
+          <button class="row" style="width:100%;text-align:left;align-items:center;gap:12px" id="upload-photos-trigger">
+            <span class="cs-chk"></span>
+            <span class="grow">
+              <span class="cs-lbl">Upload work photos</span>
+              <span class="cs-sub" id="photo-subtext" style="display:block;margin-top:2px">Upload 1 to 5 work photos</span>
+            </span>
+          </button>
+          <div id="mock-uploaded-photos" style="display:none;gap:12px;margin-top:10px;margin-left:34px">
+          </div>
+        </div>
+        
+        <button class="comp-step" data-comp="payment" style="text-align:left">
           <span class="cs-chk"></span>
           <span class="grow">
             <span class="cs-lbl">Collect payment</span>
             <span class="cs-sub">Confirm payment collection (Cash/UPI)</span>
           </span>
         </button>
-        <button class="comp-step" data-comp="invoice">
+        
+        <button class="comp-step" data-comp="invoice" style="text-align:left">
           <span class="cs-chk"></span>
           <span class="grow">
             <span class="cs-lbl">Generate digital invoice</span>
@@ -578,45 +634,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
         <div style="flex:1;text-align:center;padding:8px 4px;border-radius:10px;cursor:pointer;background:var(--soft)">
           <div class="muted f11 fw6">Sun</div><div class="fw7 f13 mt4">15</div>
         </div>
-      </div>
-    </div>
-
-    <div style="font-size:14px;font-weight:700;margin-bottom:10px;color:var(--ink)">Time Slot Availability</div>
-    <div class="card" style="padding:15px;margin-bottom:16px">
-      <div style="display:flex;flex-direction:column;gap:12px">
-        
-        <div class="row between" style="padding-bottom:10px;border-bottom:1px solid var(--line)">
-          <div>
-            <div class="fw7 f14">Morning slot</div>
-            <div class="muted f12 mt4">8:00 AM – 12:00 PM</div>
-          </div>
-          <button class="st ok" style="cursor:pointer" data-slot-toggle>Available</button>
-        </div>
-        
-        <div class="row between" style="padding-bottom:10px;border-bottom:1px solid var(--line)">
-          <div>
-            <div class="fw7 f14">Afternoon slot</div>
-            <div class="muted f12 mt4">12:00 PM – 4:00 PM</div>
-          </div>
-          <button class="st ok" style="cursor:pointer" data-slot-toggle>Available</button>
-        </div>
-        
-        <div class="row between" style="padding-bottom:10px;border-bottom:1px solid var(--line)">
-          <div>
-            <div class="fw7 f14">Evening slot</div>
-            <div class="muted f12 mt4">4:00 PM – 8:00 PM</div>
-          </div>
-          <button class="st ok" style="cursor:pointer" data-slot-toggle>Available</button>
-        </div>
-        
-        <div class="row between">
-          <div>
-            <div class="fw7 f14">Night slot</div>
-            <div class="muted f12 mt4">8:00 PM – 10:00 PM</div>
-          </div>
-          <button class="st off" style="cursor:pointer" data-slot-toggle>Unavailable</button>
-        </div>
-        
       </div>
     </div>
 
@@ -846,6 +863,28 @@ document.getElementById('online-btn').addEventListener('click',()=>{
   online=!online;
   updateOnlineUI();
 });
+window.closeTechPaymentModal = function() {
+  document.getElementById('tech-payment-modal').classList.remove('open');
+};
+window.closeTechInvoiceModal = function() {
+  document.getElementById('tech-invoice-modal').classList.remove('open');
+};
+window.closeTechPhotosModal = function() {
+  document.getElementById('tech-photos-modal').classList.remove('open');
+};
+function checkTechPhotosState() {
+  const count = document.querySelectorAll('#tech-photos-grid .photo-add.done').length;
+  const confirmBtn = document.getElementById('confirm-photos-btn');
+  if(confirmBtn) {
+    if(count >= 1) {
+      confirmBtn.disabled = false;
+      confirmBtn.style.opacity = '1';
+    } else {
+      confirmBtn.disabled = true;
+      confirmBtn.style.opacity = '0.45';
+    }
+  }
+}
 let compDone=0;
 document.addEventListener('click',e=>{
   const schedOnlineBtn = e.target.closest('#schedule-online-btn');
@@ -854,24 +893,33 @@ document.addEventListener('click',e=>{
     updateOnlineUI();
     return;
   }
-  const slotToggle = e.target.closest('[data-slot-toggle]');
-  if(slotToggle) {
-    const isAvail = slotToggle.classList.contains('ok');
-    if(isAvail) {
-      slotToggle.className = 'st off';
-      slotToggle.textContent = 'Unavailable';
-      toast('Slot marked as unavailable');
-    } else {
-      slotToggle.className = 'st ok';
-      slotToggle.textContent = 'Available';
-      toast('Slot marked as available');
-    }
+  const genderBtn = e.target.closest('.gender-btn');
+  if(genderBtn){
+    genderBtn.parentNode.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('sel'));
+    genderBtn.classList.add('sel');
     return;
   }
-  if(e.target.closest('[data-login]')){go('kyc');return;}
+  if(e.target.closest('#tech-signup-submit')){
+    const nameVal = document.getElementById('tech-name-inp').value.trim() || 'Ravi Kumar';
+    const ageVal = document.getElementById('tech-age-inp').value.trim();
+    const cityVal = document.getElementById('tech-city-inp').value.trim();
+    const greetNameEl = document.querySelector('[data-screen="jobs"] .hdr .grow div:last-child');
+    if(greetNameEl) greetNameEl.textContent = `Hi ${nameVal.split(' ')[0]} 👋`;
+    const profileNameEl = document.querySelector('[data-screen="profile"] .fw8');
+    if(profileNameEl) profileNameEl.textContent = nameVal;
+    
+    go('kyc');
+    toast('Profile details updated');
+    return;
+  }
+  if(e.target.closest('[data-login]')){go('signup-details');return;}
   if(e.target.closest('[data-kyc-submit]')){
-    go('jobs');
-    setTimeout(()=>toast('✓ KYC approved — welcome aboard, Ravi!'),400);
+    go('pending');
+    setTimeout(()=>{
+      const nameVal = document.getElementById('tech-name-inp').value.trim() || 'Rajesh';
+      toast(`✓ KYC approved — welcome aboard, ${nameVal.split(' ')[0]}!`);
+      go('jobs');
+    }, 3000);
     return;
   }
   const toastBtn=e.target.closest('[data-toast]');
@@ -880,16 +928,199 @@ document.addEventListener('click',e=>{
   if(nav){if(nav.hasAttribute('data-done'))toast('Job closed · Invoice sent · ₹680 added');go(nav.dataset.go);return;}
   const tab=e.target.closest('.itab');
   if(tab){tab.closest('.itabs').querySelectorAll('.itab').forEach(b=>b.classList.remove('on'));tab.classList.add('on');}
+  const uploadPhotos = e.target.closest('#upload-photos-trigger');
+  if(uploadPhotos) {
+    document.getElementById('tech-photos-modal').classList.add('open');
+    return;
+  }
+  const techPhotoBox = e.target.closest('#tech-photos-grid .photo-add');
+  if(techPhotoBox) {
+    const isDone = techPhotoBox.classList.toggle('done');
+    if(isDone) {
+      techPhotoBox.innerHTML = '<svg class="ic" style="width:18px;height:18px;color:var(--primary)"><use href="#check"/></svg><span style="font-size:9px;margin-top:3px;color:var(--primary-d)">Added</span>';
+    } else {
+      const idx = parseInt(techPhotoBox.dataset.index) + 1;
+      techPhotoBox.innerHTML = `<svg class="ic" style="width:18px;height:18px"><use href="#camera"/></svg><span style="font-size:9px;margin-top:3px">Photo ${idx}</span>`;
+    }
+    checkTechPhotosState();
+    return;
+  }
+  const confirmPhotosBtn = e.target.closest('#confirm-photos-btn');
+  if(confirmPhotosBtn) {
+    const count = document.querySelectorAll('#tech-photos-grid .photo-add.done').length;
+    const compPhotos = document.querySelector('[data-comp="photos"]');
+    if(compPhotos && !compPhotos.classList.contains('done')) {
+      compPhotos.classList.add('done');
+      compPhotos.querySelector('.cs-chk').innerHTML='<svg class="ic" style="width:11px;height:11px;stroke-width:2.8;color:#fff"><use href="#check"/></svg>';
+      compDone++;
+      const btn=document.getElementById('close-job-btn');
+      if(btn && compDone>=3){btn.disabled=false;btn.style.opacity='1';}
+    }
+    document.getElementById('photo-subtext').textContent = `${count} work photo${count > 1 ? 's' : ''} uploaded successfully`;
+    const mockContainer = document.getElementById('mock-uploaded-photos');
+    mockContainer.style.display = 'flex';
+    mockContainer.innerHTML = '';
+    for(let i=0; i<count; i++) {
+      mockContainer.innerHTML += `
+        <div class="photo-thumb" style="width:64px;height:48px;position:relative;background:#f1f5f9;border:1px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:8px;font-weight:700;color:var(--primary-d);background:var(--primary-50);padding:1px 3px;border-radius:3px;position:absolute;bottom:2px;left:2px">Img ${i+1}</span>
+          <svg class="ic" style="width:14px;height:14px;color:var(--primary)"><use href="#image"/></svg>
+        </div>
+      `;
+    }
+    closeTechPhotosModal();
+    toast('Photos uploaded successfully');
+    return;
+  }
   const comp=e.target.closest('[data-comp]');
-  if(comp&&!comp.classList.contains('done')){
-    comp.classList.add('done');
-    comp.querySelector('.cs-chk').innerHTML='<svg class="ic" style="width:11px;height:11px;stroke-width:2.8;color:#fff"><use href="#check"/></svg>';
-    compDone++;
-    const btn=document.getElementById('close-job-btn');
-    if(btn&&compDone>=3){btn.disabled=false;btn.style.opacity='1';}
+  if(comp && !comp.classList.contains('done')) {
+    const action = comp.getAttribute('data-comp');
+    if(action === 'payment') {
+      const estTot = document.getElementById('est-total').textContent;
+      document.getElementById('collect-amount-val').textContent = estTot;
+      document.getElementById('tech-payment-modal').classList.add('open');
+    } else if(action === 'invoice') {
+      document.getElementById('inv-service-val').textContent = document.getElementById('est-service').value;
+      document.getElementById('inv-labour-val').textContent = document.getElementById('est-labour').value;
+      document.getElementById('inv-parts-val').textContent = document.getElementById('est-parts').value;
+      document.getElementById('inv-total-val').textContent = document.getElementById('est-total').textContent;
+      document.getElementById('tech-invoice-modal').classList.add('open');
+    }
+    return;
+  }
+  const payMethod = e.target.closest('#payment-method-select button');
+  if(payMethod) {
+    document.querySelectorAll('#payment-method-select button').forEach(b => b.classList.remove('sel'));
+    payMethod.classList.add('sel');
+    return;
+  }
+  const confirmPayment = e.target.closest('#confirm-payment-btn');
+  if(confirmPayment) {
+    const compPayment = document.querySelector('[data-comp="payment"]');
+    if(compPayment && !compPayment.classList.contains('done')) {
+      compPayment.classList.add('done');
+      compPayment.querySelector('.cs-chk').innerHTML='<svg class="ic" style="width:11px;height:11px;stroke-width:2.8;color:#fff"><use href="#check"/></svg>';
+      const selectedMethod = document.querySelector('#payment-method-select .sel').getAttribute('data-paymethod');
+      compPayment.querySelector('.cs-sub').textContent = 'Payment collected via ' + selectedMethod;
+      compDone++;
+      const btn=document.getElementById('close-job-btn');
+      if(btn&&compDone>=3){btn.disabled=false;btn.style.opacity='1';}
+    }
+    closeTechPaymentModal();
+    toast('Payment collection confirmed');
+    return;
+  }
+  const confirmInvoice = e.target.closest('#confirm-invoice-btn');
+  if(confirmInvoice) {
+    const compInvoice = document.querySelector('[data-comp="invoice"]');
+    if(compInvoice && !compInvoice.classList.contains('done')) {
+      compInvoice.className = 'comp-step done';
+      compInvoice.querySelector('.cs-chk').innerHTML='<svg class="ic" style="width:11px;height:11px;stroke-width:2.8;color:#fff"><use href="#check"/></svg>';
+      compInvoice.querySelector('.cs-sub').textContent = 'Digital invoice generated & sent';
+      compDone++;
+      const btn=document.getElementById('close-job-btn');
+      if(btn&&compDone>=3){btn.disabled=false;btn.style.opacity='1';}
+    }
+    closeTechInvoiceModal();
+    toast('Digital invoice generated and sent!');
+    return;
   }
   const estInp=e.target.closest('.est-inp');
 });
 </script>
+
+<!-- Collect Payment Modal -->
+<div class="modal" id="tech-payment-modal">
+  <div class="modal-content" style="max-width:380px;margin:auto">
+    <div class="modal-header">
+      <h3 style="margin:0">Collect Payment</h3>
+      <button onclick="closeTechPaymentModal()" style="font-size:20px;font-weight:700;color:var(--gray2);cursor:pointer;background:none;border:none">&times;</button>
+    </div>
+    <div class="modal-body" style="padding:18px">
+      <div style="text-align:center;margin-bottom:18px">
+        <div class="muted f12 fw6">AMOUNT TO COLLECT</div>
+        <div class="fw8" style="font-size:28px;color:var(--primary);margin-top:4px"><span class="rupee"></span><span id="collect-amount-val">999</span></div>
+      </div>
+      <label class="inp-label" style="margin-top:0">Select Payment Method</label>
+      <div style="display:flex;gap:10px;margin-top:6px" id="payment-method-select">
+        <button class="btn out gender-btn sel" style="flex:1;height:46px;font-size:13.5px" data-paymethod="Cash">Cash</button>
+        <button class="btn out gender-btn" style="flex:1;height:46px;font-size:13.5px" data-paymethod="UPI">UPI</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn sm" onclick="closeTechPaymentModal()">Cancel</button>
+      <button class="btn sm pri" id="confirm-payment-btn">Confirm Collection</button>
+    </div>
+  </div>
+</div>
+
+<!-- Generate Invoice Modal -->
+<div class="modal" id="tech-invoice-modal">
+  <div class="modal-content" style="max-width:380px;margin:auto">
+    <div class="modal-header">
+      <h3 style="margin:0">Generate Invoice</h3>
+      <button onclick="closeTechInvoiceModal()" style="font-size:20px;font-weight:700;color:var(--gray2);cursor:pointer;background:none;border:none">&times;</button>
+    </div>
+    <div class="modal-body" style="padding:18px">
+      <div class="card" style="padding:12px;background:var(--soft)">
+        <div class="bill"><span class="k">Service Charges</span><span class="v rupee" id="inv-service-val">199</span></div>
+        <div class="bill"><span class="k">Labour Charges</span><span class="v rupee" id="inv-labour-val">350</span></div>
+        <div class="bill"><span class="k">Parts &amp; Materials</span><span class="v rupee" id="inv-parts-val">450</span></div>
+        <div class="bill tot" style="margin-top:6px;padding-top:10px"><span class="k">Total</span><span class="v rupee" id="inv-total-val">999</span></div>
+      </div>
+      <div style="margin-top:14px;font-size:12.5px;color:var(--gray);text-align:center">The invoice will be sent to the customer's email and mobile.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn sm" onclick="closeTechInvoiceModal()">Cancel</button>
+      <button class="btn sm pri" id="confirm-invoice-btn">Generate &amp; Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- Upload Photos Modal -->
+<div class="modal" id="tech-photos-modal">
+  <div class="modal-content" style="max-width:380px;margin:auto">
+    <div class="modal-header">
+      <h3 style="margin:0">Upload Work Photos</h3>
+      <button onclick="closeTechPhotosModal()" style="font-size:20px;font-weight:700;color:var(--gray2);cursor:pointer;background:none;border:none">&times;</button>
+    </div>
+    <div class="modal-body" style="padding:18px">
+      <p class="muted f13" style="margin-bottom:16px;line-height:1.5">Please upload 1 to 5 work photos to complete the job completion check.</p>
+      
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px" id="tech-photos-grid">
+        <button class="photo-add" data-index="0" style="height:68px">
+          <svg class="ic" style="width:18px;height:18px"><use href="#camera"/></svg>
+          <span style="font-size:9px;margin-top:3px">Photo 1</span>
+        </button>
+        <button class="photo-add" data-index="1" style="height:68px">
+          <svg class="ic" style="width:18px;height:18px"><use href="#camera"/></svg>
+          <span style="font-size:9px;margin-top:3px">Photo 2</span>
+        </button>
+        <button class="photo-add" data-index="2" style="height:68px">
+          <svg class="ic" style="width:18px;height:18px"><use href="#camera"/></svg>
+          <span style="font-size:9px;margin-top:3px">Photo 3</span>
+        </button>
+        <button class="photo-add" data-index="3" style="height:68px">
+          <svg class="ic" style="width:18px;height:18px"><use href="#camera"/></svg>
+          <span style="font-size:9px;margin-top:3px">Photo 4</span>
+        </button>
+        <button class="photo-add" data-index="4" style="height:68px">
+          <svg class="ic" style="width:18px;height:18px"><use href="#camera"/></svg>
+          <span style="font-size:9px;margin-top:3px">Photo 5</span>
+        </button>
+      </div>
+      
+      <div class="card row" style="gap:10px;background:var(--soft);border-color:var(--line);padding:10px">
+        <svg class="ic" style="width:16px;height:16px;color:var(--gray2)"><use href="#lock"/></svg>
+        <span class="f12 muted" style="line-height:1.4">Photos will be attached to the customer's digital invoice.</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn sm" onclick="closeTechPhotosModal()">Cancel</button>
+      <button class="btn sm pri" id="confirm-photos-btn" style="opacity:.45" disabled>Confirm Upload</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
