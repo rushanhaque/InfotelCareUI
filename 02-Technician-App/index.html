@@ -912,7 +912,7 @@ document.addEventListener('click',e=>{
   if(e.target.closest('[data-kyc-submit]')){
     go('pending');
     setTimeout(()=>{
-      const nameVal = document.getElementById('tech-name-inp').value.trim() || 'Rajesh';
+      const nameVal = document.getElementById('tech-name-inp').value.trim() || 'Ravi';
       toast(`✓ KYC approved — welcome aboard, ${nameVal.split(' ')[0]}!`);
       go('jobs');
     }, 3000);
