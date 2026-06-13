@@ -186,6 +186,18 @@ input{font-family:inherit}
 .addr-chk{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;flex:0 0 auto;margin-left:auto}
 .addr-opt.sel .addr-chk{background:var(--primary);border-color:var(--primary)}
 
+/* popular services */
+.pop-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.pop-card{background:#fff;border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.pop-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.pop-bg{height:120px;display:grid;place-items:center;font-size:40px}
+.pop-content{padding:12px 14px}
+.pop-name{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.pop-price{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.pop-rating{display:flex;align-items:center;gap:6px}
+.pop-star{color:#059669;font-size:14px;font-weight:700}
+.pop-badge{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--green);color:#fff;font-size:10px;font-weight:700}
+
 /* AMC plan cards */
 .plan-card{border:1.5px solid var(--line);border-radius:18px;padding:18px;margin-bottom:12px;background:#fff;cursor:pointer;transition:border-color .15s,box-shadow .2s,transform .15s}
 .plan-card:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,.06)}
@@ -416,6 +428,52 @@ input{font-family:inherit}
       <button class="cat" data-book="Printer"><span class="ci"><svg class="ic"><use href="#printer"/></svg></span><span>Printer</span></button>
       <button class="cat" data-book="Other Electronics"><span class="ci"><svg class="ic"><use href="#chip"/></svg></span><span>Other<br>Electronics</span></button>
     </div>
+
+    <!-- Popular services -->
+    <div class="sec">Popular services <span class="all">See all →</span></div>
+    <div class="pop-grid">
+      <div class="pop-card">
+        <div class="pop-bg" style="background:linear-gradient(135deg,#F3E8FF,#EDE9FE)"><svg class="ic" style="width:32px;height:32px;color:#8B5CF6"><use href="#ac"/></svg></div>
+        <div class="pop-content">
+          <div class="pop-name">AC Deep Clean</div>
+          <div class="pop-price"><span class="rupee"></span>499</div>
+          <div class="pop-rating"><span class="pop-badge">4.9</span></div>
+        </div>
+      </div>
+      <div class="pop-card">
+        <div class="pop-bg" style="background:linear-gradient(135deg,#DBEAFE,#D1FAE5)"><svg class="ic" style="width:32px;height:32px;color:#059669"><use href="#laptop"/></svg></div>
+        <div class="pop-content">
+          <div class="pop-name">Laptop Tune-up</div>
+          <div class="pop-price"><span class="rupee"></span>399</div>
+          <div class="pop-rating"><span class="pop-badge">4.8</span></div>
+        </div>
+      </div>
+      <div class="pop-card">
+        <div class="pop-bg" style="background:linear-gradient(135deg,#FED7AA,#FEF3C7)"><svg class="ic" style="width:32px;height:32px;color:#D97706"><use href="#washer"/></svg></div>
+        <div class="pop-content">
+          <div class="pop-name">Washer Repair</div>
+          <div class="pop-price"><span class="rupee"></span>599</div>
+          <div class="pop-rating"><span class="pop-badge">4.7</span></div>
+        </div>
+      </div>
+      <div class="pop-card">
+        <div class="pop-bg" style="background:linear-gradient(135deg,#FBCFE8,#FCE7F3)"><svg class="ic" style="width:32px;height:32px;color:#EC4899"><use href="#fridge"/></svg></div>
+        <div class="pop-content">
+          <div class="pop-name">Fridge Servicing</div>
+          <div class="pop-price"><span class="rupee"></span>449</div>
+          <div class="pop-rating"><span class="pop-badge">4.9</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="amc mt20" style="cursor:pointer" data-go="spareparts">
+      <div><h3>Spare Parts Store</h3><p>Genuine parts for all your devices · Same-day delivery</p></div>
+      <button class="amc-btn" style="background:rgba(255,255,255,.9)">Shop →</button>
+    </div>
+    <button class="amc mt12" style="width:100%;text-align:left;border:none;cursor:pointer;background:linear-gradient(135deg,#047857 0%,#059669 50%,#065F46 100%)" data-go="amc">
+      <div><h3>AMC Plans from <span class="rupee"></span>999/yr</h3><p>Silver · Gold · Platinum — unlimited visits, renewal reminders</p></div>
+      <button class="amc-btn">Explore</button>
+    </button>
   </div>
 </section>
 
